@@ -1,0 +1,19 @@
+.student-create,
+.student-update {
+    form {
+        width: auto;
+
+        .form-body {
+            display: flex;
+            gap: 3rem;
+            justify-content: space-between;
+        }
+
+        @media screen and (max-width: 990px) {
+            .form-body {
+                gap: unset;
+                flex-direction: column;
+            }
+        }
+    }
+}

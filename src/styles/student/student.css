@@ -1,0 +1,27 @@
+.student-create form,
+.student-update form {
+  width: auto;
+}
+
+.student-create form .form-body,
+.student-update form .form-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 3rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+@media screen and (max-width: 990px) {
+  .student-create form .form-body,
+  .student-update form .form-body {
+    gap: unset;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+/*# sourceMappingURL=student.css.map */

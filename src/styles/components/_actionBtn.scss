@@ -1,0 +1,46 @@
+.user-create,
+.user-update,
+.role-create,
+.role-update,
+.student-create,
+.student-update,
+.program-create,
+.program-update {
+    .action-btn {
+        justify-content: flex-end;
+        flex-direction: row !important;
+        margin-top: 1rem !important;
+
+        .btn {
+            width: 130px;
+            color: #FFF;
+        }
+    }
+}
+
+.user,
+.role,
+.student,
+.program {
+    ul:not([class=pagination]) {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #000;
+
+        a {
+            li {
+                color: #000;
+                font-size: 20px;
+                border-radius: 10px;
+                padding: .25rem .5rem;
+
+                &:hover {
+                    box-shadow: 5px 10px #ccc;
+                    transition: all .5s ease;
+                }
+            }
+        }
+    }
+}

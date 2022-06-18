@@ -1,0 +1,40 @@
+.user-view,
+.role-view,
+.student-view,
+.program-view {
+    .filter-area {
+        display: flex;
+        margin-bottom: 3rem;
+
+        .dropdown {
+            align-items: center;
+            gap: 1rem;
+        }
+
+        label {
+            color: #000;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+
+        .dropdown-toggle {
+            width: 60%;
+            color: #FFF;
+            text-align: left;
+        }
+    }
+
+    table {
+
+        thead tr th,
+        tbody tr td {
+            color: #000;
+        }
+
+        thead tr th,
+        tbody tr td {
+            text-align: center;
+        }
+    }
+}
