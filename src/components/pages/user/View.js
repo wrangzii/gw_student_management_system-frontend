@@ -1,7 +1,29 @@
-import React from 'react'
+import axios from 'axios'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
+import { Cookies } from 'react-cookie'
+import Pagination from '../../Pagination'
+import { useState } from 'react'
 
 function View() {
+    const cookies = new Cookies()
+    const [pageNumber, setPageNumber] = useState(0)
+    let formData = new FormData();
+    formData.append(pageNumber, pageNumber)
+    
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/users/all',
+            headers: {
+                'Authorization': 'Bearer ' + cookies.get('token'),
+                'Content-Type': 'multipart/form-data'
+            },
+            data: formData,
+        })
+            .then(result => console.log(result))
+    }, [pageNumber])
+
     return (
         <div className='user-view'>
             <div className="filter-area">
@@ -84,21 +106,7 @@ function View() {
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="...">
-                <ul className="pagination">
-                    <li className="page-item disabled">
-                        <Link className="page-link" to={'/'} tabIndex="-1">Previous</Link>
-                    </li>
-                    <li className="page-item"><Link className="page-link" to={'/'}>1</Link></li>
-                    <li className="page-item active">
-                        <Link className="page-link" to={'/'}>2 <span className="sr-only">(current)</span></Link>
-                    </li>
-                    <li className="page-item"><Link className="page-link" to={'/'}>3</Link></li>
-                    <li className="page-item">
-                        <Link className="page-link" to={'/'}>Next</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Pagination />
         </div>
     )
 }

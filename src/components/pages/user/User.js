@@ -24,6 +24,7 @@ function User() {
                 <Routes>
                     <Route path='/create' element={<Create />} />
                     <Route path='/view' element={<View />} />
+                    <Route path='/view/detail/:id' element={<View />} />
                     <Route path='/update' element={<Update />} />
                 </Routes>
             </div>

@@ -5,7 +5,9 @@
 .student-create,
 .student-update,
 .program-create,
-.program-update {
+.program-update,
+.department-create,
+.department-update {
     .action-btn {
         justify-content: flex-end;
         flex-direction: row !important;
@@ -21,7 +23,8 @@
 .user,
 .role,
 .student,
-.program {
+.program,
+.department {
     ul:not([class=pagination]) {
         display: flex;
         align-items: flex-end;

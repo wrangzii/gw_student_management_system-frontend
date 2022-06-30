@@ -35,20 +35,36 @@
 }
 
 .btn,
-input:not([type=file]) {
+input:not([type=file]),
+textarea,
+select {
     border-radius: 10px !important;
     outline: none;
 }
 
-.btn, i {
+.btn,
+i {
     &:hover {
         transition: all .5s ease;
         opacity: .8;
     }
 }
 
-input {
+input, textarea, select {
     margin-bottom: 1rem;
+}
+
+select {
+    cursor: pointer;
+    
+    &:hover {
+        transition: all .5s ease;
+        opacity: .85;
+    }
+
+    option {
+        color: #000;
+    }
 }
 
 .text-success {
@@ -80,6 +96,34 @@ li {
 
 table {
     min-width: 900px;
+    
+    th {
+        text-align: center;
+    }
+
+    td {
+        vertical-align: middle;
+        text-align: center;
+
+        &:last-child {
+            display: flex;
+            justify-content: center;
+
+            @media screen and (max-width: 992px) {
+                display: grid;
+            }
+
+            button {
+                border: none;
+                background-color: transparent;
+                padding: 0;
+            }
+
+            a {
+                background-color: transparent;
+            }
+        }
+    }
 }
 
 .dropdown-toggle {
@@ -99,10 +143,23 @@ i {
 .fa-pen-to-square {
     background-color: #FFC600;
     margin-inline: .5rem;
+
+    @media screen and (max-width: 992px) {
+        margin-block: .5rem;
+    }
 }
 
 .fa-trash-can {
     background-color: #E94E39;
+}
+
+.page-link {
+    color: #2A1564;
+
+    span {
+        background-color: transparent;
+        color: #2A1564;
+    }
 }
 
 @media screen and (max-width: 275px) {

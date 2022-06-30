@@ -1,11 +1,75 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { Cookies } from 'react-cookie'
+import axios from 'axios'
+import Pagination from '../../Pagination'
+import PopupConfirm from '../../PopupConfirm'
 
 function View() {
+    const cookies = new Cookies()
+    const [roles, setRoles] = useState([])
+    const [pageNumber, setPageNumber] = useState(0)
+    const [popup, setPopup] = useState({
+        message: "",
+        isLoading: false,
+    })
+    const handlePopup = (message, isLoading) => {
+        setPopup({
+            message,
+            isLoading
+        })
+    }
+    const roleIdRef = useRef()
+
+    // Call list of role
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:8080/role/all?pageNumber=${pageNumber}`,
+            headers: {
+                'Authorization': 'Bearer ' + cookies.get('token'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(result => {
+                setRoles(result.data);
+            })
+            .catch(error => console.log(error))
+    }, [pageNumber])
+
+    // Handle delete role
+    const handleDelete = roleId => {
+        handlePopup("Are you sure to delete?", true)
+        roleIdRef.current = roleId
+    }
+
+    // Confirm to delete role
+    const confirmDelete = (choose, roleId) => {
+        if (choose) {
+            axios({
+                method: 'delete',
+                url: `http://localhost:8080/role/delete/${roleIdRef.current}`,
+                headers: {
+                    'Authorization': 'Bearer ' + cookies.get('token'),
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(result => {
+                    const newRoleList = [...roles]
+                    const index = roles.findIndex(role => role.roleId === roleId)
+                    newRoleList.splice(index, 1)
+                    setRoles(newRoleList)
+                })
+            handlePopup("", false)
+        } else {
+            handlePopup("", false)
+        }
+    }
+
     return (
-        <div className='role-view'>
+        <div className='role-view position-relative'>
             <div className="filter-area">
-                <div className="filter-are__role col-6">
+                <div className="filter-area__role col-6">
                     <div className="role-dropdown dropdown d-flex">
                         <label htmlFor="role">Role</label>
                         <button className="btn btn-info dropdown-toggle" type="button" id="role_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,43 +102,38 @@ function View() {
                         <tr>
                             <th>ID</th>
                             <th>Role</th>
-                            <th>Department</th>
-                            <th>Quantity</th>
-                            <th>Active</th>
+                            <th>Description</th>
+                            <th>Created Date</th>
+                            <th>Created By</th>
+                            <th>Modified Date</th>
+                            <th>Modified By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Staff</td>
-                            <td>Marketing</td>
-                            <td>15</td>
-                            <td>13</td>
-                            <td>
-                                <Link to={'/'}><i className="fa-solid fa-circle-info"></i></Link>
-                                <Link to={'/role/update'}><i className="fa-solid fa-pen-to-square"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-trash-can"></i></Link>
-                            </td>
-                        </tr>
+                        {
+                            roles.map((role) => (
+                                <tr key={role.roleId}>
+                                    <td>{role.roleId}</td>
+                                    <td>{role.roleName}</td>
+                                    <td>{role.description}</td>
+                                    <td>{new Date(role.createDate).toLocaleDateString()}</td>
+                                    <td>{role.createBy}</td>
+                                    <td>{new Date(role.modifyDate).toLocaleDateString()}</td>
+                                    <td>{role.modifyBy}</td>
+                                    <td>
+                                        <Link to={`detail/${role.roleId}`}><i className="fa-solid fa-circle-info"></i></Link>
+                                        <Link to={`/role/update/${role.roleId}`}><i className="fa-solid fa-pen-to-square"></i></Link>
+                                        <button onClick={() => handleDelete(role.roleId)}><i className="fa-solid fa-trash-can"></i></button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="...">
-                <ul className="pagination">
-                    <li className="page-item disabled">
-                        <Link className="page-link" to={'/'} tabIndex="-1">Previous</Link>
-                    </li>
-                    <li className="page-item"><Link className="page-link" to={'/'}>1</Link></li>
-                    <li className="page-item active">
-                        <Link className="page-link" to={'/'}>2 <span className="sr-only">(current)</span></Link>
-                    </li>
-                    <li className="page-item"><Link className="page-link" to={'/'}>3</Link></li>
-                    <li className="page-item">
-                        <Link className="page-link" to={'/'}>Next</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Pagination />
+            {popup.isLoading && <PopupConfirm message={popup.message} onPopup={confirmDelete} />}
         </div>
     )
 }

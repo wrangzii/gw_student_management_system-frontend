@@ -6,19 +6,19 @@ import View from './View'
 import Update from './Update'
 import ViewDetail from './ViewDetail'
 
-function Role() {
+function Department() {
     return (
-        <div className='role'>
+        <div className='department'>
             <Navbar />
             <div className="container">
                 <ul>
                     <li className='text-success'>
-                        <h1>Role</h1>
+                        <h1>Department</h1>
                     </li>
-                    <Link to={'/role/view'}>
+                    <Link to={'/department/view'}>
                         <li className='text-success'>View</li>
                     </Link>
-                    <Link to={'/role/create'}>
+                    <Link to={'/department/create'}>
                         <li className='text-success'>Create</li>
                     </Link>
                 </ul>
@@ -33,4 +33,4 @@ function Role() {
     )
 }
 
-export default Role
+export default Department

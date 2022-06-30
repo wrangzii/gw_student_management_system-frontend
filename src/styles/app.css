@@ -35,19 +35,36 @@
 }
 
 .btn,
-input:not([type=file]) {
+input:not([type=file]),
+textarea,
+select {
   border-radius: 10px !important;
   outline: none;
 }
 
-.btn:hover, i:hover {
+.btn:hover,
+i:hover {
   -webkit-transition: all .5s ease;
   transition: all .5s ease;
   opacity: .8;
 }
 
-input {
+input, textarea, select {
   margin-bottom: 1rem;
+}
+
+select {
+  cursor: pointer;
+}
+
+select:hover {
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+  opacity: .85;
+}
+
+select option {
+  color: #000;
 }
 
 .text-success {
@@ -81,6 +98,41 @@ table {
   min-width: 900px;
 }
 
+table th {
+  text-align: center;
+}
+
+table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+table td:last-child {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+@media screen and (max-width: 992px) {
+  table td:last-child {
+    display: -ms-grid;
+    display: grid;
+  }
+}
+
+table td:last-child button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+table td:last-child a {
+  background-color: transparent;
+}
+
 .dropdown-toggle {
   color: #FFF;
 }
@@ -100,8 +152,23 @@ i {
   margin-inline: .5rem;
 }
 
+@media screen and (max-width: 992px) {
+  .fa-pen-to-square {
+    margin-block: .5rem;
+  }
+}
+
 .fa-trash-can {
   background-color: #E94E39;
+}
+
+.page-link {
+  color: #2A1564;
+}
+
+.page-link span {
+  background-color: transparent;
+  color: #2A1564;
 }
 
 @media screen and (max-width: 275px) {
@@ -111,12 +178,16 @@ i {
 }
 
 .student-create form,
-.student-update form {
+.student-update form,
+.user-create form,
+.user-update form {
   width: auto;
 }
 
 .student-create form .form-body,
-.student-update form .form-body {
+.student-update form .form-body,
+.user-create form .form-body,
+.user-update form .form-body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -128,7 +199,9 @@ i {
 
 @media screen and (max-width: 990px) {
   .student-create form .form-body,
-  .student-update form .form-body {
+  .student-update form .form-body,
+  .user-create form .form-body,
+  .user-update form .form-body {
     gap: unset;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -191,7 +264,8 @@ form .form-body .action-btn .btn {
 .user-view .filter-area,
 .role-view .filter-area,
 .student-view .filter-area,
-.program-view .filter-area {
+.program-view .filter-area,
+.department-view .filter-area {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -201,7 +275,8 @@ form .form-body .action-btn .btn {
 .user-view .filter-area .dropdown,
 .role-view .filter-area .dropdown,
 .student-view .filter-area .dropdown,
-.program-view .filter-area .dropdown {
+.program-view .filter-area .dropdown,
+.department-view .filter-area .dropdown {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -211,7 +286,8 @@ form .form-body .action-btn .btn {
 .user-view .filter-area label,
 .role-view .filter-area label,
 .student-view .filter-area label,
-.program-view .filter-area label {
+.program-view .filter-area label,
+.department-view .filter-area label {
   color: #000;
   font-weight: bold;
   font-size: 20px;
@@ -221,7 +297,8 @@ form .form-body .action-btn .btn {
 .user-view .filter-area .dropdown-toggle,
 .role-view .filter-area .dropdown-toggle,
 .student-view .filter-area .dropdown-toggle,
-.program-view .filter-area .dropdown-toggle {
+.program-view .filter-area .dropdown-toggle,
+.department-view .filter-area .dropdown-toggle {
   width: 60%;
   color: #FFF;
   text-align: left;
@@ -234,7 +311,9 @@ form .form-body .action-btn .btn {
 .student-view table thead tr th,
 .student-view table tbody tr td,
 .program-view table thead tr th,
-.program-view table tbody tr td {
+.program-view table tbody tr td,
+.department-view table thead tr th,
+.department-view table tbody tr td {
   color: #000;
 }
 
@@ -245,7 +324,9 @@ form .form-body .action-btn .btn {
 .student-view table thead tr th,
 .student-view table tbody tr td,
 .program-view table thead tr th,
-.program-view table tbody tr td {
+.program-view table tbody tr td,
+.department-view table thead tr th,
+.department-view table tbody tr td {
   text-align: center;
 }
 
@@ -256,7 +337,9 @@ form .form-body .action-btn .btn {
 .student-create .action-btn,
 .student-update .action-btn,
 .program-create .action-btn,
-.program-update .action-btn {
+.program-update .action-btn,
+.department-create .action-btn,
+.department-update .action-btn {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
@@ -274,7 +357,9 @@ form .form-body .action-btn .btn {
 .student-create .action-btn .btn,
 .student-update .action-btn .btn,
 .program-create .action-btn .btn,
-.program-update .action-btn .btn {
+.program-update .action-btn .btn,
+.department-create .action-btn .btn,
+.department-update .action-btn .btn {
   width: 130px;
   color: #FFF;
 }
@@ -282,7 +367,8 @@ form .form-body .action-btn .btn {
 .user ul:not([class=pagination]),
 .role ul:not([class=pagination]),
 .student ul:not([class=pagination]),
-.program ul:not([class=pagination]) {
+.program ul:not([class=pagination]),
+.department ul:not([class=pagination]) {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -297,7 +383,8 @@ form .form-body .action-btn .btn {
 .user ul:not([class=pagination]) a li,
 .role ul:not([class=pagination]) a li,
 .student ul:not([class=pagination]) a li,
-.program ul:not([class=pagination]) a li {
+.program ul:not([class=pagination]) a li,
+.department ul:not([class=pagination]) a li {
   color: #000;
   font-size: 20px;
   border-radius: 10px;
@@ -307,7 +394,8 @@ form .form-body .action-btn .btn {
 .user ul:not([class=pagination]) a li:hover,
 .role ul:not([class=pagination]) a li:hover,
 .student ul:not([class=pagination]) a li:hover,
-.program ul:not([class=pagination]) a li:hover {
+.program ul:not([class=pagination]) a li:hover,
+.department ul:not([class=pagination]) a li:hover {
   -webkit-box-shadow: 5px 10px #ccc;
           box-shadow: 5px 10px #ccc;
   -webkit-transition: all .5s ease;

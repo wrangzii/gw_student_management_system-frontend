@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
 import axios from 'axios'
 
 function Update() {
     const cookies = new Cookies()
-    const [roleName, setRoleName] = useState('')
+    const [departmentName, setDepartmentName] = useState('')
     const [description, setDescription] = useState('')
     const [modifyBy, setModifyBy] = useState(cookies.get('username'))
     const { id } = useParams()
@@ -15,44 +15,43 @@ function Update() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://localhost:8080/role/${id}`,
+            url: `http://localhost:8080/department/${id}`,
             headers: {
                 'Authorization': 'Bearer ' + cookies.get('token'),
                 'Content-Type': 'application/json'
             }
         })
             .then(result => {
-                setRoleName(result.data.data.roleName)
+                setDepartmentName(result.data.data.departmentName)
                 setDescription(result.data.data.description)
             })
     }, [])
 
-    // Handle update role
-    const handleUpdateRole = e => {
+    // Handle update department
+    const handleUpdateDepartment = e => {
         e.preventDefault()
         axios({
             method: 'put',
-            url: `http://localhost:8080/role/edit/${id}`,
+            url: `http://localhost:8080/department/edit/${id}`,
             headers: {
                 'Authorization': 'Bearer ' + cookies.get('token'),
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({ roleName, description, modifyBy })
+            data: JSON.stringify({ departmentName, description, modifyBy })
         })
-            .then(result => result ? navigate('../view') : null)
+        .then(result => result ? navigate('../view') : null)
     }
-
     return (
-        <div className='role-update'>
-            <form onSubmit={handleUpdateRole} className="form-group">
-                <h2 className='form-heading bg-warning text-white text-center'>UPDATING ROLE</h2>
+        <div className='department-update'>
+            <form onSubmit={handleUpdateDepartment} className="form-group">
+                <h2 className='form-heading bg-warning text-white text-center'>UPDATING DEPARTMENT</h2>
                 <div className="form-body">
                     <div className="d-flex">
-                        <label htmlFor="role">Role</label>
-                        <input type="text" className='form-control' defaultValue={roleName} onChange={e => setRoleName(e.target.value)} placeholder='Accountant Leader' />
+                        <label htmlFor="department">Department</label>
+                        <input type="text" className='form-control' defaultValue={departmentName} onChange={e => setDepartmentName(e.target.value)} placeholder='Accountant Leader' />
                     </div>
                     <div className="d-flex">
-                        <label htmlFor="department">Description</label>
+                        <label htmlFor="description">Description</label>
                         <textarea cols="30" rows="2" className='form-control' defaultValue={description} onChange={e => setDescription(e.target.value)} ></textarea>
                     </div>
                     <div className='d-flex'>
@@ -60,7 +59,7 @@ function Update() {
                         <input type="text" className='form-control' readOnly value={cookies.get('username')} />
                     </div>
                     <div className="action-btn form-group">
-                        <Link to={'/role/view'} className="btn btn-danger">Cancel</Link>
+                        <Link to={'/department/view'} className="btn btn-danger">Cancel</Link>
                         <button className="btn btn-warning">Update</button>
                     </div>
                 </div>
