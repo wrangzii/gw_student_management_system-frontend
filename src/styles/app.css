@@ -49,7 +49,9 @@ i:hover {
   opacity: .8;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   margin-bottom: 1rem;
 }
 
@@ -135,6 +137,20 @@ table td:last-child a {
 
 .dropdown-toggle {
   color: #FFF;
+}
+
+.css-b62m3t-container {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #00B388;
+}
+
+.css-b62m3t-container .css-6j8wv5-Input input {
+  color: #000;
+}
+
+.css-b62m3t-container .css-6j8wv5-Input #react-select-3-listbox span {
+  color: #000;
 }
 
 i {

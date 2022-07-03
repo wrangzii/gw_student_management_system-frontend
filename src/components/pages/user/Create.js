@@ -1,7 +1,8 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Cookies } from 'react-cookie'
 import { Link } from 'react-router-dom'
+import Select from 'react-select'
 
 function Create() {
     const cookies = new Cookies()
@@ -15,8 +16,52 @@ function Create() {
     const [createBy, setCreateBy] = useState(cookies.get('username'))
     // const [modify, setModify] = useState('')
     const [role, setRole] = useState([])
-    const [departmentId, setDepartmentId] = useState('')
+    const [departmentId, setDepartmentId] = useState([])
+    const [pageNumber, setPageNumber] = useState(0)
 
+    // Get role
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:8080/role/all?pageNumber=${pageNumber}`,
+            headers: {
+                'Authorization': 'Bearer ' + cookies.get('token'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(result => {
+                if (result) {
+                    setRole(result.data);
+                }
+            })
+    }, [])
+
+    // Get departments
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:8080/department/all?pageNumber=${pageNumber}`,
+            headers: {
+                'Authorization': 'Bearer ' + cookies.get('token'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(result => {
+                if (result)
+                    setDepartmentId(result.data);
+            })
+    }, [])
+
+    // Role array
+    const options = [
+        // { label: { label }, value: { value } }
+        { label: 'admin', value: 'admin' },
+        { label: 'user', value: 'user' },
+        { label: 'student', value: 'student' },
+        { label: 'staff', value: 'staff' },
+    ];
+
+    // Handle create user
     const handleCreateUser = e => {
         e.preventDefault()
         axios({
@@ -68,21 +113,21 @@ function Create() {
                             <input type="password" name='password' onChange={e => setPassword(e.target.value)} className='form-control' />
                         </div>
                         <div className="role-dropdown dropdown d-flex">
-                            <label htmlFor="roles">Role</label>
-                            <select class="form-select bg-success text-light" onChange={e => setRole(e.target.value)}>
-                                <option selected>Choose role</option>
-                                <option value="1">Manager</option>
-                                <option value="2">Accoutant</option>
-                                <option value="3">President</option>
-                            </select>
+                            <label htmlFor="role">Role</label>
+                            {/* <select defaultValue={'DEFAULT'} className="form-select bg-success text-light" onChange={e => setRole(e.target.value)}>
+                                <option value='DEFAULT' disabled>Choose role</option>
+                                {role.map(r => (
+                                    <option key={r.roleId} defaultValue={r.roleName}>{r.roleName}</option>
+                                ))}
+                            </select> */}
                         </div>
                         <div className="department-dropdown dropdown d-flex">
                             <label htmlFor="departments">Department</label>
-                            <select class="form-select bg-success text-light" onChange={e => setDepartmentId(e.target.value)}>
-                                <option selected>Choose department</option>
-                                <option value="1">Education</option>
-                                <option value="2">Marketing</option>
-                                <option value="3">HR</option>
+                            <select name='departmentId' value={departmentId} className="form-select bg-success text-light" onChange={e => setDepartmentId(e.target.value)}>
+                                <option defaultValue='DEFAULT' disabled>Choose department</option>
+                                {departmentId.map(department => (
+                                    <option key={department.departmentId} value={department.departmentId}>{department.departmentName}</option>
+                                ))}
                             </select>
                         </div>
                         <div className="createBy form-group d-flex">

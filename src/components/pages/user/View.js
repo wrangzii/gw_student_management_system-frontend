@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
 import Pagination from '../../Pagination'
@@ -7,21 +7,25 @@ import { useState } from 'react'
 
 function View() {
     const cookies = new Cookies()
+    const [users, setUsers] = useState([])
     const [pageNumber, setPageNumber] = useState(0)
     let formData = new FormData();
-    formData.append(pageNumber, pageNumber)
-    
+
+    // Get list user
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://localhost:8080/users/all',
+            url: `http://localhost:8080/users/all?pageNumber=${pageNumber}`,
             headers: {
                 'Authorization': 'Bearer ' + cookies.get('token'),
                 'Content-Type': 'multipart/form-data'
             },
             data: formData,
         })
-            .then(result => console.log(result))
+            .then(result => {
+                if (result)
+                    setUsers(result.data)
+            })
     }, [pageNumber])
 
     return (
@@ -67,42 +71,20 @@ function View() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Nguyen Van A</td>
-                            <td>manager@fe.edu.vn</td>
-                            <td>0902345011</td>
-                            <td>Edu Department</td>
-                            <td>
-                                <Link to={'/'}><i className="fa-solid fa-circle-info"></i></Link>
-                                <Link to={'/user/update'}><i className="fa-solid fa-pen-to-square"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-trash-can"></i></Link>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Nguyen Van B</td>
-                            <td>staff@fe.edu.vn</td>
-                            <td>0902345011</td>
-                            <td>Edu Department</td>
-                            <td>
-                                <Link to={'/'}><i className="fa-solid fa-circle-info"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-pen-to-square"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-trash-can"></i></Link>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Nguyen Thi C</td>
-                            <td>staff@fe.edu.vn</td>
-                            <td>0902345011</td>
-                            <td>HR Department</td>
-                            <td>
-                                <Link to={'/'}><i className="fa-solid fa-circle-info"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-pen-to-square"></i></Link>
-                                <Link to={'/'}><i className="fa-solid fa-trash-can"></i></Link>
-                            </td>
-                        </tr>
+                        {users.map((user, i) => (
+                            <tr key={user.userId}>
+                                <td>{i + 1}</td>
+                                <td>{user.fullName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.phoneNumber}</td>
+                                <td>{user.departmentId.departmentName}</td>
+                                <td>
+                                    <Link to={`detail/${user.userId}`}><i className="fa-solid fa-circle-info"></i></Link>
+                                    <Link to={`../update/${user.userId}`}><i className="fa-solid fa-pen-to-square"></i></Link>
+                                    <Link to={'/'}><i className="fa-solid fa-trash-can"></i></Link>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

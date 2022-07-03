@@ -3,13 +3,16 @@ import Navbar from '../Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
-
   const cookies = new Cookies()
+
+  // Handle login
   const handleLogin = e => {
     e.preventDefault()
     axios({
@@ -35,14 +38,22 @@ function Login() {
       .catch(error => console.log(error))
   }
 
+  // Handle login Google
+  useEffect(() => {
+  }, [])
+  const handleLoginGoogle = () => {
+    window.location.replace('http://localhost:8080/oauth2/authorization/google')
+    navigate('/oauth2/authorization/google')
+  }
+
   return (
     <div className='login'>
       <Navbar />
       <form onSubmit={handleLogin} className="form-group">
         <h2 className='form-heading bg-primary text-white text-center'>WELCOME TO CMS</h2>
         <div className="form-body">
-          <input type="text" placeholder='Username or Email' value={username} onChange={e => setUsername(e.target.value)} className='form-group form-control' />
-          <input type="password" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} className='form-group form-control' />
+          <input type="text" autoComplete='on' placeholder='Username or Email' value={username} onChange={e => setUsername(e.target.value)} className='form-group form-control' />
+          <input type="password" autoComplete='on' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} className='form-group form-control' />
           <div className="form-group form-check">
             <input className="form-check-input" type="checkbox" value="" id="remember_me" />
             <label className="form-check-label text-dark" htmlFor="remember_me">
@@ -51,7 +62,9 @@ function Login() {
           </div>
           <div className="action-btn form-group">
             <button className="btn btn-primary">LOGIN</button>
-            <button className="btn btn-success">LOGIN WITH FPT EMAIL</button>
+            {/* <Link to={{ pathname: 'localhost:8080/oauth2/authorization/google' }} className="btn btn-success">LOGIN WITH FPT EMAIL</Link> */}
+            
+            <button type='button' onClick={handleLoginGoogle} className="btn btn-success">LOGIN WITH FPT EMAIL</button>
           </div>
           <Link to="/forgot-password">
             <small className="note text-danger font-italic">Forgotten your username or password?</small>

@@ -8,6 +8,7 @@ function ViewDetail() {
     const cookies = new Cookies()
     const { id } = useParams()
     const [viewDetail, setViewDetail] = useState([])
+    const [departmentId, setDepartmentId] = useState({})
 
     useEffect(() => {
         axios({
@@ -18,30 +19,39 @@ function ViewDetail() {
                 'Content-Type': 'application/json'
             }
         })
-            .then(result => setViewDetail(result.data.data))
+            .then(result => {
+                setViewDetail(result.data.data)
+                setDepartmentId(result.data.data.departmentId)
+            })
     }, [])
 
     return (
-        <div className='department-detail'>
+        <div className='user-detail'>
             <Navbar />
             <div className="overflow-auto">
                 <table className='table table-striped table-bordered table-dark'>
                     <thead>
                         <tr>
-                            <th className='text-center'>ID</th>
+                            {/* <th className='text-center'>ID</th> */}
                             <th className='text-center'>Username</th>
-                            <th className='text-center'>Description</th>
-                            <th className='text-center'>Created By</th>
+                            <th className='text-center'>Fullname</th>
+                            <th className='text-center'>Email</th>
+                            <th className='text-center'>Phone Number</th>
+                            <th className='text-center'>Address</th>
+                            <th className='text-center'>Department</th>
                             <th className='text-center'>Update</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{viewDetail.userId}</td>
+                            {/* <td>{viewDetail.userId}</td> */}
                             <td>{viewDetail.username}</td>
-                            <td>{viewDetail.description}</td>
-                            <td>{viewDetail.createby}</td>
-                            <td><Link to={`/department/update/${viewDetail.userId}`}><i className="fa-solid fa-pen-to-square"></i></Link></td>
+                            <td>{viewDetail.fullName}</td>
+                            <td>{viewDetail.email}</td>
+                            <td>{viewDetail.phoneNumber}</td>
+                            <td>{viewDetail.address}</td>
+                            <td>{departmentId.departmentName}</td>
+                            <td><Link to={`/user/update/${viewDetail.userId}`}><i className="fa-solid fa-pen-to-square"></i></Link></td>
                         </tr>
                     </tbody>
                 </table>

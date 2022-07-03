@@ -4,6 +4,7 @@ import Navbar from '../../Navbar'
 import Create from './Create'
 import View from './View'
 import Update from './Update'
+import ViewDetail from './ViewDetail'
 
 function User() {
     return (
@@ -24,8 +25,8 @@ function User() {
                 <Routes>
                     <Route path='/create' element={<Create />} />
                     <Route path='/view' element={<View />} />
-                    <Route path='/view/detail/:id' element={<View />} />
-                    <Route path='/update' element={<Update />} />
+                    <Route path='/view/detail/:id' element={<ViewDetail />} />
+                    <Route path='/update/:id' element={<Update />} />
                 </Routes>
             </div>
         </div>

@@ -56,7 +56,7 @@ function Update() {
                     </div>
                     <div className='d-flex'>
                         <label htmlFor="createdBy">Modified By</label>
-                        <input type="text" className='form-control' readOnly value={cookies.get('username')} />
+                        <input type="text" className='form-control' readOnly value={modifyBy} />
                     </div>
                     <div className="action-btn form-group">
                         <Link to={'/department/view'} className="btn btn-danger">Cancel</Link>

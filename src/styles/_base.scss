@@ -50,13 +50,15 @@ i {
     }
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     margin-bottom: 1rem;
 }
 
 select {
     cursor: pointer;
-    
+
     &:hover {
         transition: all .5s ease;
         opacity: .85;
@@ -96,7 +98,7 @@ li {
 
 table {
     min-width: 900px;
-    
+
     th {
         text-align: center;
     }
@@ -128,6 +130,25 @@ table {
 
 .dropdown-toggle {
     color: #FFF;
+}
+
+// react-select
+.css-b62m3t-container {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #00B388;
+
+    .css-6j8wv5-Input {
+        input {
+            color: #000;
+        }
+
+        #react-select-3-listbox {
+            span {
+                color: #000;
+            }
+        }
+    }
 }
 
 i {
