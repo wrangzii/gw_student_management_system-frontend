@@ -1,11 +1,9 @@
-import axios from 'axios'
 import React, { useState } from 'react'
-import { Cookies } from 'react-cookie'
 import { Link } from 'react-router-dom'
-import Navbar from '../Navbar'
+import axios from 'axios'
+import { headers } from "../../headersToken";
 
 function ForgotPassword() {
-    const cookies = new Cookies()
     const [email, setEmail] = useState('')
     const [msg, setMsg] = useState('')
 
@@ -15,10 +13,7 @@ function ForgotPassword() {
         axios({
             method: 'post',
             url: 'http://localhost:8080/forgot_password',
-            headers: {
-                'Authorization': 'Bearer ' + cookies.get('token'),
-                'Content-Type': 'application/json'
-            },
+            headers,
             data: JSON.stringify({ email })
         })
             .then(result => setMsg(result.data.message))
@@ -26,7 +21,6 @@ function ForgotPassword() {
 
     return (
         <div className='forgot_password'>
-            <Navbar />
             <form onSubmit={handleForgotPassword} className="form-group">
                 <h2 className='form-heading bg-success text-white text-center'>FORGOT PASSWORD</h2>
                 <div className="form-body">

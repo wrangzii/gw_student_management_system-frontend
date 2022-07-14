@@ -1,7 +1,10 @@
 * {
   background-color: #F5F5F5;
-  color: #FFF;
   font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+  position: relative;
 }
 
 .bg-primary,
@@ -40,6 +43,11 @@ textarea,
 select {
   border-radius: 10px !important;
   outline: none;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-bottom: 0;
 }
 
 .btn:hover,
@@ -102,11 +110,13 @@ table {
 
 table th {
   text-align: center;
+  white-space: nowrap;
 }
 
 table td {
   vertical-align: middle;
   text-align: center;
+  white-space: nowrap;
 }
 
 table td:last-child {
@@ -135,28 +145,65 @@ table td:last-child a {
   background-color: transparent;
 }
 
+.table {
+  display: table;
+}
+
+.table .tr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-block: .5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.table .tr .th {
+  width: 150px;
+  min-width: 150px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.table .tr .th::after {
+  content: ':';
+}
+
+.table .tr .td a {
+  padding: 0;
+}
+
+.table .tr .td a i {
+  margin: 0;
+}
+
 .dropdown-toggle {
   color: #FFF;
 }
 
-.css-b62m3t-container {
-  width: 100%;
+.select__control {
+  max-width: 227px;
+  width: 227px;
   margin-bottom: 1rem;
-  background-color: #00B388;
 }
 
-.css-b62m3t-container .css-6j8wv5-Input input {
-  color: #000;
-}
-
-.css-b62m3t-container .css-6j8wv5-Input #react-select-3-listbox span {
-  color: #000;
+.select__input-container {
+  background: transparent;
 }
 
 i {
   color: #FFF;
   padding: .5rem 1rem;
   border-radius: 10px;
+}
+
+.fa-bars {
+  font-size: 20px;
+}
+
+.fa-bars:hover {
+  border: 1px solid #000;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .fa-circle-info {
@@ -197,7 +244,9 @@ i {
 .student-update form,
 .user-create form,
 .user-update form {
-  width: auto;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .student-create form .form-body,
@@ -414,6 +463,148 @@ form .form-body .action-btn .btn {
 .department ul:not([class=pagination]) a li:hover {
   -webkit-box-shadow: 5px 10px #ccc;
           box-shadow: 5px 10px #ccc;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: rgba(50, 50, 50, 0.5);
+  visibility: hidden;
+}
+
+.overlay .sidebar {
+  --sidebar-width: 250px;
+  width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+  position: absolute;
+  top: 200px;
+  z-index: 3;
+  border-radius: 20px;
+  margin-left: calc(var(--sidebar-width) * -1);
+  -webkit-transition: all 0.25s linear 0s;
+  transition: all 0.25s linear 0s;
+}
+
+.overlay .sidebar-header {
+  border: 1px solid #000;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.overlay .sidebar-header div {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.overlay .sidebar-header div:hover .user-tooltip, .overlay .sidebar-header div:focus .user-tooltip, .overlay .sidebar-header div:active .user-tooltip {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: visibility 0s, opacity 0.25s linear;
+  transition: visibility 0s, opacity 0.25s linear;
+}
+
+.overlay .sidebar-header div .user-tooltip {
+  -webkit-transform: scale(0.7);
+          transform: scale(0.7);
+  background-color: #eee;
+  padding: 1rem;
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  z-index: 2;
+  gap: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  -webkit-box-shadow: 0px 3px 3px 3px #ccc;
+          box-shadow: 0px 3px 3px 3px #ccc;
+  border-radius: 10px;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.overlay .sidebar-header div .user-tooltip a,
+.overlay .sidebar-header div .user-tooltip button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.5rem;
+}
+
+.overlay .sidebar-header div .user-tooltip a i,
+.overlay .sidebar-header div .user-tooltip button i {
+  background: transparent;
+}
+
+.overlay .sidebar-body {
+  border-radius: 10px;
+}
+
+.overlay .sidebar-body ul {
+  margin: 0;
+  padding: 0 !important;
+  border-right: 1px solid #000;
+}
+
+.overlay .sidebar-body ul:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.overlay .sidebar-body ul li {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.overlay .sidebar-body ul li:not(last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.overlay .sidebar-body ul li a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: transparent;
+}
+
+.overlay .sidebar-body ul li a span {
+  width: 55px;
+  background-color: transparent;
+}
+
+.overlay .sidebar-body ul li a span i {
+  color: #00B388;
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.overlay .sidebar-body ul li a p {
+  margin: 0;
+  background-color: transparent;
+  color: #000;
+}
+
+.overlay .sidebar-body ul li:hover {
+  -webkit-transform: scale(0.95);
+          transform: scale(0.95);
   -webkit-transition: all .5s ease;
   transition: all .5s ease;
 }

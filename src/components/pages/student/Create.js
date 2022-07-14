@@ -1,81 +1,141 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { headers, cookies } from "../../headersToken";
+import ActionBtns from "../../partials/ActionBtns";
 
 function Create() {
-    return (
-        <div className='student-create'>
-            <form action="" className="form-group">
-                <h2 className='form-heading bg-success text-white text-center'>CREATING A NEW STUDENT</h2>
-                <div className="form-body">
-                    <div className="form-body__left">
-                        <div className="fullname form-group d-flex">
-                            <label htmlFor="fullname">Fullname</label>
-                            <input type="text" placeholder='Nguyen Van A' className='form-control' />
-                        </div>
-                        <div className="gender-dropdown dropdown d-flex">
-                            <label htmlFor="gender">Gender</label>
-                            <button className="btn btn-success dropdown-toggle" type="button" id="gender_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Gender
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="gender_dropdown">
-                                <Link className="dropdown-item" to="/">Male</Link>
-                                <Link className="dropdown-item" to="/">Female</Link>
-                            </div>
-                        </div>
-                        <div className="email form-group d-flex">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" placeholder='manager@fe.edu.vn' className='form-control' />
-                        </div>
-                        <div className="academic_year form-group d-flex">
-                            <label htmlFor="academic_year">Academic Year</label>
-                            <input type="date" className='form-control' />
-                        </div>
-                        <div className="avatar form-group d-flex">
-                            <label htmlFor="avatar">Profile Image</label>
-                            <input type="file" className='form-control' />
-                        </div>
-                    </div>
-                    <div className="form-body__right">
-                        <div className="birthday form-group d-flex">
-                            <label htmlFor="birthday">Birthday</label>
-                            <input type="date" className='form-control' />
-                        </div>
-                        <div className="phone form-group d-flex">
-                            <label htmlFor="phone">Phone Number</label>
-                            <input type="tel" placeholder='0902345011' className='form-control' />
-                        </div>
-                        <div className="major-dropdown dropdown d-flex">
-                            <label htmlFor="major">Major</label>
-                            <button className="btn btn-success dropdown-toggle" type="button" id="major_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Major
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="major_dropdown">
-                                <Link className="dropdown-item" to="/">IT</Link>
-                                <Link className="dropdown-item" to="/">BM</Link>
-                                <Link className="dropdown-item" to="/">GD</Link>
-                            </div>
-                        </div>
-                        <div className="campus-dropdown dropdown d-flex">
-                            <label htmlFor="campus">Campus</label>
-                            <button className="btn btn-success dropdown-toggle" type="button" id="campus_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Campus
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="campus_dropdown">
-                                <Link className="dropdown-item" to="/">Ha Noi</Link>
-                                <Link className="dropdown-item" to="/">Ho Chi Minh</Link>
-                                <Link className="dropdown-item" to="/">Da Nang</Link>
-                                <Link className="dropdown-item" to="/">Can Tho</Link>
-                            </div>
-                        </div>
-                        <div className="action-btn form-group">
-                            <Link to={'/user/view'} className="btn btn-danger">Cancel</Link>
-                            <Link to={'/'} className="btn btn-success">Create</Link>
-                        </div>
-                    </div>
-                </div>
-            </form>
+  const createBy = cookies.get("username");
+  const [fptId, setFptId] = useState("");
+  const [personId, setPersonId] = useState("");
+  const [uogId, setUogId] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  const handleCreateStudent = (e) => {
+    e.preventDefault();
+    axios({
+      method: "post",
+      url: "http://localhost:8080/student/add",
+      headers,
+      data: JSON.stringify({
+        fptId,
+        personId,
+        uogId,
+        fullName,
+        dob,
+        gender,
+        createBy,
+        email,
+      }),
+    }).then((result) => (result ? navigate("../view") : null));
+  };
+  return (
+    <div className="student-create">
+      <form onSubmit={handleCreateStudent} className="form-group">
+        <h2 className="form-heading bg-success text-white text-center">
+          CREATING A NEW STUDENT
+        </h2>
+        <div className="form-body">
+          <div className="form-body__left">
+            <div className="fullname form-group d-flex">
+              <label htmlFor="fullname">Fullname</label>
+              <input
+                onChange={(e) => setFullName(e.target.value)}
+                type="text"
+                placeholder="Nguyen Van A"
+                className="form-control"
+              />
+            </div>
+            <div className="email form-group d-flex">
+              <label htmlFor="email">Email</label>
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="nguyenvana@fe.edu.vn"
+                className="form-control"
+              />
+            </div>
+            <div className="gender-dropdown dropdown d-flex">
+              <label htmlFor="gender">Gender</label>
+              <div className="d-flex mb-4">
+                <label htmlFor="male">
+                  Male
+                  <input
+                    onChange={(e) => setGender(e.target.value)}
+                    type="radio"
+                    id="male"
+                    className="ms-1"
+                    name="gender"
+                  />
+                </label>
+                <label htmlFor="female">
+                  Female
+                  <input
+                    onChange={(e) => setGender(e.target.value)}
+                    type="radio"
+                    id="female"
+                    className="ms-1"
+                    name="gender"
+                  />
+                </label>
+              </div>
+            </div>
+            <div className="birthday form-group d-flex">
+              <label htmlFor="birthday">Birthday</label>
+              <input
+                onChange={(e) => setDob(e.target.value)}
+                type="date"
+                className="form-control"
+              />
+            </div>
+          </div>
+          <div className="form-body__right">
+            <div className="d-flex">
+              <label htmlFor="fpt_id">FPT ID</label>
+              <input
+                onChange={(e) => setFptId(e.target.value)}
+                type="text"
+                className="form-control"
+                placeholder="GCS190795"
+              />
+            </div>
+            <div className="d-flex">
+              <label htmlFor="person_id">Person ID</label>
+              <input
+                onChange={(e) => setPersonId(e.target.value)}
+                type="text"
+                className="form-control"
+                placeholder="KHANHTQ190795"
+              />
+            </div>
+            <div className="d-flex">
+              <label htmlFor="uog_id">UOG ID</label>
+              <input
+                onChange={(e) => setUogId(e.target.value)}
+                type="text"
+                className="form-control"
+                placeholder="UOG190795"
+              />
+            </div>
+            <div className="d-flex">
+              <label htmlFor="createby">Created By</label>
+              <input
+                type="text"
+                readOnly
+                className="form-control"
+                value={createBy}
+              />
+            </div>
+            <ActionBtns action={"Create"} />
+          </div>
         </div>
-    )
+      </form>
+    </div>
+  );
 }
 
-export default Create
+export default Create;

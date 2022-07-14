@@ -1,7 +1,10 @@
 * {
     background-color: #F5F5F5;
-    color: #FFF;
     font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    position: relative;
 }
 
 .bg-primary,
@@ -40,6 +43,11 @@ textarea,
 select {
     border-radius: 10px !important;
     outline: none;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    margin-bottom: 0;
 }
 
 .btn,
@@ -101,11 +109,13 @@ table {
 
     th {
         text-align: center;
+        white-space: nowrap;
     }
 
     td {
         vertical-align: middle;
         text-align: center;
+        white-space: nowrap;
 
         &:last-child {
             display: flex;
@@ -128,33 +138,66 @@ table {
     }
 }
 
+// Table customize
+.table {
+    display: table;
+
+    .tr {
+        display: flex;
+        padding-block: .5rem;
+        border-bottom: 1px solid #ccc;
+
+        .th {
+            width: 150px;
+            min-width: 150px;
+            font-weight: bold;
+            white-space: nowrap;
+
+            &::after {
+                content: ':';
+            }
+        }
+
+        .td {
+            a {
+                padding: 0;
+
+                i {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
 .dropdown-toggle {
     color: #FFF;
 }
 
-// react-select
-.css-b62m3t-container {
-    width: 100%;
+// // react-select
+.select__control {
+    max-width: 227px;
+    width: 227px;
     margin-bottom: 1rem;
-    background-color: #00B388;
+}
 
-    .css-6j8wv5-Input {
-        input {
-            color: #000;
-        }
-
-        #react-select-3-listbox {
-            span {
-                color: #000;
-            }
-        }
-    }
+.select__input-container {
+    background: transparent;
 }
 
 i {
     color: #FFF;
     padding: .5rem 1rem;
     border-radius: 10px;
+}
+
+.fa-bars {
+    font-size: 20px;
+
+    &:hover {
+        border: 1px solid #000;
+        transform: scale(1.1);
+    }
 }
 
 .fa-circle-info {

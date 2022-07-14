@@ -2,7 +2,9 @@
 .student-update form,
 .user-create form,
 .user-update form {
-  width: auto;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .student-create form .form-body,
