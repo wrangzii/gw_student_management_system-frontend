@@ -22,7 +22,7 @@ function Create() {
   let department_dropdown = useRef();
   const navigate = useNavigate();
 
-  // Get role
+  // Get role dropdown
   useEffect(() => {
     axios({
       method: "get",

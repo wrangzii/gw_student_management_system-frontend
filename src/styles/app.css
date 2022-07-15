@@ -3,10 +3,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-html, body {
-  position: relative;
-}
-
 .bg-primary,
 .btn-primary {
   background-color: #2A1564 !important;
@@ -468,7 +464,7 @@ form .form-body .action-btn .btn {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 2;
   background-color: rgba(50, 50, 50, 0.5);
@@ -480,7 +476,7 @@ form .form-body .action-btn .btn {
   width: var(--sidebar-width);
   max-width: var(--sidebar-width);
   position: absolute;
-  top: 200px;
+  top: 150px;
   z-index: 3;
   border-radius: 20px;
   margin-left: calc(var(--sidebar-width) * -1);
@@ -594,6 +590,7 @@ form .form-body .action-btn .btn {
   color: #00B388;
   font-size: 1.5rem;
   padding: 0;
+  background-color: transparent;
 }
 
 .overlay .sidebar-body ul li a p {
@@ -607,6 +604,46 @@ form .form-body .action-btn .btn {
           transform: scale(0.95);
   -webkit-transition: all .5s ease;
   transition: all .5s ease;
+}
+
+.overlay .sidebar-footer {
+  position: relative;
+}
+
+.overlay .sidebar-footer .closeBtn {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding: 1.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 100rem !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.overlay .sidebar-footer .closeBtn:hover {
+  background-color: #fff !important;
+}
+
+.overlay .sidebar-footer .closeBtn i {
+  background-color: transparent;
+  font-size: 1.5rem;
+  -webkit-transition: unset;
+  transition: unset;
+}
+
+.overlay .sidebar-footer .closeBtn i:hover {
+  color: #dc3545;
 }
 
 .login form {

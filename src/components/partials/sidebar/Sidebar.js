@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { cookies } from "../../headersToken";
 import components from "./components";
 import handleSignout from "./signout";
+import { hideSidebar } from "./sidebarHandler";
 
 function Sidebar() {
   return (
@@ -23,7 +24,7 @@ function Sidebar() {
                 Profile
               </Link>
               <Link
-                to={'/'}
+                to={"/"}
                 className="signout btn btn-danger"
                 onClick={handleSignout}
               >
@@ -34,9 +35,9 @@ function Sidebar() {
           </div>
         </div>
         <div className="sidebar-body">
-          {components.map((component, index) => (
-            <ul key={index}>
-              <li className="w-100 px-2">
+          <ul>
+            {components.map((component, index) => (
+              <li key={index} className="w-100 px-2">
                 <Link to={component.path} className="py-4">
                   <span>
                     <i className={component.icon}></i>
@@ -44,8 +45,13 @@ function Sidebar() {
                   <p className="fw-bold">{component.title}</p>
                 </Link>
               </li>
-            </ul>
-          ))}
+            ))}
+          </ul>
+        </div>
+        <div className="sidebar-footer">
+          <button onClick={hideSidebar} className="btn btn-danger closeBtn">
+            <i className="fa-solid fa-xmark"></i>
+          </button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 .overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: 2;
     background-color: rgba(50, 50, 50, 0.5);
@@ -10,7 +10,7 @@
         width: var(--sidebar-width);
         max-width: var(--sidebar-width);
         position: absolute;
-        top: 200px;
+        top: 150px;
         z-index: 3;
         border-radius: 20px;
         margin-left: calc(var(--sidebar-width) * -1);
@@ -103,6 +103,7 @@
                                 color: #00B388;
                                 font-size: 1.5rem;
                                 padding: 0;
+                                background-color: transparent;
                             }
                         }
 
@@ -116,6 +117,37 @@
                     &:hover {
                         transform: scale(.95);
                         transition: all .5s ease;
+                    }
+                }
+            }
+        }
+
+        &-footer {
+            position: relative;
+            .closeBtn {
+                position: absolute;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 1.5rem;
+                width: 50px;
+                height: 50px;
+                border-radius: 100rem !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    background-color: #fff!important;
+                }
+
+                i {
+                    background-color: transparent;
+                    font-size: 1.5rem;
+                    transition: unset;
+                    
+                    &:hover {
+                        color: #dc3545;
                     }
                 }
             }

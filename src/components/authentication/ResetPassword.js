@@ -5,6 +5,8 @@ import axios from "axios";
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [msg, setMsg] = useState("");
+  const [isError, setIsError] = useState(false);
   const href = window.location.href;
   let resetToken = href.substring(href.indexOf("=") + 1);
 
@@ -17,12 +19,21 @@ function ResetPassword() {
         "Content-Type": "application/json",
       },
       data: JSON.stringify({ password, confirmPassword }),
-    });
-    if (password === confirmPassword) {
-      alert("pass");
-    } else {
-      alert("fail");
-    }
+    })
+      .then((result) => {
+        if (result && password === confirmPassword) {
+          setIsError(false);
+          setMsg(result.data.message);
+        } else {
+          setIsError(true);
+          setMsg("Passwords do not match!");
+          return false;
+        }
+      })
+      .catch((error) => {
+        setIsError(true);
+        setMsg("Passwords do not match!");
+      });
   };
 
   return (
@@ -32,6 +43,15 @@ function ResetPassword() {
           RESET PASSWORD
         </h2>
         <div className="form-body">
+          {
+            <small
+              className={`mb-3 d-block ${
+                !isError ? "text-success" : "text-danger"
+              }`}
+            >
+              {msg}
+            </small>
+          }
           <input
             type="password"
             placeholder="New password"
@@ -47,7 +67,7 @@ function ResetPassword() {
           <div className="action-btn form-group">
             <button className="btn btn-success">Confirm</button>
             <Link to={"/"} className="btn btn-danger">
-              Cancel
+              Back to home
             </Link>
           </div>
         </div>

@@ -7,7 +7,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const [isAuthen, setIsAuthen] = useState(false);
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   const cookies = new Cookies();
 
@@ -22,7 +22,6 @@ function Login() {
     })
       .then((result) => {
         if (result) {
-          setIsAuthen(true);
           cookies.set("token", result.data.data.token);
           cookies.set("userId", result.data.data.id);
           cookies.set("username", result.data.data.username);
@@ -36,18 +35,19 @@ function Login() {
         }
       })
       .catch((error) => {
-        setIsAuthen(false);
+        setIsError(true);
       });
   };
 
   // Handle login Google
   const handleLoginGoogle = () => {
+    const cookieToken = cookies.get("token");
     window.location.replace(
       "http://localhost:8080/oauth2/authorization/google"
     );
     navigate("/oauth2/authorization/google");
-    if (cookies.get("token")) {
-      setToken(cookies.get("token"));
+    if (cookieToken) {
+      setToken(cookieToken);
     }
   };
 
@@ -58,9 +58,9 @@ function Login() {
           WELCOME TO CMS
         </h2>
         <div className="form-body">
-          {/* {isAuthen && (
-            <small className="text-danger mb-2 d-block">Wrong username or password</small>
-          )} */}
+          {isError && (
+            <small className="text-danger mb-2 d-block">Username or password is incorrect!</small>
+          )}
           <input
             type="text"
             autoComplete="on"

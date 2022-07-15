@@ -7,6 +7,7 @@ function ViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
   const [departmentId, setDepartmentId] = useState({});
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     axios({
@@ -16,6 +17,11 @@ function ViewDetail() {
     }).then((result) => {
       setViewDetail(result.data.data);
       setDepartmentId(result.data.data.departmentId);
+      setRoles(
+        result.data.data.roles.map((role) => (
+          <button className="btn badge bg-danger">{role.roleName}</button>
+        ))
+      );
     });
   }, []);
 
@@ -46,6 +52,10 @@ function ViewDetail() {
           <div className="tr">
             <div className="th">Department</div>
             <div className="td">{departmentId.departmentName}</div>
+          </div>
+          <div className="tr">
+            <div className="th">Role</div>
+            <div className="td">{roles}</div>
           </div>
           <div className="tr">
             <div className="th">Update</div>
