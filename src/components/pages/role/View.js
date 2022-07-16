@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { headers } from "../../headersToken";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
+import Loading from "../../partials/Loading/Loading";
 
 function View() {
   const [roles, setRoles] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -28,7 +30,9 @@ function View() {
       headers,
     })
       .then((result) => {
-        setRoles(result.data);
+        setIsLoaded(false);
+        if (result) setRoles(result.data);
+        setIsLoaded(true);
       })
       .catch((error) => console.log(error));
   }, [pageNumber]);
@@ -47,6 +51,7 @@ function View() {
         url: `http://localhost:8080/role/delete/${roleIdRef.current}`,
         headers,
       }).then((result) => {
+        setIsLoaded(true);
         const newRoleList = [...roles];
         const index = roles.findIndex(
           (role) => role.roleId === roleIdRef.current
@@ -55,6 +60,7 @@ function View() {
         setRoles(newRoleList);
       });
       handlePopup("", false);
+      setIsLoaded(false);
     } else {
       handlePopup("", false);
     }
@@ -120,44 +126,48 @@ function View() {
         </div>
       </div>
       <div className="overflow-auto">
-        <table className="table table-striped table-hover table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Role</th>
-              <th>Description</th>
-              <th>Created Date</th>
-              <th>Created By</th>
-              <th>Modified Date</th>
-              <th>Modified By</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {roles.map((role, i) => (
-              <tr key={role.roleId}>
-                <td>{i + 1}</td>
-                <td>{role.roleName}</td>
-                <td>{role.description}</td>
-                <td>{new Date(role.createDate).toLocaleDateString()}</td>
-                <td>{role.createBy}</td>
-                <td>{new Date(role.modifyDate).toLocaleDateString()}</td>
-                <td>{role.modifyBy}</td>
-                <td>
-                  <Link to={`detail/${role.roleId}`}>
-                    <i className="fa-solid fa-circle-info"></i>
-                  </Link>
-                  <Link to={`/role/update/${role.roleId}`}>
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </Link>
-                  <button onClick={() => handleDelete(role.roleId)}>
-                    <i className="fa-solid fa-trash-can"></i>
-                  </button>
-                </td>
+        {isLoaded ? (
+          <table className="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Role</th>
+                <th>Description</th>
+                <th>Created Date</th>
+                <th>Created By</th>
+                <th>Modified Date</th>
+                <th>Modified By</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {roles.map((role, i) => (
+                <tr key={role.roleId}>
+                  <td>{i + 1}</td>
+                  <td>{role.roleName}</td>
+                  <td>{role.description}</td>
+                  <td>{new Date(role.createDate).toLocaleDateString()}</td>
+                  <td>{role.createBy}</td>
+                  <td>{new Date(role.modifyDate).toLocaleDateString()}</td>
+                  <td>{role.modifyBy}</td>
+                  <td>
+                    <Link to={`detail/${role.roleId}`}>
+                      <i className="fa-solid fa-circle-info"></i>
+                    </Link>
+                    <Link to={`/role/update/${role.roleId}`}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <button onClick={() => handleDelete(role.roleId)}>
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <Loading />
+        )}
       </div>
       <Pagination />
       {popup.isLoading && (

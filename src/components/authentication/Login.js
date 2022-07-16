@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import ErrorHandler from "../partials/ErrorHandler";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -21,6 +21,7 @@ function Login() {
       data: JSON.stringify({ username, password }),
     })
       .then((result) => {
+        setIsError(false);
         if (result) {
           cookies.set("token", result.data.data.token);
           cookies.set("userId", result.data.data.id);
@@ -35,20 +36,16 @@ function Login() {
         }
       })
       .catch((error) => {
-        setIsError(true);
+        if (error.response.status === 401) setIsError(true);
       });
   };
 
   // Handle login Google
   const handleLoginGoogle = () => {
-    const cookieToken = cookies.get("token");
     window.location.replace(
       "http://localhost:8080/oauth2/authorization/google"
     );
     navigate("/oauth2/authorization/google");
-    if (cookieToken) {
-      setToken(cookieToken);
-    }
   };
 
   return (
@@ -58,15 +55,18 @@ function Login() {
           WELCOME TO CMS
         </h2>
         <div className="form-body">
-          {isError && (
-            <small className="text-danger mb-2 d-block">Username or password is incorrect!</small>
-          )}
+          {isError ? (
+            <ErrorHandler msg={"Username or password is incorrect!"} />
+          ) : null}
           <input
             type="text"
             autoComplete="on"
             placeholder="Username or Email"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setIsError(false);
+            }}
             className="form-group form-control"
           />
           <input
@@ -74,20 +74,12 @@ function Login() {
             autoComplete="on"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setIsError(false);
+            }}
             className="form-group form-control"
           />
-          <div className="form-group form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="remember_me"
-            />
-            <label className="form-check-label text-dark" htmlFor="remember_me">
-              Remember me
-            </label>
-          </div>
           <div className="action-btn form-group">
             <button className="btn btn-primary">LOGIN</button>
 

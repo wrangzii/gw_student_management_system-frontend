@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { headers, cookies } from "../../headersToken";
 import ActionBtns from "../../partials/ActionBtns";
+import ErrorHandler from "../../partials/ErrorHandler";
 
 function Create() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
+  const [isError, setIsError] = useState(false);
   const createBy = cookies.get("username");
   const navigate = useNavigate();
 
@@ -18,7 +20,13 @@ function Create() {
       url: "http://localhost:8080/department/add",
       headers,
       data: JSON.stringify({ departmentName, description, createBy }),
-    }).then((result) => (result ? navigate("../view") : null));
+    })
+      .then((result) => (result ? navigate("../view") : null))
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setIsError(true);
+        }
+      });
   };
 
   return (
@@ -28,12 +36,18 @@ function Create() {
           CREATING A NEW DEPARTMENT
         </h2>
         <div className="form-body">
+          {isError ? (
+            <ErrorHandler name={departmentName} msg={"is already taken!"} />
+          ) : null}
           <div className="department-dropdown dropdown d-flex">
             <label htmlFor="department">Department</label>
             <input
               type="text"
               className="form-control"
-              onChange={(e) => setDepartmentName(e.target.value)}
+              onChange={(e) => {
+                setDepartmentName(e.target.value);
+                setIsError(false);
+              }}
               placeholder="Assurance"
             />
           </div>

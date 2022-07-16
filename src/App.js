@@ -11,6 +11,7 @@ import Student from "./components/pages/student/Student";
 import Program from "./components/pages/program/Program";
 import Department from "./components/pages/department/Department";
 import Dashboard from "./components/pages/dashboard/Dashboard";
+import NotFound from "./components/pages/NotFound";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/program/*" element={<Program />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/confirm_reset" element={<ResetPassword />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

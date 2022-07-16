@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { headers, cookies } from "../../headersToken";
 import ActionBtns from "../../partials/ActionBtns";
+import Loading from "../../partials/Loading/Loading";
 
 function Update() {
   const [roleName, setRoleName] = useState("");
@@ -36,43 +37,47 @@ function Update() {
 
   return (
     <div className="role-update">
-      <form onSubmit={handleUpdateRole} className="form-group">
-        <h2 className="form-heading bg-warning text-white text-center">
-          UPDATING ROLE
-        </h2>
-        <div className="form-body">
-          <div className="d-flex">
-            <label htmlFor="role">Role</label>
-            <input
-              type="text"
-              className="form-control"
-              defaultValue={roleName}
-              onChange={(e) => setRoleName(e.target.value)}
-              placeholder="Accountant Leader"
-            />
+      {roleName ? (
+        <form onSubmit={handleUpdateRole} className="form-group">
+          <h2 className="form-heading bg-warning text-white text-center">
+            UPDATING ROLE
+          </h2>
+          <div className="form-body">
+            <div className="d-flex">
+              <label htmlFor="role">Role</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={roleName}
+                onChange={(e) => setRoleName(e.target.value)}
+                placeholder="Accountant Leader"
+              />
+            </div>
+            <div className="d-flex">
+              <label htmlFor="department">Description</label>
+              <textarea
+                cols="30"
+                rows="2"
+                className="form-control"
+                defaultValue={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="d-flex">
+              <label htmlFor="createdBy">Modified By</label>
+              <input
+                type="text"
+                className="form-control"
+                readOnly
+                value={modifyBy}
+              />
+            </div>
+            <ActionBtns action={"Update"} />
           </div>
-          <div className="d-flex">
-            <label htmlFor="department">Description</label>
-            <textarea
-              cols="30"
-              rows="2"
-              className="form-control"
-              defaultValue={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="d-flex">
-            <label htmlFor="createdBy">Modified By</label>
-            <input
-              type="text"
-              className="form-control"
-              readOnly
-              value={modifyBy}
-            />
-          </div>
-          <ActionBtns action={"Update"} />
-        </div>
-      </form>
+        </form>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

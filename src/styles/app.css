@@ -1,5 +1,4 @@
 * {
-  background-color: #F5F5F5;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -36,7 +35,8 @@
 .btn,
 input:not([type=file]),
 textarea,
-select {
+select,
+.toggleBtn {
   border-radius: 10px !important;
   outline: none;
 }
@@ -172,10 +172,6 @@ table td:last-child a {
   margin: 0;
 }
 
-.dropdown-toggle {
-  color: #FFF;
-}
-
 .select__control {
   max-width: 227px;
   width: 227px;
@@ -197,7 +193,6 @@ i {
 }
 
 .fa-bars:hover {
-  border: 1px solid #000;
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
 }
@@ -548,7 +543,9 @@ form .form-body .action-btn .btn {
 }
 
 .overlay .sidebar-body {
-  border-radius: 10px;
+  background-color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .overlay .sidebar-body ul {

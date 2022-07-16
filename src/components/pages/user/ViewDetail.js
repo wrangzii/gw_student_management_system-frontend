@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { headers } from "../../headersToken";
+import Loading from "../../partials/Loading/Loading";
 
 function ViewDetail() {
   const { id } = useParams();
@@ -28,44 +29,48 @@ function ViewDetail() {
   return (
     <div className="user-detail">
       <div className="overflow-auto">
-        <div className="table">
-          <div className="tr">
-            <div className="th">Fullname</div>
-            <div className="td">{viewDetail.fullName}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Username</div>
-            <div className="td">{viewDetail.username}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Email</div>
-            <div className="td">{viewDetail.email}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Phone Number</div>
-            <div className="td">{viewDetail.phoneNumber}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Address</div>
-            <div className="td">{viewDetail.address}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Department</div>
-            <div className="td">{departmentId.departmentName}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Role</div>
-            <div className="td">{roles}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Update</div>
-            <div className="td">
-              <Link to={`/user/update/${viewDetail.userId}`}>
-                <i className="fa-solid fa-pen-to-square"></i>
-              </Link>
+        {viewDetail.length !== 0 ? (
+          <div className="table">
+            <div className="tr">
+              <div className="th">Fullname</div>
+              <div className="td">{viewDetail.fullName}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Username</div>
+              <div className="td">{viewDetail.username}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Email</div>
+              <div className="td">{viewDetail.email}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Phone Number</div>
+              <div className="td">{viewDetail.phoneNumber}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Address</div>
+              <div className="td">{viewDetail.address}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Department</div>
+              <div className="td">{departmentId.departmentName}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Role</div>
+              <div className="td">{roles}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Update</div>
+              <div className="td">
+                <Link to={`/user/update/${viewDetail.userId}`}>
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <Loading />
+        )}
       </div>
     </div>
   );

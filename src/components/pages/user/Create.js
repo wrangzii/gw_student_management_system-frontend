@@ -193,15 +193,17 @@ function Create() {
                 name="department"
                 className="form-select"
                 defaultValue={departmentId}
-                onChange={(e) => {
-                  setDepartmentId(parseInt(e.target.value));
-                }}
+                onChange={(e) => setDepartmentId(parseInt(e.target.value))}
               >
-                {department.map((depart) => (
-                  <option key={depart.departmentId} value={depart.departmentId}>
-                    {depart.departmentName}
-                  </option>
-                ))}
+                {department &&
+                  department.map((depart) => (
+                    <option
+                      key={depart.departmentId}
+                      value={depart.departmentId}
+                    >
+                      {depart.departmentName}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="createBy form-group d-flex">

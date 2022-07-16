@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { headers, cookies } from "../../headersToken";
 import ActionBtns from "../../partials/ActionBtns";
+import Loading from "../../partials/Loading/Loading";
 
 function Update() {
   const navigate = useNavigate();
@@ -40,33 +41,37 @@ function Update() {
   };
   return (
     <div className="program-update">
-      <form onSubmit={handleUpdateProgram} className="form-group">
-        <h2 className="form-heading bg-warning text-white text-center">
-          UPDATING PROGRAM
-        </h2>
-        <div className="form-body">
-          <div className="program-name d-flex">
-            <label htmlFor="programName">Program Name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="BTEC"
-              defaultValue={programName}
-              onChange={(e) => setProgramName(e.target.value)}
-            />
+      {programName ? (
+        <form onSubmit={handleUpdateProgram} className="form-group">
+          <h2 className="form-heading bg-warning text-white text-center">
+            UPDATING PROGRAM
+          </h2>
+          <div className="form-body">
+            <div className="program-name d-flex">
+              <label htmlFor="programName">Program Name</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="BTEC"
+                defaultValue={programName}
+                onChange={(e) => setProgramName(e.target.value)}
+              />
+            </div>
+            <div className="description d-flex">
+              <label htmlFor="description">Description</label>
+              <textarea
+                className="form-control"
+                placeholder="About this program"
+                defaultValue={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <ActionBtns action={"Update"} />
           </div>
-          <div className="description d-flex">
-            <label htmlFor="description">Description</label>
-            <textarea
-              className="form-control"
-              placeholder="About this program"
-              defaultValue={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <ActionBtns action={"Update"} />
-        </div>
-      </form>
+        </form>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

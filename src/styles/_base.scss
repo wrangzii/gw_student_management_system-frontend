@@ -1,5 +1,4 @@
 * {
-    background-color: #F5F5F5;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -36,7 +35,8 @@
 .btn,
 input:not([type=file]),
 textarea,
-select {
+select,
+.toggleBtn {
     border-radius: 10px !important;
     outline: none;
 }
@@ -48,6 +48,7 @@ input[type=radio] {
 
 .btn,
 i {
+
     &:hover {
         transition: all .5s ease;
         opacity: .8;
@@ -166,9 +167,9 @@ table {
     }
 }
 
-.dropdown-toggle {
-    color: #FFF;
-}
+// .dropdown-toggle {
+//     color: #FFF;
+// }
 
 // // react-select
 .select__control {
@@ -191,7 +192,6 @@ i {
     font-size: 20px;
 
     &:hover {
-        border: 1px solid #000;
         transform: scale(1.1);
     }
 }

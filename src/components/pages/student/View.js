@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { headers } from "../../headersToken";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
+import Loading from "../../partials/Loading/Loading";
 
 function View() {
   const [students, setStudents] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -28,7 +30,9 @@ function View() {
       headers,
     })
       .then((result) => {
-        setStudents(result.data);
+        setIsLoaded(false);
+        if (result) setStudents(result.data);
+        setIsLoaded(true);
       })
       .catch((error) => console.log(error));
   }, [pageNumber]);
@@ -47,6 +51,7 @@ function View() {
         url: `http://localhost:8080/student/delete/${studentIdRef.current}`,
         headers,
       }).then((result) => {
+        setIsLoaded(true);
         const newStudentList = [...students];
         const index = students.findIndex(
           (student) => student.studentId === studentIdRef.current
@@ -55,6 +60,7 @@ function View() {
         setStudents(newStudentList);
       });
       handlePopup("", false);
+      setIsLoaded(false);
     } else {
       handlePopup("", false);
     }
@@ -91,42 +97,46 @@ function View() {
         </div>
       </div>
       <div className="overflow-auto">
-        <table className="table table-striped table-hover table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>FPT_ID</th>
-              <th>Fullname</th>
-              <th>Gender</th>
-              <th>Email</th>
-              <th>Birthday</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student, i) => (
-              <tr key={student.studentId}>
-                <td>{i + 1}</td>
-                <td>{student.fptId}</td>
-                <td>{student.fullName}</td>
-                <td>{student.gender}</td>
-                <td>{student.email}</td>
-                <td>{new Date(student.dob).toLocaleDateString()}</td>
-                <td>
-                  <Link to={`detail/${student.studentId}`}>
-                    <i className="fa-solid fa-circle-info"></i>
-                  </Link>
-                  <Link to={`../update/${student.studentId}`}>
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </Link>
-                  <button onClick={() => handleDelete(student.studentId)}>
-                    <i className="fa-solid fa-trash-can"></i>
-                  </button>
-                </td>
+        {isLoaded ? (
+          <table className="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>FPT_ID</th>
+                <th>Fullname</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {students.map((student, i) => (
+                <tr key={student.studentId}>
+                  <td>{i + 1}</td>
+                  <td>{student.fptId}</td>
+                  <td>{student.fullName}</td>
+                  <td>{student.gender}</td>
+                  <td>{student.email}</td>
+                  <td>{new Date(student.dob).toLocaleDateString()}</td>
+                  <td>
+                    <Link to={`detail/${student.studentId}`}>
+                      <i className="fa-solid fa-circle-info"></i>
+                    </Link>
+                    <Link to={`../update/${student.studentId}`}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <button onClick={() => handleDelete(student.studentId)}>
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <Loading />
+        )}
       </div>
       <Pagination />
       {popup.isLoading && (

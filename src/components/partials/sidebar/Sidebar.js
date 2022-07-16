@@ -7,7 +7,7 @@ import { hideSidebar } from "./sidebarHandler";
 
 function Sidebar() {
   return (
-    <div className="overlay">
+    <div className="overlay overflow-auto">
       <div className="sidebar">
         <div className="sidebar-header">
           <div className="mb-0 p-3 text-center bg-warning fw-bold">
@@ -38,7 +38,11 @@ function Sidebar() {
           <ul>
             {components.map((component, index) => (
               <li key={index} className="w-100 px-2">
-                <Link to={component.path} className="py-4">
+                <Link
+                  to={component.path}
+                  className="py-3 py-md-4"
+                  onClick={hideSidebar}
+                >
                   <span>
                     <i className={component.icon}></i>
                   </span>

@@ -21,7 +21,8 @@ function PopupConfirm({ message, onPopup }) {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%,-50%)",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+                    backgroundColor: "#EEE"
                 }}
             >
                 <h3 className='text-light bg-danger p-3' style={{ borderTopRightRadius: "10px", borderTopLeftRadius: "10px" }}>{message}</h3>
