@@ -3,28 +3,28 @@
 .student-view,
 .program-view,
 .department-view {
-    .filter-area {
-        display: flex;
-        margin-bottom: 3rem;
+    // .filter-area {
+    //     display: flex;
+    //     margin-bottom: 3rem;
 
-        .dropdown {
-            align-items: center;
-            gap: 1rem;
-        }
+    //     .dropdown {
+    //         align-items: center;
+    //         gap: 1rem;
+    //     }
 
-        label {
-            color: #000;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 0;
-        }
+    //     label {
+    //         color: #000;
+    //         font-weight: bold;
+    //         font-size: 20px;
+    //         margin-bottom: 0;
+    //     }
 
-        .dropdown-toggle {
-            width: 60%;
-            color: #FFF;
-            text-align: left;
-        }
-    }
+    //     .dropdown-toggle {
+    //         width: 60%;
+    //         color: #FFF;
+    //         text-align: left;
+    //     }
+    // }
 
     table {
 

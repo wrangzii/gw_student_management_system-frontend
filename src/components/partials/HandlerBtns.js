@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-function ActionBtns({ action, color }) {
+function HandlerBtns({ action, color }) {
   switch (action) {
     case "Create":
       color = "success";
@@ -13,7 +13,7 @@ function ActionBtns({ action, color }) {
       color = "success";
   }
   return (
-    <div className="action-btn form-group">
+    <div className="handler-btn form-group">
       <Link to={"../view"} className="btn btn-danger">
         Cancel
       </Link>
@@ -22,4 +22,4 @@ function ActionBtns({ action, color }) {
   );
 }
 
-export default ActionBtns;
+export default HandlerBtns;

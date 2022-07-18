@@ -5,6 +5,7 @@ import { headers, cookies } from "../../headersToken";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
 import Loading from "../../partials/Loading/Loading";
+import SearchBar from "../../partials/SearchBar";
 
 function View() {
   const [users, setUsers] = useState([]);
@@ -71,60 +72,7 @@ function View() {
 
   return (
     <div className="user-view">
-      <div className="filter-area">
-        <div className="filter-are__role col-6">
-          <div className="user-dropdown dropdown d-flex">
-            <label htmlFor="user">User</label>
-            <button
-              className="btn btn-info dropdown-toggle"
-              type="button"
-              id="role_dropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              User
-            </button>
-            <div className="dropdown-menu" aria-labelledby="role_dropdown">
-              <Link className="dropdown-item" to="/">
-                Manager
-              </Link>
-              <Link className="dropdown-item" to="/">
-                Accoutant
-              </Link>
-              <Link className="dropdown-item" to="/">
-                President
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="filter-area__major col-6">
-          <div className="major-dropdown dropdown d-flex">
-            <label htmlFor="major">Major</label>
-            <button
-              className="btn btn-info dropdown-toggle"
-              type="button"
-              id="major_dropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Major
-            </button>
-            <div className="dropdown-menu" aria-labelledby="major_dropdown">
-              <Link className="dropdown-item" to="/">
-                Manager
-              </Link>
-              <Link className="dropdown-item" to="/">
-                Accoutant
-              </Link>
-              <Link className="dropdown-item" to="/">
-                President
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SearchBar page={"user"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

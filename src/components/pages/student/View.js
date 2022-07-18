@@ -5,6 +5,7 @@ import { headers } from "../../headersToken";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
 import Loading from "../../partials/Loading/Loading";
+import SearchBar from "../../partials/SearchBar";
 
 function View() {
   const [students, setStudents] = useState([]);
@@ -68,34 +69,7 @@ function View() {
 
   return (
     <div className="student-view">
-      <div className="filter-area">
-        <div className="filter-are__major col-6">
-          <div className="major-dropdown dropdown d-flex">
-            <label htmlFor="major">Major</label>
-            <button
-              className="btn btn-info dropdown-toggle"
-              type="button"
-              id="major_dropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Major
-            </button>
-            <div className="dropdown-menu" aria-labelledby="major_dropdown">
-              <Link className="dropdown-item" to="/">
-                IT
-              </Link>
-              <Link className="dropdown-item" to="/">
-                BM
-              </Link>
-              <Link className="dropdown-item" to="/">
-                GD
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SearchBar page={"student"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

@@ -5,6 +5,7 @@ import axios from "axios";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
 import Loading from "../../partials/Loading/Loading";
+import SearchBar from "../../partials/SearchBar";
 
 function View() {
   const [departments, setDepartments] = useState([]);
@@ -70,6 +71,7 @@ function View() {
 
   return (
     <div className="department-view">
+      <SearchBar page={"department"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

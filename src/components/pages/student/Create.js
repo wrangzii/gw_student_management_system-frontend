@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { headers, cookies } from "../../headersToken";
-import ActionBtns from "../../partials/ActionBtns";
+import HandlerBtns from "../../partials/HandlerBtns";
 
 function Create() {
   const createBy = cookies.get("username");
@@ -130,7 +130,7 @@ function Create() {
                 value={createBy}
               />
             </div>
-            <ActionBtns action={"Create"} />
+            <HandlerBtns action={"Create"} />
           </div>
         </div>
       </form>

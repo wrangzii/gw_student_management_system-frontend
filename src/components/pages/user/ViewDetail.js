@@ -7,9 +7,10 @@ import Loading from "../../partials/Loading/Loading";
 function ViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
-  const [departmentId, setDepartmentId] = useState({});
+  const [departmentName, setDepartmentName] = useState({});
   const [roles, setRoles] = useState([]);
 
+  // Get current user's info
   useEffect(() => {
     axios({
       method: "get",
@@ -17,14 +18,20 @@ function ViewDetail() {
       headers,
     }).then((result) => {
       setViewDetail(result.data.data);
-      setDepartmentId(result.data.data.departmentId);
+      setDepartmentName(result.data.data.departmentId.departmentName);
       setRoles(
         result.data.data.roles.map((role) => (
-          <button className="btn badge bg-danger">{role.roleName}</button>
+          <button
+            type="button"
+            key={role.roleId}
+            className="btn badge bg-danger"
+          >
+            {role.roleName}
+          </button>
         ))
       );
     });
-  }, []);
+  }, [id]);
 
   return (
     <div className="user-detail">
@@ -53,7 +60,7 @@ function ViewDetail() {
             </div>
             <div className="tr">
               <div className="th">Department</div>
-              <div className="td">{departmentId.departmentName}</div>
+              <div className="td">{departmentName}</div>
             </div>
             <div className="tr">
               <div className="th">Role</div>

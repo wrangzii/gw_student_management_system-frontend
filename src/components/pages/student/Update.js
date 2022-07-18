@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { headers, cookies } from "../../headersToken";
-import ActionBtns from "../../partials/ActionBtns";
+import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
 function Update() {
@@ -162,7 +162,7 @@ function Update() {
                   value={modifyBy}
                 />
               </div>
-              <ActionBtns action={"Update"} />
+              <HandlerBtns action={"Update"} />
             </div>
           </div>
         </form>

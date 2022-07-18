@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { cookies } from "./components/headersToken";
 import Navbar from "./components/partials/Navbar";
 import Login from "./components/authentication/Login";
@@ -19,18 +24,24 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route
-            index
-            element={cookies.get("token") ? <Dashboard /> : <Login />}
-          />
-          <Route path="/user/*" element={<User />} />
-          <Route path="/role/*" element={<Role />} />
-          <Route path="/department/*" element={<Department />} />
-          <Route path="/student/*" element={<Student />} />
-          <Route path="/program/*" element={<Program />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/confirm_reset" element={<ResetPassword />} />
-          <Route path="*" element={<NotFound />} />
+          {cookies.get("token") ? (
+            <>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/user/*" element={<User />} />
+              <Route path="/role/*" element={<Role />} />
+              <Route path="/department/*" element={<Department />} />
+              <Route path="/student/*" element={<Student />} />
+              <Route path="/program/*" element={<Program />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/confirm_reset" element={<ResetPassword />} />
+              <Route path="*" element={<NotFound />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Navigate replace to="/" />} />
+            </>
+          )}
         </Routes>
       </div>
     </Router>

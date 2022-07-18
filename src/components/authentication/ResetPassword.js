@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../partials/Loading/Loading";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const navigate = useNavigate();
   const href = window.location.href;
   let resetToken = href.substring(href.indexOf("=") + 1);
 
+  // Handle reset password
   const handleResetPassword = (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setIsError(true);
+      setMsg("Passwords do not match!");
+      return false;
+    }
+    setIsLoaded(false);
     axios({
       method: "post",
       url: `http://localhost:8080/confirm_reset?token=${resetToken}`,
@@ -24,13 +34,12 @@ function ResetPassword() {
         if (result && password === confirmPassword) {
           setIsError(false);
           setMsg(result.data.message);
-        } else {
-          setIsError(true);
-          setMsg("Passwords do not match!");
-          return false;
+          setIsLoaded(true);
+          navigate("/");
         }
       })
       .catch((error) => {
+        setIsLoaded(true);
         setIsError(true);
         setMsg("Passwords do not match!");
       });
@@ -49,22 +58,28 @@ function ResetPassword() {
                 !isError ? "text-success" : "text-danger"
               }`}
             >
-              {msg}
+              {isLoaded ? msg : <Loading />}
             </small>
           }
           <input
             type="password"
             placeholder="New password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setMsg("");
+            }}
             className="form-group form-control"
           />
           <input
             type="password"
             placeholder="Confirm password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setMsg("");
+            }}
             className="form-group form-control"
           />
-          <div className="action-btn form-group">
+          <div className="handler-btn form-group">
             <button className="btn btn-success">Confirm</button>
             <Link to={"/"} className="btn btn-danger">
               Back to home

@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { headers } from "../headersToken";
+import Loading from "../partials/Loading/Loading";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   // Handle forgot password
   const handleForgotPassword = (e) => {
     e.preventDefault();
+    setIsLoaded(false);
     axios({
       method: "post",
       url: "http://localhost:8080/forgot_password",
@@ -19,7 +22,8 @@ function ForgotPassword() {
     })
       .then((result) => {
         setIsError(false);
-        setMsg(result.data.message);
+        if (result) setMsg(result.data.message);
+        setIsLoaded(true);
       })
       .catch((error) => {
         setIsError(true);
@@ -30,6 +34,8 @@ function ForgotPassword() {
         }
       });
   };
+
+  console.log(isLoaded);
 
   return (
     <div className="forgot_password">
@@ -44,16 +50,19 @@ function ForgotPassword() {
                 !isError ? "text-success" : "text-danger"
               }`}
             >
-              {msg}
+              {isLoaded ? msg : <Loading />}
             </small>
           }
           <input
             type="text"
             placeholder="Username or Email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setMsg("");
+            }}
             className="form-group form-control"
           />
-          <div className="action-btn form-group">
+          <div className="handler-btn form-group">
             <button className="btn btn-success">Reset my password</button>
             <Link to={"/"} className="btn btn-danger">
               Cancel

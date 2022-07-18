@@ -5,6 +5,7 @@ import axios from "axios";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
 import Loading from "../../partials/Loading/Loading";
+import SearchBar from "../../partials/SearchBar";
 
 function View() {
   const [pageNumber, setPageNumber] = useState(0);
@@ -66,30 +67,7 @@ function View() {
 
   return (
     <div className="program-view">
-      <div className="filter-area">
-        <div className="filter-are__program_code col-6">
-          <div className="program_code-dropdown dropdown d-flex">
-            <label htmlFor="program_code">Program Code</label>
-            <input
-              type="text"
-              className="form-control mb-0"
-              placeholder="Input here"
-              style={{ width: "fit-content" }}
-            />
-          </div>
-        </div>
-        <div className="filter-area__program_name col-6">
-          <div className="program_name-dropdown dropdown d-flex">
-            <label htmlFor="program_name">Program Name</label>
-            <input
-              type="text"
-              className="form-control mb-0"
-              placeholder="Input here"
-              style={{ width: "fit-content" }}
-            />
-          </div>
-        </div>
-      </div>
+      <SearchBar page={"program"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

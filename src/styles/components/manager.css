@@ -33,7 +33,7 @@ form .form-body .form-check label {
   cursor: pointer;
 }
 
-form .form-body .action-btn {
+form .form-body .handler-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -45,51 +45,8 @@ form .form-body .action-btn {
   margin-top: 2.5rem;
 }
 
-form .form-body .action-btn .btn {
+form .form-body .handler-btn .btn {
   font-weight: bold;
-}
-
-.user-view .filter-area,
-.role-view .filter-area,
-.student-view .filter-area,
-.program-view .filter-area,
-.department-view .filter-area {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 3rem;
-}
-
-.user-view .filter-area .dropdown,
-.role-view .filter-area .dropdown,
-.student-view .filter-area .dropdown,
-.program-view .filter-area .dropdown,
-.department-view .filter-area .dropdown {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 1rem;
-}
-
-.user-view .filter-area label,
-.role-view .filter-area label,
-.student-view .filter-area label,
-.program-view .filter-area label,
-.department-view .filter-area label {
-  color: #000;
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 0;
-}
-
-.user-view .filter-area .dropdown-toggle,
-.role-view .filter-area .dropdown-toggle,
-.student-view .filter-area .dropdown-toggle,
-.program-view .filter-area .dropdown-toggle,
-.department-view .filter-area .dropdown-toggle {
-  width: 60%;
-  color: #FFF;
-  text-align: left;
 }
 
 .user-view table thead tr th,
@@ -118,16 +75,16 @@ form .form-body .action-btn .btn {
   text-align: center;
 }
 
-.user-create .action-btn,
-.user-update .action-btn,
-.role-create .action-btn,
-.role-update .action-btn,
-.student-create .action-btn,
-.student-update .action-btn,
-.program-create .action-btn,
-.program-update .action-btn,
-.department-create .action-btn,
-.department-update .action-btn {
+.user-create .handler-btn,
+.user-update .handler-btn,
+.role-create .handler-btn,
+.role-update .handler-btn,
+.student-create .handler-btn,
+.student-update .handler-btn,
+.program-create .handler-btn,
+.program-update .handler-btn,
+.department-create .handler-btn,
+.department-update .handler-btn {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
@@ -138,16 +95,16 @@ form .form-body .action-btn .btn {
   margin-top: 1rem !important;
 }
 
-.user-create .action-btn .btn,
-.user-update .action-btn .btn,
-.role-create .action-btn .btn,
-.role-update .action-btn .btn,
-.student-create .action-btn .btn,
-.student-update .action-btn .btn,
-.program-create .action-btn .btn,
-.program-update .action-btn .btn,
-.department-create .action-btn .btn,
-.department-update .action-btn .btn {
+.user-create .handler-btn .btn,
+.user-update .handler-btn .btn,
+.role-create .handler-btn .btn,
+.role-update .handler-btn .btn,
+.student-create .handler-btn .btn,
+.student-update .handler-btn .btn,
+.program-create .handler-btn .btn,
+.program-update .handler-btn .btn,
+.department-create .handler-btn .btn,
+.department-update .handler-btn .btn {
   width: 130px;
   color: #FFF;
 }

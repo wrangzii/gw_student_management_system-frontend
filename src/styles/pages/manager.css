@@ -21,7 +21,7 @@
   cursor: pointer;
 }
 
-.login form .form-body .action-btn {
+.login form .form-body .handler-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -33,7 +33,7 @@
   margin-top: 2.5rem;
 }
 
-.login form .form-body .action-btn .btn {
+.login form .form-body .handler-btn .btn {
   font-weight: bold;
 }
 

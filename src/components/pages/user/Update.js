@@ -3,21 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
 import { headers, cookies } from "../../headersToken";
-import ActionBtns from "../../partials/ActionBtns";
+import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
 function Update() {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
   const modifyBy = cookies.get("username");
-  const [departmentId, setDepartmentId] = useState(0);
   const [role, setRole] = useState([]);
-  const [department, setDepartment] = useState([]);
+  const [departmentId, setDepartmentId] = useState(0);
+  const [departments, setDepartments] = useState([]);
   const { id } = useParams();
   const role_dropdown = useRef();
   const navigate = useNavigate();
@@ -35,8 +33,6 @@ function Update() {
         setDob(new Date(result.data.data.dob).toISOString());
         setAddress(result.data.data.address);
         setFullName(result.data.data.fullName);
-        setUsername(result.data.data.username);
-        setPassword(result.data.data.password);
         setRole(result.data.data.roles);
         setDepartmentId(result.data.data.departmentId);
         return result.data.data;
@@ -55,7 +51,7 @@ function Update() {
       method: "get",
       url: `http://localhost:8080/department/all?pageNumber=0`,
       headers,
-    }).then((result) => setDepartment(result.data));
+    }).then((result) => setDepartments(result.data));
   }, []);
 
   // Handle change dropdown
@@ -72,8 +68,6 @@ function Update() {
       headers,
       data: JSON.stringify({
         email,
-        username,
-        password,
         phoneNumber,
         dob,
         address,
@@ -89,7 +83,7 @@ function Update() {
 
   return (
     <div className="user-create">
-      {username ? (
+      {fullName ? (
         <form onSubmit={handleUpdateUser} className="form-group">
           <h2 className="form-heading bg-warning text-white text-center">
             UPDATING A NEW USER
@@ -135,6 +129,8 @@ function Update() {
                   className="form-control"
                 />
               </div>
+            </div>
+            <div className="form-body__right">
               <div className="address form-group d-flex">
                 <label htmlFor="address">Address</label>
                 <input
@@ -142,27 +138,6 @@ function Update() {
                   placeholder="20 Cong Hoa, Tan Binh"
                   defaultValue={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="form-body__right">
-              <div className="username form-group d-flex">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  placeholder="nguyenvana"
-                  defaultValue={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="form-control"
-                />
-              </div>
-              <div className="password form-group d-flex">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  defaultValue={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -183,16 +158,16 @@ function Update() {
                 <select
                   name="department"
                   className="form-select"
-                  defaultValue={departmentId}
+                  defaultValue={departmentId.departmentName}
                   onChange={(e) => setDepartmentId(parseInt(e.target.value))}
                 >
-                  {department &&
-                    department.map((depart) => (
+                  {departments &&
+                    departments.map((department) => (
                       <option
-                        key={depart.departmentId}
-                        defaultValue={parseInt(depart.departmentId)}
+                        key={department.departmentId}
+                        defaultValue={parseInt(department.departmentId)}
                       >
-                        {depart.departmentName}
+                        {department.departmentName}
                       </option>
                     ))}
                 </select>
@@ -206,7 +181,7 @@ function Update() {
                   className="form-control"
                 />
               </div>
-              <ActionBtns action={"Update"} />
+              <HandlerBtns action={"Update"} />
             </div>
           </div>
         </form>

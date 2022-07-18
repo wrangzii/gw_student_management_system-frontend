@@ -3,33 +3,54 @@
 }
 
 .bg-primary,
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #2A1564 !important;
   border-color: #2A1564;
 }
 
 .bg-success,
-.btn-success {
+.btn-success,
+.btn-outline-success {
   background-color: #00B388 !important;
   border-color: #00B388;
 }
 
 .bg-danger,
-.btn-danger {
-  background-color: #E94E39 !important;
-  border-color: #E94E39;
+.btn-danger,
+.btn-outline-danger {
+  background-color: #F06E28 !important;
+  border-color: #F06E28;
 }
 
 .bg-warning,
-.btn-warning {
+.btn-warning,
+.btn-outline-warning {
   background-color: #FFC600 !important;
   border-color: #FFC600;
 }
 
 .bg-info,
-.btn-info {
+.btn-info,
+.btn-outline-info {
   background-color: #606EB2 !important;
   border-color: #606EB2;
+}
+
+.search .search-bar input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.search .search-bar input:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.search .search-btn {
+  border: 1px solid #CED4DA;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
 
 .btn,
@@ -78,15 +99,17 @@ select option {
 }
 
 .text-danger {
-  color: #E94E39 !important;
+  color: #F06E28 !important;
 }
 
 a {
   text-decoration: none;
+  color: #FFF;
 }
 
 a:hover {
   text-decoration: none;
+  color: #FFF;
 }
 
 h1 {
@@ -183,7 +206,6 @@ table td:last-child a {
 }
 
 i {
-  color: #FFF;
   padding: .5rem 1rem;
   border-radius: 10px;
 }
@@ -213,7 +235,8 @@ i {
 }
 
 .fa-trash-can {
-  background-color: #E94E39;
+  background-color: #F06E28;
+  color: #FFF;
 }
 
 .page-link {
@@ -301,7 +324,7 @@ form .form-body .form-check label {
   cursor: pointer;
 }
 
-form .form-body .action-btn {
+form .form-body .handler-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -313,51 +336,8 @@ form .form-body .action-btn {
   margin-top: 2.5rem;
 }
 
-form .form-body .action-btn .btn {
+form .form-body .handler-btn .btn {
   font-weight: bold;
-}
-
-.user-view .filter-area,
-.role-view .filter-area,
-.student-view .filter-area,
-.program-view .filter-area,
-.department-view .filter-area {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 3rem;
-}
-
-.user-view .filter-area .dropdown,
-.role-view .filter-area .dropdown,
-.student-view .filter-area .dropdown,
-.program-view .filter-area .dropdown,
-.department-view .filter-area .dropdown {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 1rem;
-}
-
-.user-view .filter-area label,
-.role-view .filter-area label,
-.student-view .filter-area label,
-.program-view .filter-area label,
-.department-view .filter-area label {
-  color: #000;
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 0;
-}
-
-.user-view .filter-area .dropdown-toggle,
-.role-view .filter-area .dropdown-toggle,
-.student-view .filter-area .dropdown-toggle,
-.program-view .filter-area .dropdown-toggle,
-.department-view .filter-area .dropdown-toggle {
-  width: 60%;
-  color: #FFF;
-  text-align: left;
 }
 
 .user-view table thead tr th,
@@ -386,16 +366,16 @@ form .form-body .action-btn .btn {
   text-align: center;
 }
 
-.user-create .action-btn,
-.user-update .action-btn,
-.role-create .action-btn,
-.role-update .action-btn,
-.student-create .action-btn,
-.student-update .action-btn,
-.program-create .action-btn,
-.program-update .action-btn,
-.department-create .action-btn,
-.department-update .action-btn {
+.user-create .handler-btn,
+.user-update .handler-btn,
+.role-create .handler-btn,
+.role-update .handler-btn,
+.student-create .handler-btn,
+.student-update .handler-btn,
+.program-create .handler-btn,
+.program-update .handler-btn,
+.department-create .handler-btn,
+.department-update .handler-btn {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
@@ -406,16 +386,16 @@ form .form-body .action-btn .btn {
   margin-top: 1rem !important;
 }
 
-.user-create .action-btn .btn,
-.user-update .action-btn .btn,
-.role-create .action-btn .btn,
-.role-update .action-btn .btn,
-.student-create .action-btn .btn,
-.student-update .action-btn .btn,
-.program-create .action-btn .btn,
-.program-update .action-btn .btn,
-.department-create .action-btn .btn,
-.department-update .action-btn .btn {
+.user-create .handler-btn .btn,
+.user-update .handler-btn .btn,
+.role-create .handler-btn .btn,
+.role-update .handler-btn .btn,
+.student-create .handler-btn .btn,
+.student-update .handler-btn .btn,
+.program-create .handler-btn .btn,
+.program-update .handler-btn .btn,
+.department-create .handler-btn .btn,
+.department-update .handler-btn .btn {
   width: 130px;
   color: #FFF;
 }
@@ -666,7 +646,7 @@ form .form-body .action-btn .btn {
   cursor: pointer;
 }
 
-.login form .form-body .action-btn {
+.login form .form-body .handler-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -678,7 +658,7 @@ form .form-body .action-btn .btn {
   margin-top: 2.5rem;
 }
 
-.login form .form-body .action-btn .btn {
+.login form .form-body .handler-btn .btn {
   font-weight: bold;
 }
 
