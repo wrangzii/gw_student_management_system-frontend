@@ -37,6 +37,10 @@
   border-color: #606EB2;
 }
 
+.search .search-bar {
+  width: 100%;
+}
+
 .search .search-bar input {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
@@ -351,19 +355,16 @@ form .form-body .handler-btn .btn {
 .department-view table thead tr th,
 .department-view table tbody tr td {
   color: #000;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.user-view table thead tr th,
-.user-view table tbody tr td,
-.role-view table thead tr th,
-.role-view table tbody tr td,
-.student-view table thead tr th,
-.student-view table tbody tr td,
-.program-view table thead tr th,
-.program-view table tbody tr td,
-.department-view table thead tr th,
-.department-view table tbody tr td {
-  text-align: center;
+.user-view table tbody tr td:last-child,
+.role-view table tbody tr td:last-child,
+.student-view table tbody tr td:last-child,
+.program-view table tbody tr td:last-child,
+.department-view table tbody tr td:last-child {
+  display: block;
 }
 
 .user-create .handler-btn,

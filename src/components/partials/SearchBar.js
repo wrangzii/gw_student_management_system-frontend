@@ -2,7 +2,7 @@ import React from "react";
 
 function SearchBar({ page }) {
   return (
-    <div className="search d-flex col-6 mb-3">
+    <div className="search d-flex col-12 col-md-6 mb-3">
       <div className="search-bar">
         <input
           type="search"

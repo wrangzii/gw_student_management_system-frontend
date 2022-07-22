@@ -51,6 +51,10 @@ function ViewDetail() {
               <div className="td">{viewDetail.email}</div>
             </div>
             <div className="tr">
+              <div className="th">Birthday</div>
+              <div className="td">{new Date(viewDetail.dob).toLocaleDateString()}</div>
+            </div>
+            <div className="tr">
               <div className="th">Phone Number</div>
               <div className="td">{viewDetail.phoneNumber}</div>
             </div>

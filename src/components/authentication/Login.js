@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import ErrorHandler from "../partials/ErrorHandler";
@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-  const navigate = useNavigate();
+  const [isToken, setIsToken] = useState(false);
   const cookies = new Cookies();
 
   // Handle login
@@ -41,18 +41,10 @@ function Login() {
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          setIsLoaded(true)
+          setIsLoaded(true);
           setIsError(true);
-        };
+        }
       });
-  };
-
-  // Handle login Google
-  const handleLoginGoogle = () => {
-    window.location.replace(
-      "http://localhost:8080/oauth2/authorization/google"
-    );
-    navigate("/oauth2/authorization/google");
   };
 
   return (
@@ -90,14 +82,16 @@ function Login() {
             />
             <div className="handler-btn form-group">
               <button className="btn btn-primary">LOGIN</button>
-
-              <button
-                type="button"
-                onClick={handleLoginGoogle}
+              <a
+                href={"http://localhost:8080/oauth2/authorization/google"}
                 className="btn btn-success"
               >
+                <i
+                  className="fa-brands fa-google py-0"
+                  style={{ color: "#DB4437" }}
+                ></i>
                 LOGIN WITH FPT EMAIL
-              </button>
+              </a>
             </div>
             <Link to="/forgot-password">
               <small className="note text-danger font-italic">

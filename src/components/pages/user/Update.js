@@ -14,9 +14,10 @@ function Update() {
   const [fullName, setFullName] = useState("");
   const modifyBy = cookies.get("username");
   const [role, setRole] = useState([]);
-  const [departmentId, setDepartmentId] = useState(0);
+  const [departmentId, setDepartmentId] = useState(null);
   const [departments, setDepartments] = useState([]);
   const { id } = useParams();
+  const role_current = useRef();
   const role_dropdown = useRef();
   const navigate = useNavigate();
 
@@ -28,22 +29,43 @@ function Update() {
       headers,
     })
       .then((result) => {
-        setEmail(result.data.data.email);
-        setPhoneNumber(result.data.data.phoneNumber);
-        setDob(new Date(result.data.data.dob).toISOString());
-        setAddress(result.data.data.address);
-        setFullName(result.data.data.fullName);
-        setRole(result.data.data.roles);
-        setDepartmentId(result.data.data.departmentId);
+        if (result) {
+          setEmail(result.data.data.email);
+          setPhoneNumber(result.data.data.phoneNumber);
+          setDob(new Date(result.data.data.dob).toISOString());
+          setAddress(result.data.data.address);
+          setFullName(result.data.data.fullName);
+          setRole(result.data.data.roles.map((role) => role.roleName));
+          setDepartmentId(result.data.data.departmentId.departmentId);
+        }
         return result.data.data;
       })
       .then((result) => {
-        role_dropdown.current = result.roles.map((role) => ({
-          value: role.roleId,
+        // Get user's current role
+        role_current.current = result.roles.map((role) => ({
+          value: role.roleName,
           label: role.roleName,
         }));
       });
   }, [id]);
+
+  // Get role list
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `http://localhost:8080/role/all?pageNumber=0`,
+      headers,
+    })
+      .then((result) => {
+        if (result) return result.data;
+      })
+      .then((result) => {
+        role_dropdown.current = result.map((role) => ({
+          value: role.roleName,
+          label: role.roleName,
+        }));
+      });
+  }, []);
 
   // Get department list
   useEffect(() => {
@@ -51,7 +73,9 @@ function Update() {
       method: "get",
       url: `http://localhost:8080/department/all?pageNumber=0`,
       headers,
-    }).then((result) => setDepartments(result.data));
+    }).then((result) => {
+      if (result) setDepartments(result.data);
+    });
   }, []);
 
   // Handle change dropdown
@@ -76,14 +100,12 @@ function Update() {
         role,
         departmentId,
       }),
-    }).then((result) => {
-      navigate("/");
-    });
+    }).then((result) => (result ? navigate("../view") : null));
   };
 
   return (
     <div className="user-create">
-      {fullName ? (
+      {departmentId ? (
         <form onSubmit={handleUpdateUser} className="form-group">
           <h2 className="form-heading bg-warning text-white text-center">
             UPDATING A NEW USER
@@ -125,7 +147,10 @@ function Update() {
                 <input
                   type="date"
                   defaultValue={dob.slice("T", 10)}
-                  onChange={(e) => setDob(e.target.value)}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setDob(e.target.value);
+                  }}
                   className="form-control"
                 />
               </div>
@@ -147,25 +172,25 @@ function Update() {
                   isMulti
                   name="roles"
                   options={role_dropdown.current}
-                  defaultValue={role_dropdown.current}
+                  defaultValue={role_current.current}
                   className="basic-multi-select"
                   classNamePrefix="select"
                   onChange={handleChange}
                 />
               </div>
               <div className="department-dropdown dropdown d-flex">
-                <label htmlFor="departments">Department</label>
+                <label htmlFor="department">Department</label>
                 <select
-                  name="department"
                   className="form-select"
-                  defaultValue={departmentId.departmentName}
+                  defaultValue={departmentId}
                   onChange={(e) => setDepartmentId(parseInt(e.target.value))}
                 >
-                  {departments &&
+                  {departments.length > 0 &&
                     departments.map((department) => (
                       <option
                         key={department.departmentId}
-                        defaultValue={parseInt(department.departmentId)}
+                        name={departments.departmentName}
+                        value={parseInt(department.departmentId)}
                       >
                         {department.departmentName}
                       </option>

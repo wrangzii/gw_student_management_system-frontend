@@ -56,7 +56,7 @@ function Update() {
 
   return (
     <div className="student-update">
-      {fptId ? (
+      {gender !== "" ? (
         <form onSubmit={handleUpdateStudent} className="form-group">
           <h2 className="form-heading bg-warning text-white text-center">
             UPDATING A NEW STUDENT

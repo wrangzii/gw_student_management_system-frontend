@@ -16,15 +16,15 @@ function Create() {
   const [fullName, setFullName] = useState("");
   const createBy = cookies.get("username");
   const [role, setRole] = useState([]);
-  const [departmentId, setDepartmentId] = useState(1);
+  const [departmentId, setDepartmentId] = useState(null);
   const [department, setDepartment] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   let role_dropdown = useRef();
-  let department_dropdown = useRef();
   const navigate = useNavigate();
 
-  // Get role dropdown
+  // Get role list
   useEffect(() => {
     setIsLoaded(false);
     axios({
@@ -54,20 +54,13 @@ function Create() {
       method: "get",
       url: `http://localhost:8080/department/all?pageNumber=${pageNumber}`,
       headers,
-    })
-      .then((result) => {
-        if (result) {
-          setDepartment(result.data);
-        }
-        return result.data;
-      })
-      .then((result) => {
-        department_dropdown.current = result.map((department) => ({
-          value: department.departmentId,
-          label: department.departmentName,
-        }));
-        setIsLoaded(true);
-      });
+    }).then((result) => {
+      if (result) {
+        setDepartment(result.data);
+        setIsDisabled(true);
+      }
+      setIsLoaded(true);
+    });
   }, []);
 
   // Handle create user
@@ -201,6 +194,9 @@ function Create() {
                   className="form-select"
                   onChange={(e) => setDepartmentId(parseInt(e.target.value))}
                 >
+                  <option readOnly disabled={isDisabled} value="">
+                    --Select department--
+                  </option>
                   {department &&
                     department.map((depart) => (
                       <option

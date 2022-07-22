@@ -15,6 +15,7 @@ function Create() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  // Handle create student
   const handleCreateStudent = (e) => {
     e.preventDefault();
     axios({
@@ -33,6 +34,7 @@ function Create() {
       }),
     }).then((result) => (result ? navigate("../view") : null));
   };
+  
   return (
     <div className="student-create">
       <form onSubmit={handleCreateStudent} className="form-group">
@@ -70,6 +72,7 @@ function Create() {
                     id="male"
                     className="ms-1"
                     name="gender"
+                    defaultValue={"male"}
                   />
                 </label>
                 <label htmlFor="female">
@@ -80,6 +83,7 @@ function Create() {
                     id="female"
                     className="ms-1"
                     name="gender"
+                    defaultValue={"female"}
                   />
                 </label>
               </div>
