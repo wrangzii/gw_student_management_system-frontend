@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
+import CreatedBy from "../../partials/CreatedBy";
 
 function Create() {
   const [roleName, setRoleName] = useState("");
@@ -46,15 +47,7 @@ function Create() {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
-          <div className="d-flex">
-            <label htmlFor="createdBy">Created By</label>
-            <input
-              type="text"
-              className="form-control"
-              readOnly
-              value={createBy}
-            />
-          </div>
+          <CreatedBy />
           <HandlerBtns action={"Create"} />
         </div>
       </form>

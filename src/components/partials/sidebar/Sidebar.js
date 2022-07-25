@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import components from "./components";
 import handleSignout from "./signout";
 import { hideSidebar } from "./sidebarHandler";
-import user from "../../authentication/getUserInfo";
+import Cookies from "js-cookie";
 
 function Sidebar() {
-
+  const user = JSON.parse(Cookies.get("user"));
   return (
     <div className="overlay overflow-auto">
       <div className="sidebar">

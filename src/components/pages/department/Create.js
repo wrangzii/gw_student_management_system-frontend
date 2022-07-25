@@ -1,15 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
+import { headers, username } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import ErrorHandler from "../../partials/ErrorHandler";
+import CreatedBy from "../../partials/CreatedBy";
 
 function Create() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
   const [isError, setIsError] = useState(false);
-  const createBy = Cookies.get("username");
+  const createBy = username;
   const navigate = useNavigate();
 
   // Handle create department
@@ -60,15 +61,7 @@ function Create() {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
-          <div className="d-flex">
-            <label htmlFor="createdBy">Created By</label>
-            <input
-              type="text"
-              className="form-control"
-              readOnly
-              value={Cookies.get("username")}
-            />
-          </div>
+          <CreatedBy />
           <HandlerBtns action={"Create"} />
         </div>
       </form>

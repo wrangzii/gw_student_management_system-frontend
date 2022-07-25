@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import CreatedBy from "../../partials/CreatedBy";
 
 function Create() {
   const [email, setEmail] = useState("");
@@ -208,15 +209,7 @@ function Create() {
                     ))}
                 </select>
               </div>
-              <div className="createBy form-group d-flex">
-                <label htmlFor="createBy">Created By</label>
-                <input
-                  type="text"
-                  readOnly
-                  value={createBy}
-                  className="form-control"
-                />
-              </div>
+              <CreatedBy />
               <HandlerBtns action={"Create"} />
             </div>
           </div>

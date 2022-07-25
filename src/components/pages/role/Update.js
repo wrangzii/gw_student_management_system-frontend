@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import ModifiedBy from "../../partials/ModifiedBy";
 
 function Update() {
   const [roleName, setRoleName] = useState("");
@@ -63,15 +64,7 @@ function Update() {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
-            <div className="d-flex">
-              <label htmlFor="createdBy">Modified By</label>
-              <input
-                type="text"
-                className="form-control"
-                readOnly
-                value={modifyBy}
-              />
-            </div>
+            <ModifiedBy />
             <HandlerBtns action={"Update"} />
           </div>
         </form>

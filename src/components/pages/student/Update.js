@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import ModifiedBy from "../../partials/ModifiedBy";
 
 function Update() {
   const { id } = useParams();
@@ -153,15 +154,7 @@ function Update() {
                   placeholder="UOG190795"
                 />
               </div>
-              <div className="d-flex">
-                <label htmlFor="createby">Created By</label>
-                <input
-                  type="text"
-                  readOnly
-                  className="form-control"
-                  value={modifyBy}
-                />
-              </div>
+              <ModifiedBy />
               <HandlerBtns action={"Update"} />
             </div>
           </div>

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
+import { headers, username } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
+import CreatedBy from "../../partials/CreatedBy";
 
 function Create() {
   const navigate = useNavigate();
   const [programName, setProgramName] = useState("");
   const [description, setDescription] = useState("");
-  const createBy = Cookies.get("username");
+  const createBy = username;
+
   // Handle create program
   const handleCreateProgam = (e) => {
     e.preventDefault();
@@ -43,6 +45,7 @@ function Create() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+          <CreatedBy />
           <HandlerBtns action={"Create"} />
         </div>
       </form>

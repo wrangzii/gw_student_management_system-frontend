@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
+import { headers, username } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import ModifiedBy from "../../partials/ModifiedBy";
 
 function Update() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
-  const modifyBy = Cookies.get("username");
+  const modifyBy = username;
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -30,10 +31,7 @@ function Update() {
     axios({
       method: "put",
       url: `http://localhost:8080/department/edit/${id}`,
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-        "Content-Type": "application/json",
-      },
+      headers,
       data: JSON.stringify({ departmentName, description, modifyBy }),
     }).then((result) => (result ? navigate("../view") : null));
   };
@@ -65,15 +63,7 @@ function Update() {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
-            <div className="d-flex">
-              <label htmlFor="createdBy">Modified By</label>
-              <input
-                type="text"
-                className="form-control"
-                readOnly
-                value={modifyBy}
-              />
-            </div>
+            <ModifiedBy />
             <HandlerBtns action={"Update"} />
           </div>
         </form>

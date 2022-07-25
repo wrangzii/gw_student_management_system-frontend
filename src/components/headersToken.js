@@ -1,8 +1,13 @@
 import Cookies from "js-cookie";
-import user from "./authentication/getUserInfo";
+let user, username;
 const headers = {
-  Authorization: "Bearer " + user.token,
+  Authorization: "Bearer " + Cookies.get("token"),
   "Content-Type": "application/json",
 };
 
-export { headers, Cookies };
+if (user) {
+  user = JSON.parse(Cookies.get("user"));
+  username = user.username;
+}
+
+export { headers, Cookies, user, username };

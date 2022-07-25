@@ -5,6 +5,7 @@ import Select from "react-select";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import ModifiedBy from "../../partials/ModifiedBy";
 
 function Update() {
   const [email, setEmail] = useState("");
@@ -197,15 +198,7 @@ function Update() {
                     ))}
                 </select>
               </div>
-              <div className="modifyBy form-group d-flex">
-                <label htmlFor="modifyBy">Modified By</label>
-                <input
-                  type="text"
-                  readOnly
-                  defaultValue={modifyBy}
-                  className="form-control"
-                />
-              </div>
+              <ModifiedBy />
               <HandlerBtns action={"Update"} />
             </div>
           </div>

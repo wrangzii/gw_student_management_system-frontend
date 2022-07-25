@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
+import ModifiedBy from "../../partials/ModifiedBy";
 
 function Update() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ function Update() {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
+            <ModifiedBy />
             <HandlerBtns action={"Update"} />
           </div>
         </form>

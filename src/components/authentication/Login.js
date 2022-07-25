@@ -25,7 +25,10 @@ function Login() {
         setIsError(false);
         if (result) {
           const data = result.data.data;
+          // Store user's token
           Cookies.set("token", data.token);
+          
+          // Store user's info
           const user = {
             userId: data.id,
             username: data.username,
@@ -36,8 +39,8 @@ function Login() {
             fullName: data.fullName,
             roles: data.roles,
           };
-
-          localStorage.setItem("user", JSON.stringify(user));
+          Cookies.set("user", JSON.stringify(user));
+          
           setIsLoaded(true);
           window.location.reload();
         }

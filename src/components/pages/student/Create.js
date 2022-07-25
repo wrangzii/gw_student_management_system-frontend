@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
+import CreatedBy from "../../partials/CreatedBy";
 
 function Create() {
   const createBy = Cookies.get("username");
@@ -72,7 +73,7 @@ function Create() {
                     id="male"
                     className="ms-1"
                     name="gender"
-                    defaultValue={"male"}
+                    defaultValue={"Male"}
                   />
                 </label>
                 <label htmlFor="female">
@@ -83,7 +84,7 @@ function Create() {
                     id="female"
                     className="ms-1"
                     name="gender"
-                    defaultValue={"female"}
+                    defaultValue={"Female"}
                   />
                 </label>
               </div>
@@ -125,15 +126,7 @@ function Create() {
                 placeholder="UOG190795"
               />
             </div>
-            <div className="d-flex">
-              <label htmlFor="createby">Created By</label>
-              <input
-                type="text"
-                readOnly
-                className="form-control"
-                value={createBy}
-              />
-            </div>
+            <CreatedBy />
             <HandlerBtns action={"Create"} />
           </div>
         </div>
