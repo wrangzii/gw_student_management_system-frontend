@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Cookies } from "react-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
 import ErrorHandler from "../partials/ErrorHandler";
 import Loading from "../partials/Loading/Loading";
@@ -10,8 +10,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-  const [isToken, setIsToken] = useState(false);
-  const cookies = new Cookies();
 
   // Handle login
   const handleLogin = (e) => {
@@ -26,15 +24,20 @@ function Login() {
       .then((result) => {
         setIsError(false);
         if (result) {
-          cookies.set("token", result.data.data.token);
-          cookies.set("userId", result.data.data.id);
-          cookies.set("username", result.data.data.username);
-          cookies.set("email", result.data.data.email);
-          cookies.set("phoneNumber", result.data.data.phoneNumber);
-          cookies.set("address", result.data.data.address);
-          cookies.set("dob", result.data.data.dob);
-          cookies.set("fullName", result.data.data.fullName);
-          cookies.set("roles", result.data.data.roles);
+          const data = result.data.data;
+          Cookies.set("token", data.token);
+          const user = {
+            userId: data.id,
+            username: data.username,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            address: data.address,
+            dob: data.dob,
+            fullName: data.fullName,
+            roles: data.roles,
+          };
+
+          localStorage.setItem("user", JSON.stringify(user));
           setIsLoaded(true);
           window.location.reload();
         }
@@ -46,7 +49,6 @@ function Login() {
         }
       });
   };
-
   return (
     <div className="login">
       {isLoaded ? (

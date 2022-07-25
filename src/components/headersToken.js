@@ -1,9 +1,8 @@
-import { Cookies } from "react-cookie";
-
-const cookies = new Cookies();
+import Cookies from "js-cookie";
+import user from "./authentication/getUserInfo";
 const headers = {
-  Authorization: "Bearer " + cookies.get("token"),
+  Authorization: "Bearer " + user.token,
   "Content-Type": "application/json",
 };
 
-export {headers, cookies};
+export { headers, Cookies };

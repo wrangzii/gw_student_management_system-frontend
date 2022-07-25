@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import ErrorHandler from "../../partials/ErrorHandler";
 
@@ -9,7 +9,7 @@ function Create() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
   const [isError, setIsError] = useState(false);
-  const createBy = cookies.get("username");
+  const createBy = Cookies.get("username");
   const navigate = useNavigate();
 
   // Handle create department
@@ -66,7 +66,7 @@ function Create() {
               type="text"
               className="form-control"
               readOnly
-              value={cookies.get("username")}
+              value={Cookies.get("username")}
             />
           </div>
           <HandlerBtns action={"Create"} />

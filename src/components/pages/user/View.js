@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import Pagination from "../../partials/Pagination";
 import PopupConfirm from "../../partials/PopupConfirm";
 import Loading from "../../partials/Loading/Loading";
@@ -30,7 +30,7 @@ function View() {
       method: "get",
       url: `http://localhost:8080/users/all?pageNumber=${pageNumber}`,
       headers: {
-        Authorization: "Bearer " + cookies.get("token"),
+        Authorization: "Bearer " + Cookies.get("token"),
         "Content-Type": "multipart/form-data",
       },
       data: formData,

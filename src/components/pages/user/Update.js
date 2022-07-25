@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
@@ -12,7 +12,7 @@ function Update() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
-  const modifyBy = cookies.get("username");
+  const modifyBy = Cookies.get("username");
   const [role, setRole] = useState([]);
   const [departmentId, setDepartmentId] = useState(null);
   const [departments, setDepartments] = useState([]);

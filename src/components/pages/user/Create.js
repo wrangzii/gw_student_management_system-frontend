@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
@@ -14,7 +14,7 @@ function Create() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
-  const createBy = cookies.get("username");
+  const createBy = Cookies.get("username");
   const [role, setRole] = useState([]);
   const [departmentId, setDepartmentId] = useState(null);
   const [department, setDepartment] = useState([]);
@@ -70,7 +70,7 @@ function Create() {
       method: "post",
       url: "http://localhost:8080/users/add",
       headers: {
-        Authorization: "Bearer " + cookies.get("token"),
+        Authorization: "Bearer " + Cookies.get("token"),
         "Content-Type": "application/json",
       },
       data: {

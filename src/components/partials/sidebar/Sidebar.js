@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { cookies } from "../../headersToken";
 import components from "./components";
 import handleSignout from "./signout";
 import { hideSidebar } from "./sidebarHandler";
+import user from "../../authentication/getUserInfo";
 
 function Sidebar() {
+
   return (
     <div className="overlay overflow-auto">
       <div className="sidebar">
@@ -13,11 +14,11 @@ function Sidebar() {
           <div className="mb-0 p-3 text-center bg-warning fw-bold">
             Signed in as{" "}
             <button type="button" className="btn badge bg-success">
-              {cookies.get("username")}
+              {user.username}
             </button>
             <div className="user-tooltip">
               <Link
-                to={`/user/view/detail/${cookies.get("userId")}`}
+                to={`/user/view/detail/${user.userId}`}
                 className="info btn btn-info text-light"
               >
                 <i className="fa-solid fa-user"></i>

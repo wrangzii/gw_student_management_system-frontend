@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
@@ -14,7 +14,7 @@ function Update() {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
-  const modifyBy = cookies.get("username");
+  const modifyBy = Cookies.get("username");
   const navigate = useNavigate();
 
   // Get current info

@@ -1,16 +1,9 @@
-import { cookies } from "../../headersToken";
+import { Cookies } from "../../headersToken";
 
 // Handle sign out
 const handleSignout = () => {
-  cookies.remove("token");
-  cookies.remove("fullName");
-  cookies.remove("email");
-  cookies.remove("username");
-  cookies.remove("userId");
-  cookies.remove("roles");
-  cookies.remove("dob");
-  cookies.remove("address");
-  cookies.remove("phoneNumber");
+  Cookies.remove("token");
+  localStorage.removeItem("user")
   window.location.href('/');
 };
 

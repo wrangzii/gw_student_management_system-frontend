@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
@@ -10,7 +10,7 @@ function Update() {
   const [programName, setProgramName] = useState("");
   const [programCode, setProgramCode] = useState("");
   const [description, setDescription] = useState("");
-  const modifyBy = cookies.get("username");
+  const modifyBy = Cookies.get("username");
   const { id } = useParams();
 
   // Get current info
@@ -33,7 +33,7 @@ function Update() {
       method: "put",
       url: `http://localhost:8080/program/edit/${id}`,
       headers: {
-        Authorization: "Bearer " + cookies.get("token"),
+        Authorization: "Bearer " + Cookies.get("token"),
         "Content-Type": "application/json",
       },
       data: JSON.stringify({ programName, description, programCode, modifyBy }),

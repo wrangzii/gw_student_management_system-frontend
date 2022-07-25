@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { cookies } from "../headersToken";
+import { Cookies } from "../headersToken";
 import logo from "../../assets/logo.png";
 import Sidebar from "./sidebar/Sidebar";
 import { showSidebar } from "./sidebar/sidebarHandler";
@@ -12,11 +12,11 @@ function Navbar() {
         <Link className="navbar-brand" to={"/"}>
           <img src={logo} width="250" alt="logo" id="logo" />
         </Link>
-        {cookies.get("token") && (
+        {Cookies.get("token") && (
           <button
             type="button"
             className="border-0 me-3 toggleBtn"
-            onClick={cookies.get("token") ? showSidebar : null}
+            onClick={showSidebar}
           >
             <i
               className="fa-solid fa-bars"
@@ -25,7 +25,7 @@ function Navbar() {
           </button>
         )}
       </nav>
-      <Sidebar />
+      {Cookies.get("token") && <Sidebar />}
     </>
   );
 }

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { headers, cookies } from "../../headersToken";
+import { headers, Cookies } from "../../headersToken";
 import HandlerBtns from "../../partials/HandlerBtns";
 import Loading from "../../partials/Loading/Loading";
 
 function Update() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
-  const modifyBy = cookies.get("username");
+  const modifyBy = Cookies.get("username");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function Update() {
       method: "put",
       url: `http://localhost:8080/department/edit/${id}`,
       headers: {
-        Authorization: "Bearer " + cookies.get("token"),
+        Authorization: "Bearer " + Cookies.get("token"),
         "Content-Type": "application/json",
       },
       data: JSON.stringify({ departmentName, description, modifyBy }),
