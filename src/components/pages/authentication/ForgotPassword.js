@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { headers } from "../headersToken";
-import Loading from "../partials/Loading/Loading";
+import { headers } from "~/components/headersToken";
+import { Loading } from "~/components/partials";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");

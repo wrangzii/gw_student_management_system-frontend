@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import Loading from "../../partials/Loading/Loading";
-import ModifiedBy from "../../partials/ModifiedBy";
+import { headers, Cookies } from "~/components/headersToken";
+import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 
 function Update() {
   const { id } = useParams();
@@ -25,13 +23,14 @@ function Update() {
       url: `http://localhost:8080/student/${id}`,
       headers,
     }).then((result) => {
-      setFptId(result.data.data.fptId);
-      setPersonId(result.data.data.personId);
-      setUogId(result.data.data.uogId);
-      setFullName(result.data.data.fullName);
-      setDob(result.data.data.dob);
-      setGender(result.data.data.gender);
-      setEmail(result.data.data.email);
+      let data = result.data.data;
+      setFptId(data.fptId);
+      setPersonId(data.personId);
+      setUogId(data.uogId);
+      setFullName(data.fullName);
+      setDob(data.dob);
+      setGender(data.gender);
+      setEmail(data.email);
     });
   }, []);
 

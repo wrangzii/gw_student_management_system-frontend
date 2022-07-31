@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { headers } from "../../headersToken";
-import Loading from "../../partials/Loading/Loading";
+import { headers } from "~/components/headersToken";
+import { Loading } from "~/components/partials";
 
 function ViewDetail() {
   const { id } = useParams();
@@ -52,7 +52,9 @@ function ViewDetail() {
             </div>
             <div className="tr">
               <div className="th">Birthday</div>
-              <div className="td">{new Date(viewDetail.dob).toLocaleDateString()}</div>
+              <div className="td">
+                {new Date(viewDetail.dob).toLocaleDateString()}
+              </div>
             </div>
             <div className="tr">
               <div className="th">Phone Number</div>

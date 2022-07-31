@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Cookies } from "../headersToken";
-import logo from "../../assets/logo.png";
-import Sidebar from "./sidebar/Sidebar";
+import { Cookies } from "~/components//headersToken";
 import { showSidebar } from "./sidebar/sidebarHandler";
+import Sidebar from "./sidebar/Sidebar";
+import logo from "~/assets/images/logo.png";
 
 function Navbar() {
   return (

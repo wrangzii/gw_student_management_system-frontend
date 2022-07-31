@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
-import ErrorHandler from "../partials/ErrorHandler";
-import Loading from "../partials/Loading/Loading";
+import { ErrorHandler, Loading } from "~/components/partials";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -27,7 +26,7 @@ function Login() {
           const data = result.data.data;
           // Store user's token
           Cookies.set("token", data.token);
-          
+
           // Store user's info
           const user = {
             userId: data.id,
@@ -40,7 +39,7 @@ function Login() {
             roles: data.roles,
           };
           Cookies.set("user", JSON.stringify(user));
-          
+
           setIsLoaded(true);
           window.location.reload();
         }

@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import Loading from "../../partials/Loading/Loading";
-import CreatedBy from "../../partials/CreatedBy";
+import { headers, Cookies } from "~/components/headersToken";
+import { HandlerBtns, Loading, CreatedBy } from "~/components/partials";
 
 function Create() {
   const [email, setEmail] = useState("");

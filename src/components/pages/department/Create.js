@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { headers, username } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import ErrorHandler from "../../partials/ErrorHandler";
-import CreatedBy from "../../partials/CreatedBy";
+import { headers, username } from "~/components/headersToken";
+import { HandlerBtns, ErrorHandler, CreatedBy } from "~/components/partials";
 
 function Create() {
   const [departmentName, setDepartmentName] = useState("");

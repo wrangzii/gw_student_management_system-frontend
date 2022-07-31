@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { Create, Update, View, ViewDetail } from "./";
-import Bio from "../../partials/Bio";
 
 function Department() {
   return (
@@ -18,7 +17,6 @@ function Department() {
             <li className="text-success">Create</li>
           </Link>
         </ul>
-        <Bio content={"Department includes ..."} />
         <Routes>
           <Route path="/create" element={<Create />} />
           <Route path="/view" element={<View />} />

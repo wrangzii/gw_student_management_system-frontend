@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { headers, username } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import Loading from "../../partials/Loading/Loading";
-import ModifiedBy from "../../partials/ModifiedBy";
+import { headers, username } from "~/components/headersToken";
+import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 
 function Update() {
   const [departmentName, setDepartmentName] = useState("");

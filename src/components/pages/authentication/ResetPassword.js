@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Loading from "../partials/Loading/Loading";
+import { Loading } from "~/components/partials";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");

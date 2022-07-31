@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { headers, username } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import CreatedBy from "../../partials/CreatedBy";
+import { headers, username } from "~/components/headersToken";
+import { HandlerBtns, CreatedBy } from "~/components/partials";
 
 function Create() {
   const navigate = useNavigate();

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { headers } from "../../headersToken";
-import Pagination from "../../partials/Pagination";
-import PopupConfirm from "../../partials/PopupConfirm";
-import Loading from "../../partials/Loading/Loading";
-import SearchBar from "../../partials/SearchBar";
+import { headers } from "~/components/headersToken";
+import {
+  Pagination,
+  PopupConfirm,
+  Loading,
+  SearchBar,
+} from "~/components/partials";
 
 function View() {
   const [roles, setRoles] = useState([]);

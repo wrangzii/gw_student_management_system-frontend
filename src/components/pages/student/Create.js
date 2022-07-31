@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { headers, Cookies } from "../../headersToken";
-import HandlerBtns from "../../partials/HandlerBtns";
-import CreatedBy from "../../partials/CreatedBy";
+import { headers, Cookies } from "~/components/headersToken";
+import { HandlerBtns, CreatedBy } from "~/components/partials";
 
 function Create() {
   const createBy = Cookies.get("username");
@@ -35,7 +34,7 @@ function Create() {
       }),
     }).then((result) => (result ? navigate("../view") : null));
   };
-  
+
   return (
     <div className="student-create">
       <form onSubmit={handleCreateStudent} className="form-group">
