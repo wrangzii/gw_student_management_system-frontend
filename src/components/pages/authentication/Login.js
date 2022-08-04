@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { ErrorHandler, Loading } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Login() {
+  const {token, setToken} = useAuth('')
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const redirectPath = location.state?.path || "/";
 
   // Handle login
   const handleLogin = (e) => {
@@ -41,7 +46,8 @@ function Login() {
           Cookies.set("user", JSON.stringify(user));
 
           setIsLoaded(true);
-          window.location.reload();
+          setToken(Cookies.get("token"));
+          navigate(redirectPath, { replace: true });
         }
       })
       .catch((error) => {
