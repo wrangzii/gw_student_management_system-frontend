@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { headers, username } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, CreatedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Create() {
   const navigate = useNavigate();
   const [programName, setProgramName] = useState("");
   const [description, setDescription] = useState("");
-  const createBy = username;
+  const { auth } = useAuth();
+  const createBy = auth.username;
 
   // Handle create program
   const handleCreateProgam = (e) => {

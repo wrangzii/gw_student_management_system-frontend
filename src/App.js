@@ -2,9 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { publicRoutes, privateRoutes } from "~/route";
 import Navbar from "./components/partials/Navbar";
-import { RequireAuth } from "./route/RequireAuth";
+// import { RequireAuth } from "./route/RequireAuth";
+import { useAuth } from "./store/auth";
 
 function App() {
+  const { auth } = useAuth();
+
   return (
     <Router>
       <Navbar />
@@ -13,20 +16,11 @@ function App() {
           const Page = route.component;
           return <Route key={index} path={route.path} element={<Page />} />;
         })}
-        {privateRoutes.map((route, index) => {
-          const Page = route.component;
-          return (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <RequireAuth>
-                  <Page />
-                </RequireAuth>
-              }
-            />
-          );
-        })}
+        {auth?.accessToken &&
+          privateRoutes.map((route, index) => {
+            const Page = route.component;
+            return <Route key={index} path={route.path} element={<Page />} />;
+          })}
       </Routes>
     </Router>
   );

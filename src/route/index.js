@@ -12,11 +12,11 @@ import {
 } from "~/components/pages";
 
 const privateRoutes = [
-  { path: "department", component: Department },
-  { path: "program", component: Program },
-  { path: "role", component: Role },
-  { path: "student", component: Student },
-  { path: "user", component: User },
+  { path: "department/*", component: Department },
+  { path: "program/*", component: Program },
+  { path: "role/*", component: Role },
+  { path: "student/*", component: Student },
+  { path: "user/*", component: User },
 ];
 const publicRoutes = [
   { path: "/", component: Dashboard },

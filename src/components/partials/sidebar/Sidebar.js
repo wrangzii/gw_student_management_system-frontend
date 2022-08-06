@@ -20,18 +20,18 @@ function Sidebar() {
               <Link
                 to={`/user/view/detail/${user.userId}`}
                 className="info btn btn-info text-light"
+                onClick={hideSidebar}
               >
                 <i className="fa-solid fa-user"></i>
                 Profile
               </Link>
-              <Link
-                to={"/"}
+              <a
                 className="signout btn btn-danger"
-                onClick={handleSignout}
+                href="http://localhost:8080/logout"
               >
                 <i className="fa-solid fa-arrow-right-from-bracket"></i>
                 Sign out
-              </Link>
+              </a>
             </div>
           </div>
         </div>

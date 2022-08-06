@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+
+import axios from "axios";
+
 import { headers, Cookies } from "~/components/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Update() {
   const navigate = useNavigate();
   const [programName, setProgramName] = useState("");
   const [programCode, setProgramCode] = useState("");
   const [description, setDescription] = useState("");
-  const modifyBy = Cookies.get("username");
+  const { auth } = useAuth();
+  const modifyBy = auth.username;
   const { id } = useParams();
 
   // Get current info
@@ -19,11 +23,12 @@ function Update() {
       url: `http://localhost:8080/program/${id}`,
       headers,
     }).then((result) => {
-      setProgramName(result.data.data.programName);
-      setProgramCode(result.data.data.description);
-      setDescription(result.data.data.description);
+      const data = result?.data?.data;
+      setProgramName(data.programName);
+      setProgramCode(data.description);
+      setDescription(data.description);
     });
-  }, []);
+  }, [id]);
 
   // Handle update program
   const handleUpdateProgram = (e) => {

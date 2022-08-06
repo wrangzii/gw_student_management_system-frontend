@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+
+import Select from "react-select";
+
 import { headers, Cookies } from "~/components/headersToken";
 import { HandlerBtns, Loading, CreatedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Create() {
   const [email, setEmail] = useState("");
@@ -13,7 +17,6 @@ function Create() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
-  const createBy = Cookies.get("username");
   const [role, setRole] = useState([]);
   const [departmentId, setDepartmentId] = useState(null);
   const [department, setDepartment] = useState([]);
@@ -21,6 +24,8 @@ function Create() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   let role_dropdown = useRef();
+  const { auth } = useAuth();
+  const createBy = auth.username;
   const navigate = useNavigate();
 
   // Get role list
@@ -28,12 +33,13 @@ function Create() {
     setIsLoaded(false);
     axios({
       method: "get",
-      url: `http://localhost:8080/role/all?pageNumber=${pageNumber}`,
-      headers,
+      url: `http//localhost:3000/all?pageNumber=${pageNumber}`,
+      http: headers,
     })
       .then((result) => {
         if (result) {
           setRole(result.data);
+          console.log(result.data)
         }
         return result.data;
       })

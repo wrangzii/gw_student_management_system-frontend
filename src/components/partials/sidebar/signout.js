@@ -1,17 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useNavigate } from "react-router-dom";
-import { Cookies } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { Cookies, headers } from "~/components/headersToken";
 import { useAuth } from "~/store/auth";
 
 // Handle sign out
 const handleSignout = () => {
-  const auth = useAuth();
   const navigate = useNavigate();
-  auth.logout();
-  Cookies.remove("token");
-  Cookies.remove("user");
-  // window.location.href("/");
-  navigate("/");
+  axios({
+    method: "get",
+    url: "http://localhost:3000/logout",
+    headers,
+  }).then((result) => console.log(result));
+  navigate("/login");
 };
 
 export default handleSignout;

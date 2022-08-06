@@ -1,12 +1,12 @@
 import React from "react";
-import { username } from "../headersToken";
+import { useAuth } from "~/store/auth";
 
 function CreatedBy() {
-  const createBy = username;
+  const { auth } = useAuth();
   return (
     <div className="d-flex">
       <label htmlFor="createdBy">Created By</label>
-      <input type="text" className="form-control" readOnly value={createBy} />
+      <input type="text" className="form-control" readOnly value={auth.username} />
     </div>
   );
 }

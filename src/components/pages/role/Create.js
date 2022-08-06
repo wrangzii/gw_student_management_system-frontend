@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { headers, Cookies } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, CreatedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Create() {
   const [roleName, setRoleName] = useState("");
   const [description, setDescription] = useState("");
-  const createBy = Cookies.get("username");
+  const { auth } = useAuth();
+  const createBy = auth.username;
   const navigate = useNavigate();
 
   // Handle create role

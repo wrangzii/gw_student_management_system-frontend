@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { headers, Cookies } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Update() {
   const [roleName, setRoleName] = useState("");
   const [description, setDescription] = useState("");
-  const modifyBy = Cookies.get("username");
   const { id } = useParams();
+  const { auth } = useAuth();
+  const modifyBy = auth.username;
   const navigate = useNavigate();
 
   // Get current info
@@ -21,7 +25,7 @@ function Update() {
       setRoleName(result.data.data.roleName);
       setDescription(result.data.data.description);
     });
-  }, []);
+  }, [id]);
 
   // Handle update role
   const handleUpdateRole = (e) => {

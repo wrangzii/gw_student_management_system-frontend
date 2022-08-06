@@ -1,16 +1,19 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { headers, username } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, ErrorHandler, CreatedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Create() {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
   const [isError, setIsError] = useState(false);
-  const createBy = username;
+  const { auth } = useAuth();
+  const createBy = auth.username;
   const navigate = useNavigate();
-
   // Handle create department
   const handleCreateDepartment = (e) => {
     e.preventDefault();

@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
-import { headers, Cookies } from "~/components/headersToken";
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Update() {
   const [email, setEmail] = useState("");
@@ -11,13 +12,14 @@ function Update() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
-  const modifyBy = Cookies.get("username");
   const [role, setRole] = useState([]);
   const [departmentId, setDepartmentId] = useState(null);
   const [departments, setDepartments] = useState([]);
-  const { id } = useParams();
   const role_current = useRef();
   const role_dropdown = useRef();
+  const { auth } = useAuth();
+  const modifyBy = auth.username;
+  const { id } = useParams();
   const navigate = useNavigate();
 
   // Get current info

@@ -1,15 +1,15 @@
 import React from "react";
-import { username } from "../headersToken";
+import { useAuth } from "~/store/auth";
 
 function ModifiedBy() {
-  const modifyBy = username;
+  const { auth } = useAuth();
   return (
     <div className="modifyBy form-group d-flex">
       <label htmlFor="modifyBy">Modified By</label>
       <input
         type="text"
         readOnly
-        defaultValue={modifyBy}
+        defaultValue={auth.username}
         className="form-control"
       />
     </div>

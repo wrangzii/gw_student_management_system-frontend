@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { headers, Cookies } from "~/components/headersToken";
+
+import axios from "axios";
+
+import { headers } from "~/components/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
+import { useAuth } from "~/store/auth";
 
 function Update() {
-  const { id } = useParams();
   const [fptId, setFptId] = useState("");
   const [personId, setPersonId] = useState("");
   const [uogId, setUogId] = useState("");
@@ -13,7 +15,9 @@ function Update() {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
-  const modifyBy = Cookies.get("username");
+  const { auth } = useAuth();
+  const modifyBy = auth.username;
+  const { id } = useParams();
   const navigate = useNavigate();
 
   // Get current info
@@ -32,7 +36,7 @@ function Update() {
       setGender(data.gender);
       setEmail(data.email);
     });
-  }, []);
+  }, [id]);
 
   // Handle update student
   const handleUpdateStudent = (e) => {

@@ -6,14 +6,15 @@ import logo from "~/assets/images/logo.png";
 import { useAuth } from "~/store/auth";
 
 function Navbar() {
-  const auth = useAuth();
+  const { auth } = useAuth();
+
   return (
     <>
       <nav className="navbar">
         <Link className="navbar-brand" to={"/"}>
           <img src={logo} width="250" alt="logo" id="logo" />
         </Link>
-        {auth.token ? (
+        {auth?.accessToken ? (
           <button
             type="button"
             className="border-0 me-3 toggleBtn"
@@ -30,7 +31,7 @@ function Navbar() {
           </Link>
         )}
       </nav>
-      {auth.token && <Sidebar />}
+      {auth?.accessToken && <Sidebar />}
     </>
   );
 }

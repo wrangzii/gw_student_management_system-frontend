@@ -6,7 +6,7 @@ import { ErrorHandler, Loading } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 
 function Login() {
-  const {token, setToken} = useAuth('')
+  const { setAuth } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
@@ -28,9 +28,10 @@ function Login() {
       .then((result) => {
         setIsError(false);
         if (result) {
-          const data = result.data.data;
+          const data = result?.data?.data;
           // Store user's token
-          Cookies.set("token", data.token);
+          const accessToken = data.token;
+          Cookies.set("token", accessToken);
 
           // Store user's info
           const user = {
@@ -46,7 +47,7 @@ function Login() {
           Cookies.set("user", JSON.stringify(user));
 
           setIsLoaded(true);
-          setToken(Cookies.get("token"));
+          setAuth({ accessToken });
           navigate(redirectPath, { replace: true });
         }
       })
@@ -57,6 +58,7 @@ function Login() {
         }
       });
   };
+
   return (
     <div className="login">
       {isLoaded ? (
@@ -70,7 +72,7 @@ function Login() {
             ) : null}
             <input
               type="text"
-              autoComplete="on"
+              autoComplete="off"
               placeholder="Username or Email"
               value={username}
               onChange={(e) => {
@@ -81,7 +83,7 @@ function Login() {
             />
             <input
               type="password"
-              autoComplete="on"
+              autoComplete="off"
               placeholder="Password"
               value={password}
               onChange={(e) => {
