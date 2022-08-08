@@ -1,0 +1,17 @@
+.view {
+    position: relative;
+
+    table {
+
+        thead tr th,
+        tbody tr td {
+            color: #000;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        tbody tr td:last-child {
+            display: block;
+        }
+    }
+}

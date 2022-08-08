@@ -1,5 +1,5 @@
-import Create from "./Create";
-import Update from "./Update";
-import View from "./View";
-import ViewDetail from "./ViewDetail";
-export { Create, Update, View, ViewDetail };
+import ProgramCreate from "./ProgramCreate";
+import ProgramUpdate from "./ProgramUpdate";
+import ProgramView from "./ProgramView";
+import ProgramViewDetail from "./ProgramViewDetail";
+export { ProgramCreate, ProgramUpdate, ProgramView, ProgramViewDetail };

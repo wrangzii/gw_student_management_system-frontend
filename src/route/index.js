@@ -8,6 +8,9 @@ import {
   Role,
   Student,
   User,
+  Class,
+  Term,
+  Subject,
   NotFound,
 } from "~/components/pages";
 
@@ -17,6 +20,9 @@ const privateRoutes = [
   { path: "role/*", component: Role },
   { path: "student/*", component: Student },
   { path: "user/*", component: User },
+  { path: "class/*", component: Class },
+  { path: "term/*", component: Term },
+  // { path: "subject/*", component: Subject },
 ];
 const publicRoutes = [
   { path: "/", component: Dashboard },

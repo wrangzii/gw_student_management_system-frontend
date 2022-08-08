@@ -1,27 +1,24 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import { Create, Update, View, ViewDetail } from "./";
+import { Routes, Route } from "react-router-dom";
+
+import NavigateAction from "~/components/partials/navigateAction/NavigateAction";
+import {
+  StudentCreate,
+  StudentUpdate,
+  StudentView,
+  StudentViewDetail,
+} from "./";
 
 function Student() {
   return (
     <div className="student">
       <div className="container">
-        <ul>
-          <li className="text-success">
-            <h1>Student</h1>
-          </li>
-          <Link to={"/student/view"}>
-            <li className="text-success">View</li>
-          </Link>
-          <Link to={"/student/create"}>
-            <li className="text-success">Create</li>
-          </Link>
-        </ul>
+        <NavigateAction title={"student"} />
         <Routes>
-          <Route path="/create" element={<Create />} />
-          <Route path="/view" element={<View />} />
-          <Route path="/view/detail/:id" element={<ViewDetail />} />
-          <Route path="/update/:id" element={<Update />} />
+          <Route path="/create" element={<StudentCreate />} />
+          <Route path="/view" element={<StudentView />} />
+          <Route path="/view/detail/:id" element={<StudentViewDetail />} />
+          <Route path="/update/:id" element={<StudentUpdate />} />
         </Routes>
       </div>
     </div>

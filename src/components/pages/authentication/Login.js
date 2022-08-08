@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+
 import Cookies from "js-cookie";
+
 import axios from "axios";
+
 import { ErrorHandler, Loading } from "~/components/partials";
 import { useAuth } from "~/store/auth";
+
+import styles from "./login.module.scss";
 
 function Login() {
   const { setAuth } = useAuth();
@@ -45,9 +50,8 @@ function Login() {
             roles: data.roles,
           };
           Cookies.set("user", JSON.stringify(user));
-
           setIsLoaded(true);
-          setAuth({ accessToken });
+          setAuth({ accessToken, user });
           navigate(redirectPath, { replace: true });
         }
       })
@@ -60,13 +64,15 @@ function Login() {
   };
 
   return (
-    <div className="login">
+    <div className={styles["login"]}>
       {isLoaded ? (
         <form onSubmit={handleLogin} className="form-group">
-          <h2 className="form-heading bg-primary text-white text-center">
+          <h2
+            className={`${styles["form-heading"]} bg-primary text-white text-center`}
+          >
             WELCOME TO CMS
           </h2>
-          <div className="form-body">
+          <div className={styles["form-body"]}>
             {isError ? (
               <ErrorHandler msg={"Username or password is incorrect!"} />
             ) : null}
@@ -92,11 +98,11 @@ function Login() {
               }}
               className="form-group form-control"
             />
-            <div className="handler-btn form-group">
-              <button className="btn btn-primary">LOGIN</button>
+            <div className={`${styles["handler-btn"]} form-group`}>
+              <button className="btn btn-primary fw-bold">LOGIN</button>
               <a
                 href={"http://localhost:8080/oauth2/authorization/google"}
-                className="btn btn-success"
+                className="btn btn-success fw-bold"
               >
                 <i
                   className="fa-brands fa-google py-0"
@@ -106,7 +112,7 @@ function Login() {
               </a>
             </div>
             <Link to="/forgot-password">
-              <small className="note text-danger font-italic">
+              <small className={`${styles["note"]} text-danger font-italic`}>
                 Forgotten your username or password?
               </small>
             </Link>

@@ -1,24 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import components from "./components";
-import handleSignout from "./signout";
 import { hideSidebar } from "./sidebarHandler";
-import Cookies from "js-cookie";
+import { useAuth } from "~/store/auth";
+import styles from "./sidebar.module.scss";
 
 function Sidebar() {
-  const user = JSON.parse(Cookies.get("user"));
+  const { auth } = useAuth();
+
   return (
-    <div className="overlay overflow-auto">
-      <div className="sidebar">
-        <div className="sidebar-header">
+    <div className={`${styles["overlay"]} overlay overflow-auto`}>
+      <div className={`${styles["sidebar"]} sidebar`}>
+        <div className={styles["sidebar-header"]}>
           <div className="mb-0 p-3 text-center bg-warning fw-bold">
             Signed in as{" "}
             <button type="button" className="btn badge bg-success">
-              {user.username}
+              {auth.username}
             </button>
-            <div className="user-tooltip">
+            <div className={styles["user-tooltip"]}>
               <Link
-                to={`/user/view/detail/${user.userId}`}
+                to={`/user/view/detail/${auth.userId}`}
                 className="info btn btn-info text-light"
                 onClick={hideSidebar}
               >
@@ -35,7 +36,7 @@ function Sidebar() {
             </div>
           </div>
         </div>
-        <div className="sidebar-body">
+        <div className={styles["sidebar-body"]}>
           <ul>
             {components.map((component, index) => (
               <li key={index} className="w-100 px-2">
@@ -53,8 +54,11 @@ function Sidebar() {
             ))}
           </ul>
         </div>
-        <div className="sidebar-footer">
-          <button onClick={hideSidebar} className="btn btn-danger closeBtn">
+        <div className={styles["sidebar-footer"]}>
+          <button
+            onClick={hideSidebar}
+            className={`${styles["closeBtn"]} btn btn-danger`}
+          >
             <i className="fa-solid fa-xmark"></i>
           </button>
         </div>

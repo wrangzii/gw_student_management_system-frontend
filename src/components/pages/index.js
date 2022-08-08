@@ -5,6 +5,9 @@ import Program from "./program/Program";
 import Role from "./role/Role";
 import Student from "./student/Student";
 import User from "./user/User";
+import Class from "./class/Class";
+import Term from "./term/Term";
+import Subject from "./subject/Subject";
 import NotFound from "./NotFound";
 
 // Authentication
@@ -19,6 +22,9 @@ export {
   Role,
   Student,
   User,
+  Class,
+  Term,
+  Subject,
   NotFound,
   Login,
   ForgotPassword,

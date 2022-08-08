@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { headers } from "~/components/headersToken";
+import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components/partials";
 
 function ForgotPassword() {

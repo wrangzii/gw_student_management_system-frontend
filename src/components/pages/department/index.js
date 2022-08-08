@@ -1,5 +1,5 @@
-import Create from "./Create";
-import Update from "./Update";
-import View from "./View";
-import ViewDetail from "./ViewDetail";
-export { Create, Update, View, ViewDetail };
+import DepartmentCreate from "./DepartmentCreate";
+import DepartmentUpdate from "./DepartmentUpdate";
+import DepartmentView from "./DepartmentView";
+import DepartmentViewDetail from "./DepartmentViewDetail";
+export { DepartmentCreate, DepartmentUpdate, DepartmentView, DepartmentViewDetail };

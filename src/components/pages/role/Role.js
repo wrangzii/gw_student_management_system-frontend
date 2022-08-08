@@ -1,27 +1,18 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import { Create, Update, View, ViewDetail } from "./";
+import { Routes, Route } from "react-router-dom";
+import NavigateAction from "~/components/partials/navigateAction/NavigateAction";
+import { RoleCreate, RoleUpdate, RoleView, RoleViewDetail } from "./";
 
 function Role() {
   return (
     <div className="role">
       <div className="container">
-        <ul>
-          <li className="text-success">
-            <h1>Role</h1>
-          </li>
-          <Link to={"/role/view"}>
-            <li className="text-success">View</li>
-          </Link>
-          <Link to={"/role/create"}>
-            <li className="text-success">Create</li>
-          </Link>
-        </ul>
+        <NavigateAction title={"role"} />
         <Routes>
-          <Route path="/create" element={<Create />} />
-          <Route path="/view" element={<View />} />
-          <Route path="/view/detail/:id" element={<ViewDetail />} />
-          <Route path="update/:id" element={<Update />} />
+          <Route path="/create" element={<RoleCreate />} />
+          <Route path="/view" element={<RoleView />} />
+          <Route path="/view/detail/:id" element={<RoleViewDetail />} />
+          <Route path="update/:id" element={<RoleUpdate />} />
         </Routes>
       </div>
     </div>

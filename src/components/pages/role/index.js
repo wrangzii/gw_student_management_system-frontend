@@ -1,5 +1,5 @@
-import Create from "./Create";
-import Update from "./Update";
-import View from "./View";
-import ViewDetail from "./ViewDetail";
-export { Create, Update, View, ViewDetail };
+import RoleCreate from "./RoleCreate";
+import RoleUpdate from "./RoleUpdate";
+import RoleView from "./RoleView";
+import RoleViewDetail from "./RoleViewDetail";
+export { RoleCreate, RoleUpdate, RoleView, RoleViewDetail };

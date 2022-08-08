@@ -1,27 +1,18 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import { Create, Update, View, ViewDetail } from "./";
+import { Routes, Route } from "react-router-dom";
+import NavigateAction from "~/components/partials/navigateAction/NavigateAction";
+import { UserCreate, UserUpdate, UserView, UserViewDetail } from "./";
 
 function User() {
   return (
     <div className="user">
       <div className="container">
-        <ul>
-          <li className="text-success">
-            <h1>USER</h1>
-          </li>
-          <Link to={"/user/view"}>
-            <li className="text-success">View</li>
-          </Link>
-          <Link to={"/user/create"}>
-            <li className="text-success">Create</li>
-          </Link>
-        </ul>
+        <NavigateAction title={"user"} />
         <Routes>
-          <Route path="/create" element={<Create />} />
-          <Route path="/view" element={<View />} />
-          <Route path="/view/detail/:id" element={<ViewDetail />} />
-          <Route path="/update/:id" element={<Update />} />
+          <Route path="/create" element={<UserCreate />} />
+          <Route path="/view" element={<UserView />} />
+          <Route path="/view/detail/:id" element={<UserViewDetail />} />
+          <Route path="/update/:id" element={<UserUpdate />} />
         </Routes>
       </div>
     </div>
