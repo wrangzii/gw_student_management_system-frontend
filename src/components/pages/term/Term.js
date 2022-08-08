@@ -10,9 +10,9 @@ import {
 
 function Term() {
   return (
-    <div className="department">
+    <div className="term">
       <div className="container">
-        <NavigateAction title={"department"} />
+        <NavigateAction title={"term"} />
         <Routes>
           <Route path="/create" element={<TermCreate />} />
           <Route path="/view" element={<TermView />} />

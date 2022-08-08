@@ -3,10 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
-import Update from "~/components/partials/crud/Update";
 import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
+import Update from "~/components/partials/crud/Update";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -65,11 +66,7 @@ function StudentUpdate() {
     <Update>
       {gender !== "" ? (
         <form onSubmit={handleUpdateStudent} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-warning text-white text-center`}
-          >
-            UPDATING A NEW STUDENT
-          </h2>
+          <HeadingTitle title={"student"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="form-body__left">
               <div className="fullname form-group d-flex">

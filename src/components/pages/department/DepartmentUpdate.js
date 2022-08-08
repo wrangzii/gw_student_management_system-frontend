@@ -7,6 +7,7 @@ import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/partials/crud/Update";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -44,11 +45,7 @@ function DepartmentUpdate() {
     <Update>
       {departmentName ? (
         <form onSubmit={handleUpdateDepartment} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-warning text-white text-center`}
-          >
-            UPDATING DEPARTMENT
-          </h2>
+          <HeadingTitle title={"department"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="d-flex">
               <label htmlFor="department">Department</label>

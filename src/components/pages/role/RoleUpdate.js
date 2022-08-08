@@ -9,6 +9,7 @@ import { useAuth } from "~/store/auth";
 import Update from "~/components/partials/crud/Update";
 
 import styles from "~/styles/components/form.module.scss";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 function RoleUpdate() {
   const [roleName, setRoleName] = useState("");
@@ -45,11 +46,7 @@ function RoleUpdate() {
     <Update>
       {roleName ? (
         <form onSubmit={handleUpdateRole} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-warning text-white text-center`}
-          >
-            UPDATING ROLE
-          </h2>
+          <HeadingTitle title={"role"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="d-flex">
               <label htmlFor="role">Role</label>

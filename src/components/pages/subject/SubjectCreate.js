@@ -7,25 +7,34 @@ import { headers } from "~/utils/headersToken";
 import { HandlerBtns, ErrorHandler, CreatedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Create from "~/components/partials/crud/Create";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
-function DepartmentCreate() {
-  const [departmentName, setDepartmentName] = useState("");
+function SubjectCreate() {
+  const [subjectName, setSubjectName] = useState("");
+  const [subjectCode, setSubjectCode] = useState("");
   const [description, setDescription] = useState("");
+  const [replaceWith, setReplaceWith] = useState("");
   const [isError, setIsError] = useState(false);
   const { auth } = useAuth();
   const createBy = auth.username;
   const navigate = useNavigate();
 
-  // Handle create department
-  const handleCreateDepartment = (e) => {
+  // Handle create subject
+  const handleCreateSubject = (e) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:8080/department/add",
+      url: "http://localhost:8080/subject/add",
       headers,
-      data: JSON.stringify({ departmentName, description, createBy }),
+      data: JSON.stringify({
+        subjectName,
+        subjectCode,
+        description,
+        replaceWith,
+        createBy,
+      }),
     })
       .then((result) => (result ? navigate("../view") : null))
       .catch((error) => {
@@ -37,36 +46,55 @@ function DepartmentCreate() {
 
   return (
     <Create>
-      <form onSubmit={handleCreateDepartment} className="form-group">
-        <h2
-          className={`${styles["form-heading"]} bg-success text-white text-center`}
-        >
-          CREATING A NEW DEPARTMENT
-        </h2>
+      <form onSubmit={handleCreateSubject} className="form-group">
+        <HeadingTitle title={"subject"} form={"create"} />
         <div className={styles["form-body"]}>
           {isError ? (
-            <ErrorHandler name={departmentName} msg={"is already taken!"} />
+            <ErrorHandler name={subjectName} msg={"is already taken!"} />
           ) : null}
-          <div className="department-dropdown dropdown d-flex">
-            <label htmlFor="department">Department</label>
+          <div className="d-flex">
+            <label htmlFor="subject">Subject</label>
             <input
               type="text"
               className="form-control"
               onChange={(e) => {
-                setDepartmentName(e.target.value);
+                setSubjectName(e.target.value);
                 setIsError(false);
               }}
-              placeholder="Assurance"
+              placeholder="Advanced Programming"
             />
           </div>
-          <div className="department-dropdown dropdown d-flex">
-            <label htmlFor="department">Description</label>
+          <div className="d-flex">
+            <label htmlFor="subjectCode">Subject Code</label>
+            <input
+              type="text"
+              className="form-control"
+              onChange={(e) => {
+                setSubjectCode(e.target.value);
+                setIsError(false);
+              }}
+              placeholder="ADV_PM"
+            />
+          </div>
+          <div className="d-flex">
+            <label htmlFor="subject">Description</label>
             <textarea
               cols="30"
               rows="2"
               className="form-control"
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
+          </div>
+          <div className="d-flex">
+            <label htmlFor="replaceWith">Replace With</label>
+            <input
+              type="text"
+              className="form-control"
+              onChange={(e) => {
+                setReplaceWith(e.target.value);
+              }}
+              placeholder="ADPM101"
+            />
           </div>
           <CreatedBy />
           <HandlerBtns action={"Create"} />
@@ -76,4 +104,4 @@ function DepartmentCreate() {
   );
 }
 
-export default DepartmentCreate;
+export default SubjectCreate;

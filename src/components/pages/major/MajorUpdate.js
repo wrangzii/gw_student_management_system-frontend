@@ -11,10 +11,10 @@ import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
-function TermUpdate() {
-  const [termName, setTermName] = useState("");
-  const [termCode, setTermCode] = useState("");
-  const [description, setDescription] = useState("");
+function MajorUpdate() {
+  const [vName, setVName] = useState("");
+  const [eName, setEName] = useState("");
+  const [majorCode, setMajorCode] = useState("");
   const { id } = useParams();
   const { auth } = useAuth();
   const modifyBy = auth.username;
@@ -24,61 +24,61 @@ function TermUpdate() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/term/${id}`,
+      url: `http://localhost:8080/major/${id}`,
       headers,
     }).then((result) => {
       const data = result?.data?.data;
-      setTermName(data.termName);
-      setTermCode(data.termCode);
-      setDescription(data.description);
+      setVName(data.vName);
+      setEName(data.vName);
+      setMajorCode(data.majorCode);
     });
   }, [id]);
 
-  // Handle update term
-  const handleUpdateTerm = (e) => {
+  // Handle update major
+  const handleUpdateMajor = (e) => {
     e.preventDefault();
     axios({
       method: "put",
-      url: `http://localhost:8080/term/edit/${id}`,
+      url: `http://localhost:8080/major/edit/${id}`,
       headers,
-      data: JSON.stringify({ termName, termCode, description, modifyBy }),
+      data: JSON.stringify({ vName, eName, majorCode, modifyBy }),
     }).then((result) => (result ? navigate("../view") : null));
   };
   return (
     <Update>
-      {termName ? (
-        <form onSubmit={handleUpdateTerm} className="form-group">
-          <HeadingTitle title={"term"} form={"update"} />
+      {vName ? (
+        <form onSubmit={handleUpdateMajor} className="form-group">
+          <HeadingTitle title={"major"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="d-flex">
-              <label htmlFor="term">Term</label>
+              <label htmlFor="major">V_Major Name</label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={termName}
-                onChange={(e) => setTermName(e.target.value)}
-                placeholder="Spring 2022"
+                defaultValue={vName}
+                onChange={(e) => setVName(e.target.value)}
+                placeholder="Computer Science"
               />
             </div>
             <div className="d-flex">
-              <label htmlFor="term">Term Code</label>
+              <label htmlFor="major">E_Major Name</label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={termCode}
-                onChange={(e) => setTermCode(e.target.value)}
-                placeholder="SPR22"
+                defaultValue={vName}
+                onChange={(e) => setEName(e.target.value)}
+                placeholder="Front End Developer"
               />
             </div>
             <div className="d-flex">
-              <label htmlFor="description">Description</label>
-              <textarea
-                cols="30"
-                rows="2"
+              <label htmlFor="major">Major Code</label>
+              <input
+                type="text"
                 className="form-control"
-                defaultValue={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></textarea>
+                defaultValue={majorCode}
+                onChange={(e) => setMajorCode(e.target.value)}
+                placeholder="FE_DEV22"
+              />
             </div>
             <ModifiedBy />
             <HandlerBtns action={"Update"} />
@@ -91,4 +91,4 @@ function TermUpdate() {
   );
 }
 
-export default TermUpdate;
+export default MajorUpdate;

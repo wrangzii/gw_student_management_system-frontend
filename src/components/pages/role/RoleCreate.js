@@ -9,6 +9,7 @@ import { useAuth } from "~/store/auth";
 import Create from "~/components/partials/crud/Create";
 
 import styles from "~/styles/components/form.module.scss";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 function RoleCreate() {
   const [roleName, setRoleName] = useState("");
@@ -31,11 +32,7 @@ function RoleCreate() {
   return (
     <Create>
       <form onSubmit={handleCreateRole} className="form-group">
-        <h2
-          className={`${styles["form-heading"]} bg-success text-white text-center`}
-        >
-          CREATING A NEW ROLE
-        </h2>
+        <HeadingTitle title={"role"} form={"create"} />
         <div className={styles["form-body"]}>
           <div className="d-flex">
             <label htmlFor="role">Role</label>

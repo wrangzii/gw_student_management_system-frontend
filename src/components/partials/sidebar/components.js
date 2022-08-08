@@ -35,6 +35,24 @@ const components = [
     icon: "fa-solid fa-graduation-cap",
     isActive: false,
   },
+  {
+    title: "Term",
+    path: "/term/view",
+    icon: "fa-solid fa-clock",
+    isActive: false,
+  },
+  {
+    title: "Subject",
+    path: "/subject/view",
+    icon: "fa-solid fa-book",
+    isActive: false,
+  },
+  {
+    title: "Major",
+    path: "/major/view",
+    icon: "fa-solid fa-star",
+    isActive: false,
+  },
 ];
 
 export default components;

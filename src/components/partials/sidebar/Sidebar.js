@@ -42,7 +42,7 @@ function Sidebar() {
               <li key={index} className="w-100 px-2">
                 <Link
                   to={component.path}
-                  className="py-3 py-md-4"
+                  className="py-3"
                   onClick={hideSidebar}
                 >
                   <span>

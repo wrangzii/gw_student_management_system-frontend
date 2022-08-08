@@ -7,14 +7,14 @@ import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components/partials";
 import ViewDetail from "~/components/partials/crud/ViewDetail";
 
-function TermViewDetail() {
+function MajorViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
 
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/term/${id}`,
+      url: `http://localhost:8080/major/${id}`,
       headers,
     }).then((result) => setViewDetail(result.data.data));
   }, []);
@@ -26,19 +26,19 @@ function TermViewDetail() {
           <div className="table">
             <div className="tr">
               <div className="th">ID</div>
-              <div className="td">{viewDetail.termId}</div>
+              <div className="td">{viewDetail.majorId}</div>
             </div>
             <div className="tr">
-              <div className="th">Term</div>
-              <div className="td">{viewDetail.termName}</div>
+              <div className="th">E_Major Name</div>
+              <div className="td">{viewDetail.ename}</div>
             </div>
             <div className="tr">
-              <div className="th">Term Code</div>
-              <div className="td">{viewDetail.termCode}</div>
+              <div className="th">V_Major Name</div>
+              <div className="td">{viewDetail.vname}</div>
             </div>
             <div className="tr">
-              <div className="th">Description</div>
-              <div className="td">{viewDetail.description}</div>
+              <div className="th">Major Code</div>
+              <div className="td">{viewDetail.majorCode}</div>
             </div>
             <div className="tr">
               <div className="th">Created Date</div>
@@ -63,7 +63,7 @@ function TermViewDetail() {
             <div className="tr">
               <div className="th">Update</div>
               <div className="td">
-                <Link to={`/term/update/${id}`}>
+                <Link to={`/major/update/${id}`}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
               </div>
@@ -77,4 +77,4 @@ function TermViewDetail() {
   );
 }
 
-export default TermViewDetail;
+export default MajorViewDetail;

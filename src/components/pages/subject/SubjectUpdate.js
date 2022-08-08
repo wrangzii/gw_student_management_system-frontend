@@ -7,12 +7,15 @@ import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/partials/crud/Update";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
-function DepartmentUpdate() {
-  const [departmentName, setDepartmentName] = useState("");
+function SubjectUpdate() {
+  const [subjectName, setSubjectName] = useState("");
+  const [subjectCode, setSubjectCode] = useState("");
   const [description, setDescription] = useState("");
+  const [replaceWith, setReplaceWith] = useState("");
   const { id } = useParams();
   const { auth } = useAuth();
   const modifyBy = auth.username;
@@ -22,42 +25,55 @@ function DepartmentUpdate() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/department/${id}`,
+      url: `http://localhost:8080/subject/${id}`,
       headers,
     }).then((result) => {
-      setDepartmentName(result.data.data.departmentName);
-      setDescription(result.data.data.description);
+      const data = result?.data?.data;
+      setSubjectName(data.subjectName);
+      setDescription(data.description);
     });
   }, [id]);
 
-  // Handle update department
-  const handleUpdateDepartment = (e) => {
+  // Handle update subject
+  const handleUpdateSubject = (e) => {
     e.preventDefault();
     axios({
       method: "put",
-      url: `http://localhost:8080/department/edit/${id}`,
+      url: `http://localhost:8080/subject/edit/${id}`,
       headers,
-      data: JSON.stringify({ departmentName, description, modifyBy }),
+      data: JSON.stringify({
+        subjectName,
+        subjectCode,
+        description,
+        replaceWith,
+        modifyBy,
+      }),
     }).then((result) => (result ? navigate("../view") : null));
   };
   return (
     <Update>
-      {departmentName ? (
-        <form onSubmit={handleUpdateDepartment} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-warning text-white text-center`}
-          >
-            UPDATING DEPARTMENT
-          </h2>
+      {subjectName ? (
+        <form onSubmit={handleUpdateSubject} className="form-group">
+          <HeadingTitle title={"subject"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="d-flex">
-              <label htmlFor="department">Department</label>
+              <label htmlFor="subject">Subject</label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={departmentName}
-                onChange={(e) => setDepartmentName(e.target.value)}
-                placeholder="Accountant Leader"
+                defaultValue={subjectName}
+                onChange={(e) => setSubjectName(e.target.value)}
+                placeholder="Advanced Programming"
+              />
+            </div>
+            <div className="d-flex">
+              <label htmlFor="subjectCode">Subject Code</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={subjectCode}
+                onChange={(e) => setSubjectCode(e.target.value)}
+                placeholder="ADV_PM"
               />
             </div>
             <div className="d-flex">
@@ -70,6 +86,16 @@ function DepartmentUpdate() {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
+            <div className="d-flex">
+              <label htmlFor="replaceWith">Replace With</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={replaceWith}
+                onChange={(e) => setReplaceWith(e.target.value)}
+                placeholder="ADPM101"
+              />
+            </div>
             <ModifiedBy />
             <HandlerBtns action={"Update"} />
           </div>
@@ -81,4 +107,4 @@ function DepartmentUpdate() {
   );
 }
 
-export default DepartmentUpdate;
+export default SubjectUpdate;

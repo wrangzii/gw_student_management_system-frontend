@@ -13,8 +13,8 @@ import {
 
 import View from "~/components/partials/crud/View";
 
-function DepartmentView() {
-  const [departments, setDepartments] = useState([]);
+function SubjectView() {
+  const [subjects, setSubjects] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [popup, setPopup] = useState({
@@ -27,29 +27,29 @@ function DepartmentView() {
       isLoading,
     });
   };
-  const departmentIdRef = useRef();
+  const subjectIdRef = useRef();
 
-  // Call list of department
+  // Call list of subject
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/department/all?pageNumber=${pageNumber}`,
+      url: `http://localhost:8080/subject/all?pageNumber=${pageNumber}`,
       headers,
     })
       .then((result) => {
         setIsLoaded(false);
         if (result) {
-          setDepartments(result.data);
+          setSubjects(result.data);
         }
         setIsLoaded(true);
       })
       .catch((error) => console.log(error));
   }, [pageNumber]);
 
-  // Handle delete department
-  const handleDelete = (departmentId) => {
+  // Handle delete subject
+  const handleDelete = (subjectId) => {
     handlePopup("Are you sure to delete?", true);
-    departmentIdRef.current = departmentId;
+    subjectIdRef.current = subjectId;
   };
 
   // Confirm to delete role
@@ -57,16 +57,16 @@ function DepartmentView() {
     if (choose) {
       axios({
         method: "delete",
-        url: `http://localhost:8080/department/delete/${departmentIdRef.current}`,
+        url: `http://localhost:8080/subject/delete/${subjectIdRef.current}`,
         headers,
       }).then((result) => {
         setIsLoaded(true);
-        const newDepartmentList = [...departments];
-        const index = departments.findIndex(
-          (department) => department.departmentId === departmentIdRef.current
+        const newSubjectList = [...subjects];
+        const index = subjects.findIndex(
+          (subject) => subject.subjectId === subjectIdRef.current
         );
-        newDepartmentList.splice(index, 1);
-        setDepartments(newDepartmentList);
+        newSubjectList.splice(index, 1);
+        setSubjects(newSubjectList);
       });
       handlePopup("", false);
       setIsLoaded(false);
@@ -77,46 +77,40 @@ function DepartmentView() {
 
   return (
     <View>
-      <SearchBar page={"department"} />
+      <SearchBar page={"subject"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Department</th>
+                <th>Subject</th>
+                <th>Subject Code</th>
                 <th>Description</th>
+                <th>Replace With</th>
                 <th>Created Date</th>
                 <th>Created By</th>
-                <th>Modified Date</th>
-                <th>Modified By</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {departments.map((department, i) => (
-                <tr key={department.departmentId}>
+              {subjects.map((subject, i) => (
+                <tr key={subject.subjectId}>
                   <td>{i + 1}</td>
-                  <td>{department.departmentName}</td>
-                  <td>{department.description}</td>
+                  <td>{subject.subjectName}</td>
+                  <td>{subject.subjectCode}</td>
+                  <td>{subject.description}</td>
+                  <td>{subject.replaceWith}</td>
+                  <td>{new Date(subject.createDate).toLocaleDateString()}</td>
+                  <td>{subject.createBy}</td>
                   <td>
-                    {new Date(department.createDate).toLocaleDateString()}
-                  </td>
-                  <td>{department.createBy}</td>
-                  <td>
-                    {new Date(department.modifyDate).toLocaleDateString()}
-                  </td>
-                  <td>{department.modifyBy}</td>
-                  <td>
-                    <Link to={`detail/${department.departmentId}`}>
+                    <Link to={`detail/${subject.subjectId}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/department/update/${department.departmentId}`}>
+                    <Link to={`/subject/update/${subject.subjectId}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button
-                      onClick={() => handleDelete(department.departmentId)}
-                    >
+                    <button onClick={() => handleDelete(subject.subjectId)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>
@@ -136,4 +130,4 @@ function DepartmentView() {
   );
 }
 
-export default DepartmentView;
+export default SubjectView;

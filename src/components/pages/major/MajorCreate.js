@@ -11,23 +11,23 @@ import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
-function TermCreate() {
-  const [termName, setTermName] = useState("");
-  const [termCode, setTermCode] = useState("");
-  const [description, setDescription] = useState("");
+function MajorCreate() {
+  const [vName, setVName] = useState("");
+  const [eName, setEName] = useState("");
+  const [majorCode, setMajorCode] = useState("");
   const [isError, setIsError] = useState(false);
   const { auth } = useAuth();
   const createBy = auth.username;
   const navigate = useNavigate();
 
-  // Handle create term
-  const handleCreateTerm = (e) => {
+  // Handle create major
+  const handleCreateMajor = (e) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://localhost:8080/term/add",
+      url: "http://localhost:8080/major/add",
       headers,
-      data: JSON.stringify({ termName, termCode, description, createBy }),
+      data: JSON.stringify({ vName, eName, majorCode, createBy }),
     })
       .then((result) => (result ? navigate("../view") : null))
       .catch((error) => {
@@ -39,44 +39,47 @@ function TermCreate() {
 
   return (
     <Create>
-      <form onSubmit={handleCreateTerm} className="form-group">
-        <HeadingTitle title={"term"} form={"create"} />
+      <form onSubmit={handleCreateMajor} className="form-group">
+        <HeadingTitle title={"major"} form={"create"} />
         <div className={styles["form-body"]}>
           {isError ? (
-            <ErrorHandler name={termName} msg={"is already taken!"} />
+            <ErrorHandler name={vName} msg={"is already taken!"} />
           ) : null}
           <div className="d-flex">
-            <label htmlFor="term">Term</label>
+            <label htmlFor="major">V_Major Name</label>
             <input
               type="text"
               className="form-control"
               onChange={(e) => {
-                setTermName(e.target.value);
+                setVName(e.target.value);
                 setIsError(false);
               }}
-              placeholder="Spring 2022"
+              placeholder="Computer Science"
             />
           </div>
           <div className="d-flex">
-            <label htmlFor="term">Term Code</label>
+            <label htmlFor="major">E_Major Name</label>
             <input
               type="text"
-              placeholder="SPR22"
               className="form-control"
               onChange={(e) => {
-                setTermCode(e.target.value);
+                setEName(e.target.value);
                 setIsError(false);
               }}
+              placeholder="Front End Developer"
             />
           </div>
           <div className="d-flex">
-            <label htmlFor="term">Description</label>
-            <textarea
-              cols="30"
-              rows="2"
+            <label htmlFor="major">Major Code</label>
+            <input
+              type="text"
+              placeholder="FE_DEV22"
               className="form-control"
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
+              onChange={(e) => {
+                setMajorCode(e.target.value);
+                setIsError(false);
+              }}
+            />
           </div>
           <CreatedBy />
           <HandlerBtns action={"Create"} />
@@ -86,4 +89,4 @@ function TermCreate() {
   );
 }
 
-export default TermCreate;
+export default MajorCreate;

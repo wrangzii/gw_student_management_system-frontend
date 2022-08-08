@@ -7,7 +7,7 @@ import PopupConfirm from "./PopupConfirm";
 import Pagination from "./Pagination";
 import SearchBar from "./SearchBar";
 import Sidebar from "./sidebar/Sidebar";
-import Loading from "./Loading/Loading";
+import Loading from "./loading/Loading";
 
 export {
   CreatedBy,

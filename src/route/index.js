@@ -10,6 +10,7 @@ import {
   User,
   Class,
   Term,
+  Major,
   Subject,
   NotFound,
 } from "~/components/pages";
@@ -22,7 +23,8 @@ const privateRoutes = [
   { path: "user/*", component: User },
   { path: "class/*", component: Class },
   { path: "term/*", component: Term },
-  // { path: "subject/*", component: Subject },
+  { path: "subject/*", component: Subject },
+  { path: "major/*", component: Major },
 ];
 const publicRoutes = [
   { path: "/", component: Dashboard },

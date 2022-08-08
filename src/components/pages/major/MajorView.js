@@ -13,8 +13,8 @@ import {
 
 import View from "~/components/partials/crud/View";
 
-function TermView() {
-  const [terms, setTerms] = useState([]);
+function MajorView() {
+  const [majors, setMajors] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [popup, setPopup] = useState({
@@ -27,29 +27,29 @@ function TermView() {
       isLoading,
     });
   };
-  const termIdRef = useRef();
+  const majorIdRef = useRef();
 
-  // Call list of term
+  // Call list of major
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/term/all?pageNumber=${pageNumber}`,
+      url: `http://localhost:8080/major/all?pageNumber=${pageNumber}`,
       headers,
     })
       .then((result) => {
         setIsLoaded(false);
         if (result) {
-          setTerms(result.data);
+          setMajors(result.data);
         }
         setIsLoaded(true);
       })
       .catch((error) => console.log(error));
   }, [pageNumber]);
 
-  // Handle delete term
-  const handleDelete = (termId) => {
+  // Handle delete major
+  const handleDelete = (majorId) => {
     handlePopup("Are you sure to delete?", true);
-    termIdRef.current = termId;
+    majorIdRef.current = majorId;
   };
 
   // Confirm to delete role
@@ -57,16 +57,16 @@ function TermView() {
     if (choose) {
       axios({
         method: "delete",
-        url: `http://localhost:8080/term/delete/${termIdRef.current}`,
+        url: `http://localhost:8080/major/delete/${majorIdRef.current}`,
         headers,
       }).then((result) => {
         setIsLoaded(true);
-        const newTermList = [...terms];
-        const index = terms.findIndex(
-          (term) => term.termId === termIdRef.current
+        const newMajorList = [...majors];
+        const index = majors.findIndex(
+          (major) => major.majorId === majorIdRef.current
         );
-        newTermList.splice(index, 1);
-        setTerms(newTermList);
+        newMajorList.splice(index, 1);
+        setMajors(newMajorList);
       });
       handlePopup("", false);
       setIsLoaded(false);
@@ -77,38 +77,38 @@ function TermView() {
 
   return (
     <View>
-      <SearchBar page={"term"} />
+      <SearchBar page={"major"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Term</th>
-                <th>Term Code</th>
-                <th>Description</th>
+                <th>V_Major Name</th>
+                <th>E_Major Name</th>
+                <th>Major Code</th>
                 <th>Created Date</th>
                 <th>Created By</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {terms.map((term, i) => (
-                <tr key={term.termId}>
+              {majors.map((major, i) => (
+                <tr key={major.majorId}>
                   <td>{i + 1}</td>
-                  <td>{term.termName}</td>
-                  <td>{term.termCode}</td>
-                  <td>{term.description}</td>
-                  <td>{new Date(term.createDate).toLocaleDateString()}</td>
-                  <td>{term.createBy}</td>
+                  <td>{major.vname}</td>
+                  <td>{major.ename}</td>
+                  <td>{major.majorCode}</td>
+                  <td>{new Date(major.createDate).toLocaleDateString()}</td>
+                  <td>{major.createBy}</td>
                   <td>
-                    <Link to={`detail/${term.termId}`}>
+                    <Link to={`detail/${major.majorId}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/term/update/${term.termId}`}>
+                    <Link to={`/major/update/${major.majorId}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button onClick={() => handleDelete(term.termId)}>
+                    <button onClick={() => handleDelete(major.majorId)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>
@@ -128,4 +128,4 @@ function TermView() {
   );
 }
 
-export default TermView;
+export default MajorView;

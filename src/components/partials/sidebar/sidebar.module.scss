@@ -78,6 +78,8 @@
                 margin: 0;
                 padding: 0 !important;
                 border-right: 1px solid #000;
+                overflow-y: scroll;
+                max-height: 400px;
 
                 &:last-child {
                     border-bottom-left-radius: 10px;

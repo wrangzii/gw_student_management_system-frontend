@@ -8,6 +8,7 @@ import User from "./user/User";
 import Class from "./class/Class";
 import Term from "./term/Term";
 import Subject from "./subject/Subject";
+import Major from "./major/Major";
 import NotFound from "./NotFound";
 
 // Authentication
@@ -25,6 +26,7 @@ export {
   Class,
   Term,
   Subject,
+  Major,
   NotFound,
   Login,
   ForgotPassword,

@@ -7,6 +7,7 @@ import { headers, Cookies } from "~/utils/headersToken";
 import { HandlerBtns, Loading, ModifiedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/partials/crud/Update";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -50,11 +51,7 @@ function ProgramUpdate() {
     <Update>
       {programName ? (
         <form onSubmit={handleUpdateProgram} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-warning text-white text-center`}
-          >
-            UPDATING PROGRAM
-          </h2>
+          <HeadingTitle title={"program"} form={"update"} />
           <div className={styles["form-body"]}>
             <div className="program-name d-flex">
               <label htmlFor="programName">Program Name</label>

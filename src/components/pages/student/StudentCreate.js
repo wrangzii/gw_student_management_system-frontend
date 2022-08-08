@@ -7,6 +7,7 @@ import { headers } from "~/utils/headersToken";
 import { HandlerBtns, CreatedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Create from "~/components/partials/crud/Create";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -45,11 +46,7 @@ function StudentCreate() {
   return (
     <Create>
       <form onSubmit={handleCreateStudent} className="form-group">
-        <h2
-          className={`${styles["form-heading"]} bg-success text-white text-center`}
-        >
-          CREATING A NEW STUDENT
-        </h2>
+        <HeadingTitle title={"student"} form={"create"} />
         <div className={styles["form-body"]}>
           <div className="form-body__left">
             <div className="fullname form-group d-flex">

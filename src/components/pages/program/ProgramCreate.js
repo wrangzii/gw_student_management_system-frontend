@@ -7,6 +7,7 @@ import { headers } from "~/utils/headersToken";
 import { HandlerBtns, CreatedBy } from "~/components/partials";
 import { useAuth } from "~/store/auth";
 import Create from "~/components/partials/crud/Create";
+import HeadingTitle from "~/components/partials/headingTitle/HeadingTitle";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -30,11 +31,7 @@ function ProgramCreate() {
   return (
     <Create>
       <form onSubmit={handleCreateProgam} className="form-group">
-        <h2
-          className={`${styles["form-heading"]} bg-success text-white text-center`}
-        >
-          CREATING A NEW PROGRAM
-        </h2>
+        <HeadingTitle title={"program"} form={"create"} />
         <div className={styles["form-body"]}>
           <div className="program-name d-flex">
             <label htmlFor="program_name">Program Name</label>

@@ -10,9 +10,9 @@ import {
 
 function Subject() {
   return (
-    <div className="department">
+    <div className="subject">
       <div className="container">
-        <NavigateAction title={"department"} />
+        <NavigateAction title={"subject"} />
         <Routes>
           <Route path="/create" element={<SubjectCreate />} />
           <Route path="/view" element={<SubjectView />} />

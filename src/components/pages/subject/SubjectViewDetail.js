@@ -7,14 +7,14 @@ import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components/partials";
 import ViewDetail from "~/components/partials/crud/ViewDetail";
 
-function DepartmentViewDetail() {
+function SubjectViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
 
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8080/department/${id}`,
+      url: `http://localhost:8080/subject/${id}`,
       headers,
     }).then((result) => setViewDetail(result.data.data));
   }, []);
@@ -26,15 +26,23 @@ function DepartmentViewDetail() {
           <div className="table">
             <div className="tr">
               <div className="th">ID</div>
-              <div className="td">{viewDetail.departmentId}</div>
+              <div className="td">{viewDetail.subjectId}</div>
             </div>
             <div className="tr">
-              <div className="th">Department</div>
-              <div className="td">{viewDetail.departmentName}</div>
+              <div className="th">Subject</div>
+              <div className="td">{viewDetail.subjectName}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Subject Code</div>
+              <div className="td">{viewDetail.subjectCode}</div>
             </div>
             <div className="tr">
               <div className="th">Description</div>
               <div className="td">{viewDetail.description}</div>
+            </div>
+            <div className="tr">
+              <div className="th">Replace With</div>
+              <div className="td">{viewDetail.replaceWith}</div>
             </div>
             <div className="tr">
               <div className="th">Created Date</div>
@@ -59,7 +67,7 @@ function DepartmentViewDetail() {
             <div className="tr">
               <div className="th">Update</div>
               <div className="td">
-                <Link to={`/department/update/${id}`}>
+                <Link to={`/subject/update/${id}`}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
               </div>
@@ -73,4 +81,4 @@ function DepartmentViewDetail() {
   );
 }
 
-export default DepartmentViewDetail;
+export default SubjectViewDetail;
