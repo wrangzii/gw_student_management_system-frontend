@@ -1,5 +1,28 @@
 * {
     font-family: 'Poppins', sans-serif;
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 12px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #0068B0;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba($color: #0068B0, $alpha: 0.7);
+    }
 }
 
 .bg-primary,
@@ -30,7 +53,9 @@
     border-color: #FFC600;
     color: #FFF;
 
-    &:hover {
+    &:hover,
+    &:visited,
+    &:focus {
         color: #FFF;
     }
 }
@@ -40,6 +65,13 @@
 .btn-outline-info {
     background-color: #606EB2 !important;
     border-color: #606EB2;
+    color: #FFF;
+
+    &:hover,
+    &:visited,
+    &:focus {
+        color: #FFF;
+    }
 }
 
 .search {

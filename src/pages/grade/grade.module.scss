@@ -1,0 +1,11 @@
+.grade {
+    display: flex;
+    flex-direction: column;
+
+    .collapse-btn {
+        text-align: left;
+        text-transform: capitalize;
+        width: 150px;
+        margin-bottom: .5rem;
+    }
+}
