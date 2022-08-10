@@ -11,6 +11,7 @@ import {
   Term,
   Major,
   Subject,
+  StudentProgramMajor,
   NotFound,
 } from "~/pages";
 
@@ -23,6 +24,7 @@ const privateRoutes = [
   { path: "term/*", component: Term },
   { path: "subject/*", component: Subject },
   { path: "major/*", component: Major },
+  { path: "student-program-major/*", component: StudentProgramMajor },
 ];
 const publicRoutes = [
   { path: "/", component: Dashboard },

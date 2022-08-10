@@ -73,6 +73,10 @@ function StudentViewDetail() {
               <div className="td">{viewDetail.uogId}</div>
             </div>
             <div className="tr">
+              <div className="th">Status</div>
+              <div className="td">{viewDetail.status}</div>
+            </div>
+            <div className="tr">
               <div className="th">Created By</div>
               <div className="td">{viewDetail.createBy}</div>
             </div>

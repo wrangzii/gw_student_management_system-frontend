@@ -10,6 +10,7 @@ import Subject from "./subject/Subject";
 import Major from "./major/Major";
 import NotFound from "./NotFound";
 import Grade from "./grade/Grade";
+import StudentProgramMajor from "./studentProgramMajor/StudentProgramMajor";
 
 // Authentication
 import Login from "./authentication/Login";
@@ -26,6 +27,7 @@ export {
   Term,
   Subject,
   Major,
+  StudentProgramMajor,
   NotFound,
   Grade,
   Login,

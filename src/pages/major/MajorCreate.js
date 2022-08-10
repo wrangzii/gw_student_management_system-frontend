@@ -13,8 +13,8 @@ import styles from "~/styles/components/form.module.scss";
 
 function MajorCreate() {
   const form = "create";
-  const [vName, setVName] = useState("");
-  const [eName, setEName] = useState("");
+  const [vietnameseName, setVietnameseName] = useState("");
+  const [englishName, setEnglishName] = useState("");
   const [majorCode, setMajorCode] = useState("");
   const [isError, setIsError] = useState(false);
   const { auth } = useAuth();
@@ -28,7 +28,12 @@ function MajorCreate() {
       method: "post",
       url: "http://localhost:8080/major/add",
       headers,
-      data: JSON.stringify({ vName, eName, majorCode, createBy }),
+      data: JSON.stringify({
+        vietnameseName,
+        englishName,
+        majorCode,
+        createBy,
+      }),
     })
       .then((result) => (result ? navigate("../view") : null))
       .catch((error) => {
@@ -44,7 +49,7 @@ function MajorCreate() {
         <HeadingTitle title={"major"} form={form} />
         <div className={styles["form-body"]}>
           {isError ? (
-            <ErrorHandler name={vName} msg={"is already taken!"} />
+            <ErrorHandler name={vietnameseName} msg={"is already taken!"} />
           ) : null}
           <div className="d-flex">
             <label htmlFor="major">V_Major Name</label>
@@ -52,7 +57,7 @@ function MajorCreate() {
               type="text"
               className="form-control"
               onChange={(e) => {
-                setVName(e.target.value);
+                setVietnameseName(e.target.value);
                 setIsError(false);
               }}
               placeholder="Computer Science"
@@ -64,7 +69,7 @@ function MajorCreate() {
               type="text"
               className="form-control"
               onChange={(e) => {
-                setEName(e.target.value);
+                setEnglishName(e.target.value);
                 setIsError(false);
               }}
               placeholder="Front End Developer"

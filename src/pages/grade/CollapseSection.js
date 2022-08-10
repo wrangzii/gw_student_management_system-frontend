@@ -2,8 +2,9 @@ import React, { useCallback, useState } from "react";
 import Table from "./Table";
 import styles from "./grade.module.scss";
 
-function SectionBtn({ title, color }) {
+function CollapseSection({ title, color }) {
   const [isShow, setIsShow] = useState(false);
+
   const handleCollapse = useCallback(() => {
     setIsShow((prevState) => !prevState);
   }, []);
@@ -26,8 +27,11 @@ function SectionBtn({ title, color }) {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>FPT_ID</th>
-                <th>Fullname</th>
+                {/* <th>FPT_ID</th> */}
+                {title === "topup" && <th>Pearson_ID</th>}
+                {/* <th>Fullname</th> */}
+                {title === "topup" && <th>Major</th>}
+                {title === "btec" && <th>Term</th>}
                 <th>Subject</th>
                 <th>Grade</th>
                 <th>Status</th>
@@ -45,4 +49,4 @@ function SectionBtn({ title, color }) {
   );
 }
 
-export default SectionBtn;
+export default CollapseSection;
