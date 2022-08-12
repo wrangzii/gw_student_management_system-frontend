@@ -7,6 +7,7 @@ import axios from "axios";
 
 import { ErrorHandler, Loading } from "~/components";
 import { useAuth } from "~/store/auth";
+import AuthHeading from "./partials/AuthHeading";
 
 import styles from "./login.module.scss";
 
@@ -67,11 +68,7 @@ function Login() {
     <div className={styles["login"]}>
       {isLoaded ? (
         <form onSubmit={handleLogin} className="form-group">
-          <h2
-            className={`${styles["form-heading"]} bg-primary text-white text-center`}
-          >
-            WELCOME TO CMS
-          </h2>
+          <AuthHeading form="login" />
           <div className={styles["form-body"]}>
             {isError ? (
               <ErrorHandler msg={"Username or password is incorrect!"} />
@@ -111,7 +108,7 @@ function Login() {
                 LOGIN WITH FPT EMAIL
               </a>
             </div>
-            <Link to="/forgot-password">
+            <Link to="/forgot_password">
               <small className={`${styles["note"]} text-danger font-italic`}>
                 Forgotten your username or password?
               </small>

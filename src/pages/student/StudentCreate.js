@@ -21,7 +21,7 @@ function StudentCreate() {
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Handle create student

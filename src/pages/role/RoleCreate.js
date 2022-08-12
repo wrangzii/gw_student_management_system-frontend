@@ -16,7 +16,7 @@ function RoleCreate() {
   const [roleName, setRoleName] = useState("");
   const [description, setDescription] = useState("");
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Handle create role

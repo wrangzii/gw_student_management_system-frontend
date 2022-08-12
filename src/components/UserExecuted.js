@@ -12,7 +12,7 @@ function UserExecuted({ type }) {
         type="text"
         className="form-control"
         readOnly
-        value={auth.username}
+        value={auth?.user?.username}
       />
     </div>
   );

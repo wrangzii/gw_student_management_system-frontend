@@ -21,7 +21,7 @@ function StudentUpdate() {
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const { auth } = useAuth();
-  const modifyBy = auth.username;
+  const modifyBy = auth?.user?.username;
   const { id } = useParams();
   const navigate = useNavigate();
 

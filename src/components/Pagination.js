@@ -1,39 +1,53 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePagination } from "~/store/pagination";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
-function Pagination({ apiName }) {
-  const navigate = useNavigate();
+function Pagination() {
   const [pageNumber, setPageNumber] = useState(0);
+  const { pagination, setPagination } = usePagination();
+  const nextRef = useRef();
+  const prevRef = useRef();
 
-  const url = window.location.pathname;
-  const handleNextPage = () => {
-    setPageNumber(pageNumber + 1);
-    navigate(`${url}?page=${pageNumber}`);
-  };
+  // Handle pagination action
+  useEffect(() => {
+    // Handle pointer-event
+    pageNumber <= 0
+      ? prevRef.current.classList.add("pe-none")
+      : prevRef.current.classList.remove("pe-none");
+
+    // Send context page number
+    setPagination({ pageNumber });
+  }, [pageNumber]);
 
   return (
     <ul className="pagination">
-      <li className="page-item">
-        <button type="button" className="page-link" aria-label="Previous">
+      <li
+        className="page-item prev"
+        onClick={() => setPageNumber(pagination.pageNumber - 1)}
+        ref={prevRef}
+      >
+        <Link
+          className="page-link"
+          to={`?pageNumber=${pageNumber - 1}`}
+          aria-label="Previous"
+        >
           <span aria-hidden="true">&laquo;</span>
           <span className="sr-only">Previous</span>
-        </button>
+        </Link>
       </li>
-      <li className="page-item">
-        <button type="button" className="page-link">
-          1
-        </button>
-      </li>
-      <li className="page-item">
-        <button
-          type="button"
+      <li
+        className="page-item next"
+        onClick={() => setPageNumber(pagination.pageNumber + 1)}
+        ref={nextRef}
+      >
+        <Link
           className="page-link"
-          aria-label="Next"
-          onClick={handleNextPage}
+          to={`?pageNumber=${pageNumber + 1}`}
+          aria-label="Previous"
         >
           <span aria-hidden="true">&raquo;</span>
           <span className="sr-only">Next</span>
-        </button>
+        </Link>
       </li>
     </ul>
   );

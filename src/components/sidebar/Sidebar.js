@@ -15,11 +15,11 @@ function Sidebar() {
           <div className="mb-0 p-3 text-center bg-warning fw-bold">
             Signed in as{" "}
             <button type="button" className="btn badge bg-success">
-              {auth.username}
+              {auth?.user?.username}
             </button>
             <div className={styles["user-tooltip"]}>
               <Link
-                to={`/user/view/detail/${auth.userId}`}
+                to={`/user/view/detail/${auth?.user?.userId}`}
                 className="info btn btn-info text-light"
                 onClick={hideSidebar}
               >

@@ -17,7 +17,7 @@ function ProgramCreate() {
   const [programName, setProgramName] = useState("");
   const [description, setDescription] = useState("");
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
 
   // Handle create program
   const handleCreateProgam = (e) => {

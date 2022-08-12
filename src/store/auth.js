@@ -7,24 +7,17 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
 
   useEffect(() => {
-    let accessToken, cookieDataUser, jSessionId, user, username, userId;
+    let accessToken, cookieDataUser, jSessionId, user;
     accessToken = Cookies.get("token");
     cookieDataUser = Cookies.get("user");
     user = cookieDataUser ? JSON.parse(cookieDataUser) : null;
-    if (user) {
-      username = user.username;
-      userId = user.userId;
-    }
 
     if (accessToken) {
       setAuth((prevAuth) => ({
         ...prevAuth,
         accessToken,
-        cookieDataUser,
         jSessionId,
         user,
-        username,
-        userId,
       }));
     }
   }, []);

@@ -30,7 +30,7 @@ function UserCreate() {
   const [isDisabled, setIsDisabled] = useState(false);
   let role_dropdown = useRef();
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Get role list

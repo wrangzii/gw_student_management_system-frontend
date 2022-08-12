@@ -18,7 +18,7 @@ function ProgramUpdate() {
   const [programCode, setProgramCode] = useState("");
   const [description, setDescription] = useState("");
   const { auth } = useAuth();
-  const modifyBy = auth.username;
+  const modifyBy = auth?.user?.username;
   const { id } = useParams();
 
   // Get current info

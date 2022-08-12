@@ -17,7 +17,7 @@ function DepartmentCreate() {
   const [description, setDescription] = useState("");
   const [isError, setIsError] = useState(false);
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Handle create department

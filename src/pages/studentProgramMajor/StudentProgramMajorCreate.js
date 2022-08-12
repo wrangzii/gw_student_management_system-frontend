@@ -23,7 +23,7 @@ function StudentProgramMajorCreate() {
   const [endDate, setEndDate] = useState("");
   const [isError, setIsError] = useState(false);
   const { auth } = useAuth();
-  const createBy = auth.username;
+  const createBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Handle create studentProgramMajor

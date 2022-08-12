@@ -7,7 +7,7 @@ function Grade() {
   return (
     <div className={styles["grade"]}>
       <SearchBar page={"student name or FPT ID"} />
-      <div class="card mb-3 col-12 col-md-6">
+      <div className="card mb-3 col-12 col-md-6">
         <div className="card-body">
           <h3 className="card-title">Truong Quoc Khanh</h3>
           <p className="card-text">

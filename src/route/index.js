@@ -29,8 +29,8 @@ const privateRoutes = [
 const publicRoutes = [
   { path: "/", component: Dashboard },
   { path: "login", component: Login },
-  { path: "forgot-password", component: ForgotPassword },
-  { path: "reset-password", component: ResetPassword },
+  { path: "forgot_password", component: ForgotPassword },
+  { path: "confirm_reset", component: ResetPassword },
   { path: "*", component: NotFound },
 ];
 

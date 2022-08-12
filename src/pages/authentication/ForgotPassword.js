@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
 import axios from "axios";
+
 import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components";
+import AuthHeading from "./partials/AuthHeading";
+
+import styles from "~/styles/components/form.module.scss";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -26,24 +31,23 @@ function ForgotPassword() {
         setIsLoaded(true);
       })
       .catch((error) => {
-        setIsError(true);
-        if (!email.includes("@")) {
-          setMsg("Email address is not valid!");
-        } else {
-          setMsg("Email address not found!");
+        if (error.response.status === 400) {
+          setIsError(true);
+          setIsLoaded(true)
+          if (!email.includes("@")) {
+            setMsg("Email address is not valid!");
+          } else {
+            setMsg("Email address not found!");
+          }
         }
       });
   };
 
-  console.log(isLoaded);
-
   return (
     <div className="forgot_password">
       <form onSubmit={handleForgotPassword} className="form-group">
-        <h2 className="form-heading bg-success text-white text-center">
-          FORGOT PASSWORD
-        </h2>
-        <div className="form-body">
+        <AuthHeading form="forgot" />
+        <div className={styles["form-body"]}>
           {
             <small
               className={`mb-3 d-block ${
@@ -62,11 +66,11 @@ function ForgotPassword() {
             }}
             className="form-group form-control"
           />
-          <div className="handler-btn form-group">
-            <button className="btn btn-success">Reset my password</button>
-            <Link to={"/"} className="btn btn-danger">
+          <div className={`${styles["handler-btn"]} form-group`}>
+            <Link to={"/login"} className="btn btn-danger">
               Cancel
             </Link>
+            <button className="btn btn-success">Submit</button>
           </div>
         </div>
       </form>

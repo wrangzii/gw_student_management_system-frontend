@@ -20,7 +20,7 @@ function MajorUpdate() {
   const [majorCode, setMajorCode] = useState("");
   const { id } = useParams();
   const { auth } = useAuth();
-  const modifyBy = auth.username;
+  const modifyBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Get current info

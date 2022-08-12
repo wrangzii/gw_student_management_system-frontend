@@ -4,12 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { headers } from "~/utils/headersToken";
-import {
-  Pagination,
-  PopupConfirm,
-  Loading,
-  SearchBar,
-} from "~/components";
+import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
 
 import View from "~/components/crud/View";
 
@@ -127,7 +122,7 @@ function DepartmentView() {
         ) : (
           <Loading />
         )}
-        <Pagination />
+        <Pagination items={departments} />
         {popup.isLoading && (
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}

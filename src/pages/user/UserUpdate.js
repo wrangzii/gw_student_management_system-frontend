@@ -26,7 +26,7 @@ function UserUpdate() {
   const role_current = useRef();
   const role_dropdown = useRef();
   const { auth } = useAuth();
-  const modifyBy = auth.username;
+  const modifyBy = auth?.user?.username;
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -155,7 +155,6 @@ function UserUpdate() {
                   type="date"
                   defaultValue={dob.slice("T", 10)}
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setDob(e.target.value);
                   }}
                   className="form-control"

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import { Loading } from "~/components";
+import AuthHeading from "./partials/AuthHeading";
+
+import styles from "~/styles/components/form.module.scss";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -48,10 +53,8 @@ function ResetPassword() {
   return (
     <div className="reset_password">
       <form onSubmit={handleResetPassword} className="form-group">
-        <h2 className="form-heading bg-success text-white text-center">
-          RESET PASSWORD
-        </h2>
-        <div className="form-body">
+        <AuthHeading form="reset" />
+        <div className={styles["form-body"]}>
           {
             <small
               className={`mb-3 d-block ${
@@ -79,11 +82,11 @@ function ResetPassword() {
             }}
             className="form-group form-control"
           />
-          <div className="handler-btn form-group">
-            <button className="btn btn-success">Confirm</button>
+          <div className={`${styles["handler-btn"]} form-group`}>
             <Link to={"/"} className="btn btn-danger">
               Back to home
             </Link>
+            <button className="btn btn-success">Confirm</button>
           </div>
         </div>
       </form>
