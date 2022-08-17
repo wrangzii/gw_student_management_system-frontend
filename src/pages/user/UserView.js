@@ -4,19 +4,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import View from "~/components/crud/View";
-import { headers, Cookies } from "~/utils/headersToken";
-import {
-  Pagination,
-  PopupConfirm,
-  Loading,
-  SearchBar,
-} from "~/components";
+import { headers } from "~/utils/headersToken";
+import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
 
 function UserView() {
   const [users, setUsers] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  let formData = new FormData();
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -34,11 +28,7 @@ function UserView() {
     axios({
       method: "get",
       url: `http://localhost:8080/users/all?pageNumber=${pageNumber}`,
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
+      headers,
     }).then((result) => {
       setIsLoaded(false);
       if (result) setUsers(result.data);

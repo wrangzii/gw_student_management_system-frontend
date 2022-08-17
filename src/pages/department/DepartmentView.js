@@ -1,17 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
-import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
+import httpRequest from "~/utils/httpRequest";
 
 import View from "~/components/crud/View";
+import {
+  Pagination,
+  PopupConfirm,
+  Loading,
+  SearchBar,
+  Message,
+} from "~/components";
 
 function DepartmentView() {
   const [departments, setDepartments] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -26,19 +40,17 @@ function DepartmentView() {
 
   // Call list of department
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/department/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    httpRequest
+      .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
         setIsLoaded(false);
-        if (result) {
-          setDepartments(result.data);
-        }
+        setDepartments(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete department
@@ -50,19 +62,18 @@ function DepartmentView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/department/delete/${departmentIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newDepartmentList = [...departments];
-        const index = departments.findIndex(
-          (department) => department.departmentId === departmentIdRef.current
-        );
-        newDepartmentList.splice(index, 1);
-        setDepartments(newDepartmentList);
-      });
+      httpRequest
+        .delete(`department/delete/${departmentIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newDepartmentList = [...departments];
+          const index = departments.findIndex(
+            (department) => department.departmentId === departmentIdRef.current
+          );
+          newDepartmentList.splice(index, 1);
+          setDepartments(newDepartmentList);
+          handleMsgStatus(result?.data?.message, true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -73,6 +84,13 @@ function DepartmentView() {
   return (
     <View>
       <SearchBar page={"department"} />
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => handleMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

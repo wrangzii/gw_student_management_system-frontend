@@ -1,22 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
-
 import {
   Pagination,
   PopupConfirm,
   Loading,
   SearchBar,
+  Message,
 } from "~/components";
 import View from "~/components/crud/View";
+import httpRequest from "~/utils/httpRequest";
 
 function ProgramView() {
   const [pageNumber, setPageNumber] = useState(0);
   const [programs, setPrograms] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,15 +39,17 @@ function ProgramView() {
 
   // Call list of program
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/program/all?pageNumber=${pageNumber}`,
-      headers,
-    }).then((result) => {
-      setIsLoaded(false);
-      if (result) setPrograms(result.data);
-      setIsLoaded(true);
-    });
+    httpRequest
+      .get(`program/all?pageNumber=${pageNumber}`)
+      .then((result) => {
+        setIsLoaded(false);
+        setPrograms(result?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, []);
 
   // Handle delete program
@@ -51,19 +61,18 @@ function ProgramView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/program/delete/${programIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newProgramList = [...programs];
-        const index = programs.findIndex(
-          (program) => program.programId === programIdRef.current
-        );
-        newProgramList.splice(index, 1);
-        setPrograms(newProgramList);
-      });
+      httpRequest
+        .delete(`program/delete/${programIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newProgramList = [...programs];
+          const index = programs.findIndex(
+            (program) => program.programId === programIdRef.current
+          );
+          newProgramList.splice(index, 1);
+          setPrograms(newProgramList);
+          handleMsgStatus(result?.data?.message, true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -74,6 +83,9 @@ function ProgramView() {
   return (
     <View>
       <SearchBar page={"program"} />
+      {msgStatus.isSuccess && (
+        <Message isSuccess={msgStatus.isSuccess} msg={msgStatus.msg} />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

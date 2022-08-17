@@ -26,6 +26,7 @@ const privateRoutes = [
   { path: "major/*", component: Major },
   { path: "student-program-major/*", component: StudentProgramMajor },
 ];
+
 const publicRoutes = [
   { path: "/", component: Dashboard },
   { path: "login", component: Login },

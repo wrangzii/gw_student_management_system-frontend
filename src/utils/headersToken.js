@@ -1,7 +1,10 @@
 import Cookies from "js-cookie";
+
+const token = Cookies.get("token");
+
 const headers = {
-  Authorization: "Bearer " + Cookies.get("token"),
+  Authorization: "Bearer " + token,
   "Content-Type": "application/json",
 };
 
-export { Cookies, headers };
+export { headers };

@@ -233,6 +233,21 @@ table {
     }
 }
 
+// close msg
+.close-msg {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all .25s ease;
+
+    &:hover {
+        opacity: .7;
+    }
+}
+
 // // react-select
 .select__control {
     max-width: 227px;

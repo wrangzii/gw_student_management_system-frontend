@@ -7,13 +7,14 @@ import View from "~/components/crud/View";
 import { headers } from "~/utils/headersToken";
 import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
 import { usePagination } from "~/store/pagination";
+import { useAuth } from "~/store/auth";
+import httpRequest from "~/utils/httpRequest";
 
 function StudentView() {
+  const { auth } = useAuth();
   const [students, setStudents] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [csvFile, setCsvFile] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
-  const fileRef = useRef();
   const { pagination } = usePagination();
   const [popup, setPopup] = useState({
     message: "",
@@ -28,21 +29,38 @@ function StudentView() {
   const studentIdRef = useRef();
 
   // Call list of student
+  const pageNum = window.location.href.split("=")[1];
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/student/all?pageNumber=${
-        pagination.pageNumber !== undefined ? pagination.pageNumber : 0
-      }`,
-      headers,
-    })
+    // axios({
+    //   method: "get",
+    //   url: `http://localhost:8080/student/all?pageNumber=${
+    //     pagination.pageNumber !== undefined
+    //       ? pagination.pageNumber
+    //       : pageNum || 0
+    //   }`,
+    //   headers,
+    // })
+    //   .then((result) => {
+    //     setIsLoaded(false);
+    //     if (result) setStudents(result.data);
+    //     setIsLoaded(true);
+    //   })
+    //   .catch((error) => console.log(error));
+    httpRequest
+      .get(
+        `student/all?pageNumber=${
+          pagination.pageNumber !== undefined
+            ? pagination.pageNumber
+            : pageNum || 0
+        }`
+      )
       .then((result) => {
         setIsLoaded(false);
         if (result) setStudents(result.data);
         setIsLoaded(true);
       })
       .catch((error) => console.log(error));
-  }, [pagination.pageNumber]);
+  }, [pageNum, pagination.pageNumber]);
 
   // Handle delete student
   const handleDelete = (studentId) => {
@@ -74,14 +92,12 @@ function StudentView() {
   };
 
   // Handle import CSV file
-  let formData = new FormData();
+  const formData = new FormData();
   const onFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target?.files[0];
     if (e.target && file) {
       formData.append("file", file);
       setCsvFile(file.name);
-      setSelectedFile(fileRef.current?.value);
-      console.log(file);
     }
   };
 
@@ -91,12 +107,18 @@ function StudentView() {
       method: "post",
       url: "http://localhost:8080/student/insert/file",
       data: formData,
-      headers,
-    }).then((result) => console.log(result));
+      headers: {
+        Authorization: "Bearer " + auth.accessToken,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
   };
 
-  const removeFile = () => {
-    setSelectedFile(null);
+  // Get student by page
+  const getStudentByPage = (page) => {
+    console.log(page);
   };
 
   return (
@@ -107,23 +129,18 @@ function StudentView() {
           <i className="fa-solid fa-upload p-0 me-2"></i>
           Upload CSV
         </span>
-        <input
-          type="file"
-          onChange={onFileChange}
-          id="file"
-          hidden
-          ref={fileRef}
-        />
-        {selectedFile && (
+        <input type="file" onChange={onFileChange} id="file" hidden />
+        {csvFile && (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex flex-column align-items-start gap-2 mt-2">
               <p className="d-inline-block mb-0">
                 <b>File name:</b> {csvFile}
               </p>
-              <button className="btn btn-danger" onClick={removeFile}>
-                &times;
-              </button>
-              <button className="btn btn-success" onClick={handleSubmitFile}>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={handleSubmitFile}
+              >
                 <i className="fa-solid fa-circle-arrow-up p-0 me-2"></i>
                 Submit
               </button>
@@ -136,8 +153,7 @@ function StudentView() {
           <table className="table table-striped table-hover table-bordered">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>FPT_ID</th>
+                <th>FPT ID</th>
                 <th>Fullname</th>
                 <th>Gender</th>
                 <th>Email</th>
@@ -146,9 +162,8 @@ function StudentView() {
               </tr>
             </thead>
             <tbody>
-              {students.map((student, i) => (
+              {students.map((student) => (
                 <tr key={student.studentId}>
-                  <td>{i + 1}</td>
                   <td>{student.fptId}</td>
                   <td>{student.fullName}</td>
                   <td>{student.gender}</td>
@@ -173,7 +188,7 @@ function StudentView() {
           <Loading />
         )}
       </div>
-      <Pagination />
+      <Pagination onClickPage={getStudentByPage} />
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

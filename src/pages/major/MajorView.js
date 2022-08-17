@@ -1,22 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import {
   Pagination,
   PopupConfirm,
   Loading,
   SearchBar,
+  Message,
 } from "~/components";
-
 import View from "~/components/crud/View";
+
+import httpRequest from "~/utils/httpRequest";
 
 function MajorView() {
   const [majors, setMajors] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,11 +40,8 @@ function MajorView() {
 
   // Call list of major
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/major/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    httpRequest
+      .get(`major/all?pageNumber=${pageNumber}`)
       .then((result) => {
         setIsLoaded(false);
         if (result) {
@@ -55,19 +61,18 @@ function MajorView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/major/delete/${majorIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newMajorList = [...majors];
-        const index = majors.findIndex(
-          (major) => major.majorId === majorIdRef.current
-        );
-        newMajorList.splice(index, 1);
-        setMajors(newMajorList);
-      });
+      httpRequest
+        .delete(`major/delete/${majorIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newMajorList = [...majors];
+          const index = majors.findIndex(
+            (major) => major.majorId === majorIdRef.current
+          );
+          newMajorList.splice(index, 1);
+          setMajors(newMajorList);
+          handleMsgStatus(result?.data?.message, true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -78,6 +83,9 @@ function MajorView() {
   return (
     <View>
       <SearchBar page={"major"} />
+      {msgStatus.isSuccess && (
+        <Message isSuccess={msgStatus.isSuccess} msg={msgStatus.msg} />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -119,11 +127,11 @@ function MajorView() {
         ) : (
           <Loading />
         )}
-        <Pagination />
         {popup.isLoading && (
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
+      <Pagination />
     </View>
   );
 }

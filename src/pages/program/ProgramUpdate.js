@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import axios from "axios";
 
-import { headers, Cookies } from "~/utils/headersToken";
+import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
@@ -41,10 +41,7 @@ function ProgramUpdate() {
     axios({
       method: "put",
       url: `http://localhost:8080/program/edit/${id}`,
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-        "Content-Type": "application/json",
-      },
+      headers,
       data: JSON.stringify({ programName, description, programCode, modifyBy }),
     }).then((result) => (result ? navigate("../view") : null));
   };

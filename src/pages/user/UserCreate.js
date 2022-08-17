@@ -6,7 +6,7 @@ import axios from "axios";
 import Select from "react-select";
 
 import Create from "~/components/crud/Create";
-import { headers, Cookies } from "~/utils/headersToken";
+import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 
@@ -78,10 +78,7 @@ function UserCreate() {
     axios({
       method: "post",
       url: "http://localhost:8080/users/add",
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-        "Content-Type": "application/json",
-      },
+      headers,
       data: {
         email,
         username,
@@ -110,7 +107,7 @@ function UserCreate() {
     <Create>
       {isLoaded ? (
         <form onSubmit={handleCreateUser} className="form-group">
-          <HeadingTitle title={"user"} form={form}/>
+          <HeadingTitle title={"user"} form={form} />
           <div className={styles["form-body"]}>
             <div className="form-body__left">
               <div className="fullname form-group d-flex">

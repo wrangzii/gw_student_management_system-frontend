@@ -7,6 +7,7 @@ import Pagination from "./Pagination";
 import SearchBar from "./SearchBar";
 import Sidebar from "./sidebar/Sidebar";
 import Loading from "./loading/Loading";
+import Message from "./Message";
 
 export {
   UserExecuted,
@@ -18,4 +19,5 @@ export {
   Sidebar,
   Loading,
   PopupConfirm,
+  Message,
 };
