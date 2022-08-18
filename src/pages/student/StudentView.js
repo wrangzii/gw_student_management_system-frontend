@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import View from "~/components/crud/View";
-import { headers } from "~/utils/headersToken";
-import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
+import {
+  Pagination,
+  PopupConfirm,
+  Loading,
+  SearchBar,
+  Message,
+} from "~/components";
 import { usePagination } from "~/store/pagination";
 import { useAuth } from "~/store/auth";
 import httpRequest from "~/utils/httpRequest";
@@ -16,6 +21,16 @@ function StudentView() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [csvFile, setCsvFile] = useState("");
   const { pagination } = usePagination();
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,21 +46,7 @@ function StudentView() {
   // Call list of student
   const pageNum = window.location.href.split("=")[1];
   useEffect(() => {
-    // axios({
-    //   method: "get",
-    //   url: `http://localhost:8080/student/all?pageNumber=${
-    //     pagination.pageNumber !== undefined
-    //       ? pagination.pageNumber
-    //       : pageNum || 0
-    //   }`,
-    //   headers,
-    // })
-    //   .then((result) => {
-    //     setIsLoaded(false);
-    //     if (result) setStudents(result.data);
-    //     setIsLoaded(true);
-    //   })
-    //   .catch((error) => console.log(error));
+    setIsLoaded(false);
     httpRequest
       .get(
         `student/all?pageNumber=${
@@ -55,11 +56,13 @@ function StudentView() {
         }`
       )
       .then((result) => {
-        setIsLoaded(false);
-        if (result) setStudents(result.data);
+        setStudents(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNum, pagination.pageNumber]);
 
   // Handle delete student
@@ -71,19 +74,22 @@ function StudentView() {
   // Confirm to delete student
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/student/delete/${studentIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newStudentList = [...students];
-        const index = students.findIndex(
-          (student) => student.studentId === studentIdRef.current
-        );
-        newStudentList.splice(index, 1);
-        setStudents(newStudentList);
-      });
+      httpRequest
+        .delete(`student/delete/${studentIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newStudentList = [...students];
+          const index = students.findIndex(
+            (student) => student.studentId === studentIdRef.current
+          );
+          newStudentList.splice(index, 1);
+          setStudents(newStudentList);
+          handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -148,6 +154,13 @@ function StudentView() {
           </>
         )}
       </label>
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

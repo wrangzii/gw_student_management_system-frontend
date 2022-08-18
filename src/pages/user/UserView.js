@@ -1,16 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
 import View from "~/components/crud/View";
-import { headers } from "~/utils/headersToken";
-import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
+import {
+  Pagination,
+  PopupConfirm,
+  Loading,
+  SearchBar,
+  Message,
+} from "~/components";
+import httpRequest from "~/utils/httpRequest";
 
 function UserView() {
   const [users, setUsers] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -25,15 +39,16 @@ function UserView() {
 
   // Get list user
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/users/all?pageNumber=${pageNumber}`,
-      headers,
-    }).then((result) => {
-      setIsLoaded(false);
-      if (result) setUsers(result.data);
-      setIsLoaded(true);
-    });
+    httpRequest
+      .get(`users/all?pageNumber=${pageNumber}`)
+      .then((result) => {
+        setUsers(result?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete user
@@ -45,19 +60,22 @@ function UserView() {
   // Confirm to delete user
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/users/delete/${userIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newUserList = [...users];
-        const index = users.findIndex(
-          (user) => user.userId === userIdRef.current
-        );
-        newUserList.splice(index, 1);
-        setUsers(newUserList);
-      });
+      httpRequest
+        .delete(`users/delete/${userIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newUserList = [...users];
+          const index = users.findIndex(
+            (user) => user.userId === userIdRef.current
+          );
+          newUserList.splice(index, 1);
+          setUsers(newUserList);
+          handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -68,6 +86,13 @@ function UserView() {
   return (
     <View>
       <SearchBar page={"user"} />
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -110,10 +135,10 @@ function UserView() {
           <Loading />
         )}
       </div>
-      <Pagination />
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}
+      <Pagination />
     </View>
   );
 }

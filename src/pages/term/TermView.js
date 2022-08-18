@@ -4,19 +4,25 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { headers } from "~/utils/headersToken";
-import {
-  Pagination,
-  PopupConfirm,
-  Loading,
-  SearchBar,
-} from "~/components";
+import { Pagination, PopupConfirm, Loading, SearchBar, Message } from "~/components";
 
 import View from "~/components/crud/View";
+import httpRequest from "~/utils/httpRequest";
 
 function TermView() {
   const [terms, setTerms] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,19 +37,16 @@ function TermView() {
 
   // Call list of term
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/term/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    httpRequest
+      .get(`term/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
-        if (result) {
-          setTerms(result.data);
-        }
+        setTerms(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete term
@@ -55,19 +58,22 @@ function TermView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/term/delete/${termIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newTermList = [...terms];
-        const index = terms.findIndex(
-          (term) => term.termId === termIdRef.current
-        );
-        newTermList.splice(index, 1);
-        setTerms(newTermList);
-      });
+      httpRequest
+        .delete(`term/delete/${termIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newTermList = [...terms];
+          const index = terms.findIndex(
+            (term) => term.termId === termIdRef.current
+          );
+          newTermList.splice(index, 1);
+          setTerms(newTermList);
+          handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -78,6 +84,13 @@ function TermView() {
   return (
     <View>
       <SearchBar page={"term"} />
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -119,11 +132,11 @@ function TermView() {
         ) : (
           <Loading />
         )}
-        <Pagination />
         {popup.isLoading && (
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
+      <Pagination />
     </View>
   );
 }

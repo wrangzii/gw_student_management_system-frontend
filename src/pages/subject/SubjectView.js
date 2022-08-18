@@ -9,14 +9,26 @@ import {
   PopupConfirm,
   Loading,
   SearchBar,
+  Message,
 } from "~/components";
 
 import View from "~/components/crud/View";
+import httpRequest from "~/utils/httpRequest";
 
 function SubjectView() {
   const [subjects, setSubjects] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,19 +43,17 @@ function SubjectView() {
 
   // Call list of subject
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/subject/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    setIsLoaded(false);
+    httpRequest
+      .get(`subject/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
-        if (result) {
-          setSubjects(result.data);
-        }
+        setSubjects(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete subject
@@ -55,19 +65,18 @@ function SubjectView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/subject/delete/${subjectIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newSubjectList = [...subjects];
-        const index = subjects.findIndex(
-          (subject) => subject.subjectId === subjectIdRef.current
-        );
-        newSubjectList.splice(index, 1);
-        setSubjects(newSubjectList);
-      });
+      httpRequest
+        .delete(`subject/delete/${subjectIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newSubjectList = [...subjects];
+          const index = subjects.findIndex(
+            (subject) => subject.subjectId === subjectIdRef.current
+          );
+          newSubjectList.splice(index, 1);
+          setSubjects(newSubjectList);
+          handleMsgStatus(result?.data?.message, true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -78,6 +87,13 @@ function SubjectView() {
   return (
     <View>
       <SearchBar page={"subject"} />
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -121,11 +137,11 @@ function SubjectView() {
         ) : (
           <Loading />
         )}
-        <Pagination />
         {popup.isLoading && (
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
+      <Pagination />
     </View>
   );
 }

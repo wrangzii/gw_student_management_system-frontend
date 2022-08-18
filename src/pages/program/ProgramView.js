@@ -39,10 +39,10 @@ function ProgramView() {
 
   // Call list of program
   useEffect(() => {
+    setIsLoaded(false);
     httpRequest
       .get(`program/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
         setPrograms(result?.data);
         setIsLoaded(true);
       })
@@ -72,6 +72,10 @@ function ProgramView() {
           newProgramList.splice(index, 1);
           setPrograms(newProgramList);
           handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
         });
       handlePopup("", false);
       setIsLoaded(false);
@@ -84,7 +88,11 @@ function ProgramView() {
     <View>
       <SearchBar page={"program"} />
       {msgStatus.isSuccess && (
-        <Message isSuccess={msgStatus.isSuccess} msg={msgStatus.msg} />
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
       )}
       <div className="overflow-auto">
         {isLoaded ? (

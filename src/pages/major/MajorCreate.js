@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Create from "~/components/crud/Create";
 import { ErrorHandler, HandlerBtns, UserExecuted, Loading } from "~/components";
 import { useAuth } from "~/store/auth";
-import Create from "~/components/crud/Create";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
 
@@ -44,7 +44,7 @@ function MajorCreate() {
           <div className={styles["form-body"]}>
             {isError ? (
               <ErrorHandler
-                name={`"${vietnameseName}"`}
+                name={`"${englishName}"`}
                 msg={"is already taken!"}
               />
             ) : null}

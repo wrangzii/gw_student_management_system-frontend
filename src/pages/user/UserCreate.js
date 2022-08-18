@@ -7,11 +7,12 @@ import Select from "react-select";
 
 import Create from "~/components/crud/Create";
 import { headers } from "~/utils/headersToken";
-import { HandlerBtns, Loading, UserExecuted } from "~/components";
+import { ErrorHandler, HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 
 import styles from "~/styles/components/form.module.scss";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 function UserCreate() {
   const form = "create";
@@ -26,6 +27,7 @@ function UserCreate() {
   const [departmentId, setDepartmentId] = useState(null);
   const [department, setDepartment] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   let role_dropdown = useRef();
@@ -36,22 +38,21 @@ function UserCreate() {
   // Get role list
   useEffect(() => {
     setIsLoaded(false);
-    axios({
-      method: "get",
-      url: `http://localhost:8080/role/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    httpRequest
+      .get(`role/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        if (result) {
-          setRole(result.data);
-        }
+        setRole(result?.data);
         return result.data;
       })
       .then((result) => {
-        role_dropdown.current = result.map((role) => ({
+        role_dropdown.current = result?.map((role) => ({
           value: role.roleName,
           label: role.roleName,
         }));
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
         setIsLoaded(true);
       });
   }, []);
@@ -59,27 +60,24 @@ function UserCreate() {
   // Get departments
   useEffect(() => {
     setIsLoaded(false);
-    axios({
-      method: "get",
-      url: `http://localhost:8080/department/all?pageNumber=${pageNumber}`,
-      headers,
-    }).then((result) => {
-      if (result) {
-        setDepartment(result.data);
-        setIsDisabled(true);
-      }
-      setIsLoaded(true);
-    });
+    httpRequest
+      .get(`department/all?pageNumber=${pageNumber}`)
+      .then((result) => {
+        setDepartment(result?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, []);
 
   // Handle create user
   const handleCreateUser = (e) => {
     e.preventDefault();
-    axios({
-      method: "post",
-      url: "http://localhost:8080/users/add",
-      headers,
-      data: {
+    setIsLoaded(false);
+    httpRequest
+      .post("users/add", {
         email,
         username,
         password,
@@ -90,12 +88,15 @@ function UserCreate() {
         createBy,
         role,
         departmentId,
-      },
-    }).then((result) => {
-      if (result.data) {
-        navigate("../view");
-      }
-    });
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        error?.response?.status === 400 && setIsError(true);
+        setIsLoaded(true);
+      });
   };
 
   // Handle change select
@@ -109,6 +110,9 @@ function UserCreate() {
         <form onSubmit={handleCreateUser} className="form-group">
           <HeadingTitle title={"user"} form={form} />
           <div className={styles["form-body"]}>
+            {isError ? (
+              <ErrorHandler name={`"${email}"`} msg={"is already taken!"} />
+            ) : null}
             <div className="form-body__left">
               <div className="fullname form-group d-flex">
                 <label htmlFor="fullname">Fullname</label>
@@ -126,7 +130,10 @@ function UserCreate() {
                   type="email"
                   name="email"
                   placeholder="manager@fe.edu.vn"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setIsError(false);
+                  }}
                   className="form-control"
                 />
               </div>
@@ -197,8 +204,12 @@ function UserCreate() {
                   name="department"
                   className="form-select"
                   onChange={(e) => setDepartmentId(parseInt(e.target.value))}
+                  onClick={() => setIsDisabled(true)}
                 >
-                  <option readOnly disabled={isDisabled} value="">
+                  <option
+                    defaultValue=""
+                    disabled={isDisabled}
+                  >
                     --Select department--
                   </option>
                   {department &&

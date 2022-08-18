@@ -40,10 +40,10 @@ function DepartmentView() {
 
   // Call list of department
   useEffect(() => {
+    setIsLoaded(false);
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
         setDepartments(result?.data);
         setIsLoaded(true);
       })
@@ -73,6 +73,10 @@ function DepartmentView() {
           newDepartmentList.splice(index, 1);
           setDepartments(newDepartmentList);
           handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
         });
       handlePopup("", false);
       setIsLoaded(false);
@@ -140,11 +144,11 @@ function DepartmentView() {
         ) : (
           <Loading />
         )}
-        <Pagination items={departments} />
         {popup.isLoading && (
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
+      <Pagination items={departments} />
     </View>
   );
 }

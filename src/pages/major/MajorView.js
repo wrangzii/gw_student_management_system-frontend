@@ -40,16 +40,17 @@ function MajorView() {
 
   // Call list of major
   useEffect(() => {
+    setIsLoaded(false);
     httpRequest
       .get(`major/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
-        if (result) {
-          setMajors(result.data);
-        }
+        setMajors(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete major
@@ -72,6 +73,10 @@ function MajorView() {
           newMajorList.splice(index, 1);
           setMajors(newMajorList);
           handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
         });
       handlePopup("", false);
       setIsLoaded(false);
@@ -84,7 +89,11 @@ function MajorView() {
     <View>
       <SearchBar page={"major"} />
       {msgStatus.isSuccess && (
-        <Message isSuccess={msgStatus.isSuccess} msg={msgStatus.msg} />
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => setMsgStatus("", false)}
+        />
       )}
       <div className="overflow-auto">
         {isLoaded ? (

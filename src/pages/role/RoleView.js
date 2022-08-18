@@ -1,22 +1,31 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import {
   Pagination,
   PopupConfirm,
   Loading,
   SearchBar,
+  Message,
 } from "~/components";
 
 import View from "~/components/crud/View";
+import httpRequest from "~/utils/httpRequest";
 
 function RoleView() {
   const [roles, setRoles] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [msgStatus, setMsgStatus] = useState({
+    msg: "",
+    isSuccess: false,
+  });
+  const handleMsgStatus = (msg, isSuccess) => {
+    setMsgStatus({
+      msg,
+      isSuccess,
+    });
+  };
   const [popup, setPopup] = useState({
     message: "",
     isLoading: false,
@@ -31,14 +40,11 @@ function RoleView() {
 
   // Call list of role
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/role/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    setIsLoaded(false);
+    httpRequest
+      .get(`role/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
-        if (result) setRoles(result.data);
+        setRoles(result?.data);
         setIsLoaded(true);
       })
       .catch((error) => console.log(error));
@@ -53,19 +59,22 @@ function RoleView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/role/delete/${roleIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newRoleList = [...roles];
-        const index = roles.findIndex(
-          (role) => role.roleId === roleIdRef.current
-        );
-        newRoleList.splice(index, 1);
-        setRoles(newRoleList);
-      });
+      httpRequest
+        .delete(`role/delete/${roleIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newRoleList = [...roles];
+          const index = roles.findIndex(
+            (role) => role.roleId === roleIdRef.current
+          );
+          newRoleList.splice(index, 1);
+          setRoles(newRoleList);
+          handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {
@@ -76,6 +85,13 @@ function RoleView() {
   return (
     <View>
       <SearchBar page={"role"} />
+      {msgStatus.isSuccess && (
+        <Message
+          isSuccess={msgStatus.isSuccess}
+          msg={msgStatus.msg}
+          onCloseMsg={() => handleMsgStatus("", false)}
+        />
+      )}
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
