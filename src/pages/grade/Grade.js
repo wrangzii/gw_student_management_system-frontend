@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import axios from "axios";
-
 import { SearchBar, Loading } from "~/components";
 import { sections } from "./Sections";
 import CollapseSection from "./CollapseSection";
-import { headers } from "~/utils/headersToken";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "./grade.module.scss";
 
@@ -19,17 +17,19 @@ function Grade() {
   // Get student's grade (score)
   useEffect(() => {
     setIsLoaded(false);
-    axios({
-      method: "get",
-      url: `http://localhost:8080/student/get/score/${studentId.id}`,
-      headers,
-    }).then((result) => {
-      const data = result?.data?.data;
-      const studentSubjectId = data.studentSubjectId;
-      setStudentInfo(studentSubjectId.studentId);
-      setStatus(data.status);
-      setIsLoaded(true);
-    });
+    httpRequest
+      .get(`student/get/score/${studentId.id}`)
+      .then((result) => {
+        const data = result?.data?.data;
+        const studentSubjectId = data?.studentSubjectId;
+        setStudentInfo(studentSubjectId?.studentId);
+        setStatus(data?.status);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, []);
 
   return (

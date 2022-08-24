@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components";
 import AuthHeading from "./partials/AuthHeading";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -19,21 +17,17 @@ function ForgotPassword() {
   const handleForgotPassword = (e) => {
     e.preventDefault();
     setIsLoaded(false);
-    axios({
-      method: "post",
-      url: "http://localhost:8080/forgot_password",
-      headers,
-      data: JSON.stringify({ email }),
-    })
+    httpRequest
+      .post("forgot_password", { email })
       .then((result) => {
         setIsError(false);
-        if (result) setMsg(result.data.message);
+        setMsg(result?.data?.message);
         setIsLoaded(true);
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error?.response?.status === 400) {
           setIsError(true);
-          setIsLoaded(true)
+          setIsLoaded(true);
           if (!email.includes("@")) {
             setMsg("Email address is not valid!");
           } else {

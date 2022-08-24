@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { Pagination, PopupConfirm, Loading, SearchBar } from "~/components";
+import httpRequest from "~/utils/httpRequest";
 
 import View from "~/components/crud/View";
 
@@ -26,19 +24,17 @@ function MajorView() {
 
   // Call list of studentProgramMajor
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/studentProgramMajor/all?pageNumber=${pageNumber}`,
-      headers,
-    })
+    setIsLoaded(false);
+    httpRequest
+      .get(`studentProgramMajor/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setIsLoaded(false);
-        if (result) {
-          setStudentProgramMajors(result.data);
-        }
+        setStudentProgramMajors(result?.data);
         setIsLoaded(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [pageNumber]);
 
   // Handle delete studentProgramMajor
@@ -50,20 +46,18 @@ function MajorView() {
   // Confirm to delete role
   const confirmDelete = (choose) => {
     if (choose) {
-      axios({
-        method: "delete",
-        url: `http://localhost:8080/studentProgramMajor/delete/${majorIdRef.current}`,
-        headers,
-      }).then((result) => {
-        setIsLoaded(true);
-        const newMajorList = [...studentProgramMajors];
-        const index = studentProgramMajors.findIndex(
-          (studentProgramMajor) =>
-            studentProgramMajor.majorId === majorIdRef.current
-        );
-        newMajorList.splice(index, 1);
-        setStudentProgramMajors(newMajorList);
-      });
+      httpRequest
+        .delete(`studentProgramMajor/delete/${majorIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newMajorList = [...studentProgramMajors];
+          const index = studentProgramMajors.findIndex(
+            (studentProgramMajor) =>
+              studentProgramMajor.majorId === majorIdRef.current
+          );
+          newMajorList.splice(index, 1);
+          setStudentProgramMajors(newMajorList);
+        });
       handlePopup("", false);
       setIsLoaded(false);
     } else {

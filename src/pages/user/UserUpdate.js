@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import axios from "axios";
-
 import Select from "react-select";
 
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -28,63 +26,70 @@ function UserUpdate() {
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
   const { id } = useParams();
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/users/${id}`,
-      headers,
-    })
+    setIsLoaded(false);
+    httpRequest
+      .get(`users/${id}`)
       .then((result) => {
-        if (result) {
-          setEmail(result.data.data.email);
-          setPhoneNumber(result.data.data.phoneNumber);
-          setDob(new Date(result.data.data.dob).toISOString());
-          setAddress(result.data.data.address);
-          setFullName(result.data.data.fullName);
-          setRole(result.data.data.roles.map((role) => role.roleName));
-          setDepartmentId(result.data.data.departmentId.departmentId);
-        }
-        return result.data.data;
+        const data = result?.data?.data;
+        setEmail(data.email);
+        setPhoneNumber(data.phoneNumber);
+        setDob(new Date(data.dob).toISOString());
+        setAddress(data.address);
+        setFullName(data.fullName);
+        setRole(data.roles.map((role) => role.roleName));
+        setDepartmentId(data.departmentId.departmentId);
+        return data;
       })
       .then((result) => {
         // Get user's current role
-        role_current.current = result.roles.map((role) => ({
-          value: role.roleName,
-          label: role.roleName,
+        role_current.current = result?.roles.map((role) => ({
+          value: role?.roleName,
+          label: role?.roleName,
         }));
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
       });
   }, [id]);
 
   // Get role list
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/role/all?pageNumber=0`,
-      headers,
-    })
+    setIsLoaded(false);
+    httpRequest
+      .get(`role/all?pageNumber=0`)
       .then((result) => {
-        if (result) return result.data;
-      })
-      .then((result) => {
-        role_dropdown.current = result.map((role) => ({
+        role_dropdown.current = result?.data?.map((role) => ({
           value: role.roleName,
           label: role.roleName,
         }));
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
       });
   }, []);
 
   // Get department list
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/department/all?pageNumber=0`,
-      headers,
-    }).then((result) => {
-      if (result) setDepartments(result.data);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`department/all?pageNumber=0`)
+      .then((result) => {
+        setDepartments(result?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, []);
 
   // Handle change dropdown
@@ -95,11 +100,9 @@ function UserUpdate() {
   // Handle update user
   const handleUpdateUser = (e) => {
     e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/users/edit/${id}`,
-      headers,
-      data: JSON.stringify({
+    setIsLoaded(false);
+    httpRequest
+      .put(`users/edit/${id}`, {
         email,
         phoneNumber,
         dob,
@@ -108,15 +111,22 @@ function UserUpdate() {
         modifyBy,
         role,
         departmentId,
-      }),
-    }).then((result) => (result ? navigate("../view") : null));
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
 
   return (
     <Update>
-      {departmentId ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateUser} className="form-group">
-          <HeadingTitle title={"user"} form={form}/>
+          <HeadingTitle title={"user"} form={form} />
           <div className={styles["form-body"]}>
             <div className="form-body__left">
               <div className="fullname form-group d-flex">

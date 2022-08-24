@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
+import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
-import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 
 function RoleUpdate() {
   const form = "update";
   const [roleName, setRoleName] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { id } = useParams();
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
@@ -22,30 +21,44 @@ function RoleUpdate() {
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/role/${id}`,
-      headers,
-    }).then((result) => {
-      setRoleName(result.data.data.roleName);
-      setDescription(result.data.data.description);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`role/${id}`)
+      .then((result) => {
+        const data = result?.data?.data;
+        setRoleName(data.roleName);
+        setDescription(data.description);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [id]);
 
   // Handle update role
   const handleUpdateRole = (e) => {
     e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/role/edit/${id}`,
-      headers,
-      data: JSON.stringify({ roleName, description, modifyBy }),
-    }).then((result) => (result ? navigate("../view") : null));
+    setIsLoaded(false);
+    httpRequest
+      .put(`role/edit/${id}`, {
+        roleName,
+        description,
+        modifyBy,
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
 
   return (
     <Update>
-      {roleName ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateRole} className="form-group">
           <HeadingTitle title={"role"} form={form} />
           <div className={styles["form-body"]}>

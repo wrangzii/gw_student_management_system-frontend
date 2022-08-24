@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-
 import Select from "react-select";
 
 import Create from "~/components/crud/Create";
-import { headers } from "~/utils/headersToken";
+import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import { ErrorHandler, HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
-import HeadingTitle from "~/components/headingTitle/HeadingTitle";
-import httpRequest from "~/utils/httpRequest";
 
 function UserCreate() {
   const form = "create";
@@ -42,12 +39,12 @@ function UserCreate() {
       .get(`role/all?pageNumber=${pageNumber}`)
       .then((result) => {
         setRole(result?.data);
-        return result.data;
+        return result?.data;
       })
       .then((result) => {
         role_dropdown.current = result?.map((role) => ({
-          value: role.roleName,
-          label: role.roleName,
+          value: role?.roleName,
+          label: role?.roleName,
         }));
         setIsLoaded(true);
       })

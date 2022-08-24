@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { Loading } from "~/components";
 import ViewDetail from "~/components/crud/ViewDetail";
+import httpRequest from "~/utils/httpRequest";
 
 function RoleViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Get role's detail info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/role/${id}`,
-      headers,
-    }).then((result) => {
-      if (result) {
-        setViewDetail(result.data.data);
-      }
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`role/${id}`)
+      .then((result) => {
+        setViewDetail(result?.data?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, []);
 
   return (
     <ViewDetail>
       <div className="overflow-auto">
-        {viewDetail.length !== 0 ? (
+        {isLoaded ? (
           <div className="table">
             <div className="tr">
               <div className="th">ID</div>

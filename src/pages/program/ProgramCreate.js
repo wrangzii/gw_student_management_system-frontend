@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { ErrorHandler, HandlerBtns, UserExecuted, Loading } from "~/components";
 import { useAuth } from "~/store/auth";
 import Create from "~/components/crud/Create";

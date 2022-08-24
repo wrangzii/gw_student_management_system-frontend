@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -15,6 +13,7 @@ function DepartmentUpdate() {
   const form = "update";
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { id } = useParams();
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
@@ -22,29 +21,42 @@ function DepartmentUpdate() {
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/department/${id}`,
-      headers,
-    }).then((result) => {
-      setDepartmentName(result.data.data.departmentName);
-      setDescription(result.data.data.description);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`department/${id}`)
+      .then((result) => {
+        const data = result?.data?.data;
+        setDepartmentName(data.departmentName);
+        setDescription(data.description);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [id]);
 
   // Handle update department
   const handleUpdateDepartment = (e) => {
-    e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/department/edit/${id}`,
-      headers,
-      data: JSON.stringify({ departmentName, description, modifyBy }),
-    }).then((result) => (result ? navigate("../view") : null));
+    setIsLoaded(false);
+    httpRequest
+      .put(`department/edit/${id}`, {
+        departmentName,
+        description,
+        modifyBy,
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
   return (
     <Update>
-      {departmentName ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateDepartment} className="form-group">
           <HeadingTitle title={"department"} form={form} />
           <div className={styles["form-body"]}>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -20,6 +18,7 @@ function StudentUpdate() {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
   const { id } = useParams();
@@ -27,30 +26,32 @@ function StudentUpdate() {
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/student/${id}`,
-      headers,
-    }).then((result) => {
-      let data = result.data.data;
-      setFptId(data.fptId);
-      setPersonId(data.personId);
-      setUogId(data.uogId);
-      setFullName(data.fullName);
-      setDob(data.dob);
-      setGender(data.gender);
-      setEmail(data.email);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`student/${id}`)
+      .then((result) => {
+        let data = result?.data?.data;
+        setFptId(data.fptId);
+        setPersonId(data.personId);
+        setUogId(data.uogId);
+        setFullName(data.fullName);
+        setDob(data.dob);
+        setGender(data.gender);
+        setEmail(data.email);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [id]);
 
   // Handle update student
   const handleUpdateStudent = (e) => {
     e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/student/edit/${id}`,
-      headers,
-      data: JSON.stringify({
+    setIsLoaded(false);
+    httpRequest
+      .put(`student/edit/${id}`, {
         fptId,
         personId,
         uogId,
@@ -59,13 +60,20 @@ function StudentUpdate() {
         gender,
         modifyBy,
         email,
-      }),
-    }).then((result) => (result ? navigate("../view") : null));
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
 
   return (
     <Update>
-      {gender !== "" ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateStudent} className="form-group">
           <HeadingTitle title={"student"} form={form} />
           <div className={styles["form-body"]}>

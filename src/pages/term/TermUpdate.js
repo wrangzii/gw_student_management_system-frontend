@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -16,6 +14,7 @@ function TermUpdate() {
   const [termName, setTermName] = useState("");
   const [termCode, setTermCode] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { id } = useParams();
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
@@ -23,31 +22,40 @@ function TermUpdate() {
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/term/${id}`,
-      headers,
-    }).then((result) => {
-      const data = result?.data?.data;
-      setTermName(data.termName);
-      setTermCode(data.termCode);
-      setDescription(data.description);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`term/${id}`)
+      .then((result) => {
+        const data = result?.data?.data;
+        setTermName(data?.termName);
+        setTermCode(data?.termCode);
+        setDescription(data?.description);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [id]);
 
   // Handle update term
   const handleUpdateTerm = (e) => {
     e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/term/edit/${id}`,
-      headers,
-      data: JSON.stringify({ termName, termCode, description, modifyBy }),
-    }).then((result) => (result ? navigate("../view") : null));
+    setIsLoaded(false);
+    httpRequest
+      .put(`term/edit/${id}`, { termName, termCode, description, modifyBy })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
   return (
     <Update>
-      {termName ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateTerm} className="form-group">
           <HeadingTitle title={"term"} form={form} />
           <div className={styles["form-body"]}>

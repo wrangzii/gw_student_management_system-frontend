@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
 import { HandlerBtns, Loading, UserExecuted } from "~/components";
 import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
+import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -17,37 +15,52 @@ function ProgramUpdate() {
   const [programName, setProgramName] = useState("");
   const [programCode, setProgramCode] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
   const { id } = useParams();
 
   // Get current info
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:8080/program/${id}`,
-      headers,
-    }).then((result) => {
-      const data = result?.data?.data;
-      setProgramName(data.programName);
-      setProgramCode(data.description);
-      setDescription(data.description);
-    });
+    setIsLoaded(false);
+    httpRequest
+      .get(`program/${id}`)
+      .then((result) => {
+        const data = result?.data?.data;
+        setProgramName(data.programName);
+        setProgramCode(data.description);
+        setDescription(data.description);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   }, [id]);
 
   // Handle update program
   const handleUpdateProgram = (e) => {
     e.preventDefault();
-    axios({
-      method: "put",
-      url: `http://localhost:8080/program/edit/${id}`,
-      headers,
-      data: JSON.stringify({ programName, description, programCode, modifyBy }),
-    }).then((result) => (result ? navigate("../view") : null));
+    setIsLoaded(false);
+    httpRequest
+      .put(`program/edit/${id}`, {
+        programName,
+        description,
+        programCode,
+        modifyBy,
+      })
+      .then((result) => {
+        result && navigate("../view");
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
   };
   return (
     <Update>
-      {programName ? (
+      {isLoaded ? (
         <form onSubmit={handleUpdateProgram} className="form-group">
           <HeadingTitle title={"program"} form={form} />
           <div className={styles["form-body"]}>

@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
-import { headers } from "~/utils/headersToken";
-import { Pagination, PopupConfirm, Loading, SearchBar, Message } from "~/components";
+import {
+  Pagination,
+  PopupConfirm,
+  Loading,
+  SearchBar,
+  Message,
+} from "~/components";
+import httpRequest from "~/utils/httpRequest";
 
 import View from "~/components/crud/View";
-import httpRequest from "~/utils/httpRequest";
 
 function TermView() {
   const [terms, setTerms] = useState([]);
@@ -37,6 +40,7 @@ function TermView() {
 
   // Call list of term
   useEffect(() => {
+    setIsLoaded(false);
     httpRequest
       .get(`term/all?pageNumber=${pageNumber}`)
       .then((result) => {
