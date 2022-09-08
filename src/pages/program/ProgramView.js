@@ -134,7 +134,6 @@ function ProgramView() {
           <Loading />
         )}
       </div>
-      <Pagination />
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

@@ -140,7 +140,6 @@ function TermView() {
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
-      <Pagination />
     </View>
   );
 }

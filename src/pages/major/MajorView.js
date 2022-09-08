@@ -140,7 +140,6 @@ function MajorView() {
           <PopupConfirm message={popup.message} onPopup={confirmDelete} />
         )}
       </div>
-      <Pagination />
     </View>
   );
 }

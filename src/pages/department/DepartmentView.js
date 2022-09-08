@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import httpRequest from "~/utils/httpRequest";
-
 import View from "~/components/crud/View";
 import {
   Pagination,
@@ -11,11 +9,13 @@ import {
   SearchBar,
   Message,
 } from "~/components";
+import httpRequest from "~/utils/httpRequest";
+import { usePagination } from "~/store/pagination";
 
 function DepartmentView() {
   const [departments, setDepartments] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -40,6 +40,8 @@ function DepartmentView() {
 
   // Call list of department
   useEffect(() => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     setIsLoaded(false);
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
@@ -51,7 +53,7 @@ function DepartmentView() {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNumber]);
+  }, [pagination.pageNumber]);
 
   // Handle delete department
   const handleDelete = (departmentId) => {
@@ -144,11 +146,11 @@ function DepartmentView() {
         ) : (
           <Loading />
         )}
-        {popup.isLoading && (
-          <PopupConfirm message={popup.message} onPopup={confirmDelete} />
-        )}
       </div>
-      <Pagination items={departments} />
+      {/* <Pagination pageName={"department"} /> */}
+      {popup.isLoading && (
+        <PopupConfirm message={popup.message} onPopup={confirmDelete} />
+      )}
     </View>
   );
 }

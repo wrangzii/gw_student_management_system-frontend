@@ -136,7 +136,7 @@ function RoleView() {
           <Loading />
         )}
       </div>
-      <Pagination />
+      {/* <Pagination pageName={"role"} /> */}
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
 import View from "~/components/crud/View";
 import {
   Pagination,
@@ -12,14 +10,12 @@ import {
   Message,
 } from "~/components";
 import { usePagination } from "~/store/pagination";
-import { useAuth } from "~/store/auth";
 import httpRequest from "~/utils/httpRequest";
+import UploadCSV from "./uploadCSV";
 
 function StudentView() {
-  const { auth } = useAuth();
   const [students, setStudents] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [csvFile, setCsvFile] = useState("");
   const { pagination } = usePagination();
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -44,15 +40,12 @@ function StudentView() {
   const studentIdRef = useRef();
 
   // Call list of student
-  const pageNum = window.location.href.split("=")[1];
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
       .get(
         `student/all?pageNumber=${
-          pagination.pageNumber !== undefined
-            ? pagination.pageNumber
-            : pageNum || 0
+          pagination.pageNumber !== undefined ? pagination.pageNumber : 0
         }`
       )
       .then((result) => {
@@ -63,7 +56,7 @@ function StudentView() {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNum, pagination.pageNumber]);
+  }, [pagination.pageNumber]);
 
   // Handle delete student
   const handleDelete = (studentId) => {
@@ -97,63 +90,10 @@ function StudentView() {
     }
   };
 
-  // Handle import CSV file
-  const formData = new FormData();
-  const onFileChange = (e) => {
-    const file = e.target?.files[0];
-    if (e.target && file) {
-      formData.append("file", file);
-      setCsvFile(file.name);
-    }
-  };
-
-  // Handle submit file
-  const handleSubmitFile = () => {
-    axios({
-      method: "post",
-      url: "http://localhost:8080/student/insert/file",
-      data: formData,
-      headers: {
-        Authorization: "Bearer " + auth.accessToken,
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
-  };
-
-  // Get student by page
-  const getStudentByPage = (page) => {
-    console.log(page);
-  };
-
   return (
     <View>
       <SearchBar page={"student"} />
-      <label className="import-file mb-2" htmlFor="file">
-        <span className="btn btn-warning">
-          <i className="fa-solid fa-upload p-0 me-2"></i>
-          Upload CSV
-        </span>
-        <input type="file" onChange={onFileChange} id="file" hidden />
-        {csvFile && (
-          <>
-            <div className="d-flex flex-column align-items-start gap-2 mt-2">
-              <p className="d-inline-block mb-0">
-                <b>File name:</b> {csvFile}
-              </p>
-              <button
-                type="button"
-                className="btn btn-success"
-                onClick={handleSubmitFile}
-              >
-                <i className="fa-solid fa-circle-arrow-up p-0 me-2"></i>
-                Submit
-              </button>
-            </div>
-          </>
-        )}
-      </label>
+      <UploadCSV />
       {msgStatus.isSuccess && (
         <Message
           isSuccess={msgStatus.isSuccess}
@@ -201,7 +141,7 @@ function StudentView() {
           <Loading />
         )}
       </div>
-      <Pagination onClickPage={getStudentByPage} />
+      <Pagination pageName={"student"} />
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

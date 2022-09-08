@@ -1,31 +1,34 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { Loading } from "~/components";
 import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
-function Pagination({ onClickPage }) {
+function Pagination({ pageName }) {
   const [pageNumber, setPageNumber] = useState(0);
-  const { pagination, setPagination } = usePagination();
+  const { pagination, setPagination } = usePagination(0);
   const [amountOfItem, setAmountOfItem] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
   const nextRef = useRef();
   const prevRef = useRef();
 
   // Handle pagination action
   useEffect(() => {
-    setIsLoaded(false);
-    httpRequest.get("student/pageNumber").then((result) => {
-      setAmountOfItem(result?.data);
-      setIsLoaded(true);
-    });
+    httpRequest
+      .get(`${pageName}/pageNumber`)
+      .then((result) => {
+        setAmountOfItem(result?.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // Handle pointer-event
-    const currentPageNumber = window.location.href.split("=")[1];
-    pageNumber <= 0 || currentPageNumber <= 0
+    pageNumber <= 0
       ? prevRef.current.classList.add("pe-none")
       : prevRef.current.classList.remove("pe-none");
 
+    pageNumber >= countPageLength()
+      ? nextRef.current.classList.add("pe-none")
+      : nextRef.current.classList.remove("pe-none");
     // Send context page number
     setPagination({ pageNumber });
   }, [pageNumber]);
@@ -34,15 +37,6 @@ function Pagination({ onClickPage }) {
   const countPageLength = () => {
     const pageLength = amountOfItem / 15;
     return Math.floor(pageLength);
-  };
-
-  const renderPage = () => {
-    let totalPage = countPageLength();
-    let buttonsArr = [];
-    for (let i = 1; i <= totalPage; i++) {
-      buttonsArr.push(i);
-    }
-    return buttonsArr;
   };
 
   return (
@@ -62,20 +56,9 @@ function Pagination({ onClickPage }) {
         </Link>
       </li>
       <li className="page-item">
-        {isLoaded ? (
-          renderPage().map((item) => (
-            <Link
-              to={`?page=${item}`}
-              className="page-link text-center"
-              key={item}
-              onClick={() => onClickPage(item)}
-            >
-              {item}
-            </Link>
-          ))
-        ) : (
-          <Loading />
-        )}
+        <button className="page-link text-center">{`${
+          pagination.pageNumber + 1
+        }/${countPageLength() + 1}`}</button>
       </li>
       <li
         className="page-item next"

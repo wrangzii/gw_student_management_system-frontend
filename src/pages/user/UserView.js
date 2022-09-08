@@ -138,7 +138,6 @@ function UserView() {
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}
-      <Pagination />
     </View>
   );
 }

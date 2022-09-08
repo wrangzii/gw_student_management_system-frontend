@@ -8,12 +8,10 @@ export const PaginationProvider = ({ children }) => {
   useEffect(() => {
     let pageNumber;
 
-    // if (accessToken) {
     setPagination((prevPagination) => ({
       ...prevPagination,
       pageNumber,
     }));
-    // }
   }, []);
 
   return (
