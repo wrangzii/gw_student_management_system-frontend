@@ -12,6 +12,7 @@ import {
 import { usePagination } from "~/store/pagination";
 import httpRequest from "~/utils/httpRequest";
 import UploadCSV from "./uploadCSV";
+import UploadGrade from "./uploadGrade";
 
 function StudentView() {
   const [students, setStudents] = useState([]);
@@ -94,6 +95,7 @@ function StudentView() {
     <View>
       <SearchBar page={"student"} />
       <UploadCSV />
+      <UploadGrade />
       {msgStatus.isSuccess && (
         <Message
           isSuccess={msgStatus.isSuccess}

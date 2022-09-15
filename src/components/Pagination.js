@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
+// import { Link } from "react-router-dom";
 
 import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
 function Pagination({ pageName }) {
   const [pageNumber, setPageNumber] = useState(0);
+  const [pageValue, setPageValue] = useState(1);
   const { pagination, setPagination } = usePagination(0);
   const [amountOfItem, setAmountOfItem] = useState(0);
   const nextRef = useRef();
@@ -26,9 +27,9 @@ function Pagination({ pageName }) {
       ? prevRef.current.classList.add("pe-none")
       : prevRef.current.classList.remove("pe-none");
 
-    pageNumber >= countPageLength()
-      ? nextRef.current.classList.add("pe-none")
-      : nextRef.current.classList.remove("pe-none");
+    // pageNumber >= countPageLength()
+    //   ? nextRef.current.classList.add("pe-none")
+    //   : nextRef.current.classList.remove("pe-none");
     // Send context page number
     setPagination({ pageNumber });
   }, [pageNumber]);
@@ -39,6 +40,19 @@ function Pagination({ pageName }) {
     return Math.floor(pageLength);
   };
 
+  // Input pagination
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current.onkeypress = (e) => {
+        if (e.key === "Enter") {
+          setPageNumber(pageValue);
+        }
+      };
+    }
+  }, [pageValue]);
+
   return (
     <ul className="pagination my-3">
       <li
@@ -46,33 +60,42 @@ function Pagination({ pageName }) {
         onClick={() => setPageNumber(pagination.pageNumber - 1)}
         ref={prevRef}
       >
-        <Link
+        <button
           className="page-link"
-          to={`?page=${pageNumber - 1}`}
+          // to={`?page=${pageNumber - 1}`}
           aria-label="Previous"
         >
           <span aria-hidden="true">&laquo;</span>
           <span className="sr-only">Previous</span>
-        </Link>
+        </button>
       </li>
       <li className="page-item">
-        <button className="page-link text-center">{`${
+        {/* <button className="page-link text-center">{`${
           pagination.pageNumber + 1
-        }/${countPageLength() + 1}`}</button>
+        }/${countPageLength() + 1}`}</button> */}
+        <button className="page-link text-center" id="paginationInput">
+          <input
+            type="number"
+            defaultValue={pageValue}
+            onChange={(e) => setPageValue(e.target.value)}
+            ref={inputRef}
+          />
+          / {countPageLength() + 1}
+        </button>
       </li>
       <li
         className="page-item next"
         onClick={() => setPageNumber(pagination.pageNumber + 1)}
         ref={nextRef}
       >
-        <Link
+        <button
           className="page-link"
-          to={`?page=${pageNumber + 1}`}
+          // to={`?page=${pageNumber + 1}`}
           aria-label="Previous"
         >
           <span aria-hidden="true">&raquo;</span>
           <span className="sr-only">Next</span>
-        </Link>
+        </button>
       </li>
     </ul>
   );

@@ -32,7 +32,8 @@ function DepartmentCreate() {
       .catch((error) => {
         error?.response?.status === 400 && setIsError(true);
         setIsLoaded(true);
-      });
+      })
+      // .finally(setIsLoaded(true));
   };
 
   return (

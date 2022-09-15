@@ -1,19 +1,21 @@
-import React from "react";
-
-function SearchBar({ page }) {
+function SearchBar({ page, onInputSearch, onSubmitSearch }) {
   return (
-    <div className="search d-flex col-12 col-md-6 mb-3">
+    <form
+      className="search d-flex col-12 mb-3"
+      onSubmit={onSubmitSearch}
+    >
       <div className="search-bar">
         <input
           type="search"
           className="form-control mb-0 h-100"
           placeholder={`Search ${page} here...`}
+          onChange={onInputSearch}
         />
       </div>
       <button className="btn search-btn btn-warning">
         <i className="fa-solid fa-magnifying-glass"></i>
       </button>
-    </div>
+    </form>
   );
 }
 

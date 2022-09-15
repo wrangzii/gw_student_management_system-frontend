@@ -9,6 +9,7 @@ import {
   StudentView,
   StudentViewDetail,
 } from "./";
+import InsertGrade from "./insertGrade";
 
 function Student() {
   return (
@@ -19,6 +20,7 @@ function Student() {
         <Route path="view" element={<StudentView />} />
         <Route path="view/detail/:id" element={<StudentViewDetail />} />
         <Route path="view/detail/:id/grade" element={<Grade />} />
+        <Route path="view/detail/:id/grade/insert" element={<InsertGrade />} />
         <Route path="update/:id" element={<StudentUpdate />} />
       </Routes>
     </div>

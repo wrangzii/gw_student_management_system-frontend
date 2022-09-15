@@ -4,9 +4,8 @@ import axios from "axios";
 import { useAuth } from "~/store/auth";
 import { Loading } from "~/components";
 import { ToastContainer, toast } from "react-toastify";
-import { saveAs } from "file-saver";
 
-function UploadCSV() {
+function UploadGrade() {
   const [csvFile, setCsvFile] = useState("");
   const [isLoaded, setIsLoaded] = useState(true);
   const [formData, setFormData] = useState(new FormData());
@@ -26,7 +25,7 @@ function UploadCSV() {
     setIsLoaded(false);
     axios({
       method: "post",
-      url: "http://localhost:8080/student/insert/file",
+      url: "http://localhost:8080/student/insert/score/file",
       data: formData,
       responseType: "blob",
       headers: {
@@ -35,10 +34,11 @@ function UploadCSV() {
       },
     })
       .then((result) => {
-        const blob = new Blob([result.data], {
-          type: "application/vnd.ms-excel",
-        });
-        saveAs(blob, "StudentList.xls");
+        // console.log(result.data);
+        // const blob = new Blob([result.data], {
+        //   type: "application/vnd.ms-excel",
+        // });
+        // saveAs(blob, "StudentGrade.xls");
         notify();
         setCsvFile("");
         setIsLoaded(true);
@@ -59,12 +59,12 @@ function UploadCSV() {
     <>
       <ToastContainer autoClose={3000} />
       {isLoaded ? (
-        <label className="import-file mb-2" htmlFor="file">
+        <label className="import-file mb-2" htmlFor="file_grade">
           <span className="btn btn-warning">
             <i className="fa-solid fa-upload p-0 me-2"></i>
-            Upload CSV
+            Upload Grade
           </span>
-          <input type="file" onChange={onFileChange} id="file" hidden />
+          <input type="file" onChange={onFileChange} id="file_grade" hidden />
 
           {csvFile && (
             <>
@@ -91,4 +91,4 @@ function UploadCSV() {
   );
 }
 
-export default UploadCSV;
+export default UploadGrade;

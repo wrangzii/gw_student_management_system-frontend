@@ -36,6 +36,7 @@ function DepartmentView() {
       isLoading,
     });
   };
+  const [valueSearch, setValueSearch] = useState("");
   const departmentIdRef = useRef();
 
   // Call list of department
@@ -87,9 +88,31 @@ function DepartmentView() {
     }
   };
 
+  // Search
+  const handleSubmitSearch = (e) => {
+    e.preventDefault();
+    setIsLoaded(false);
+    if (valueSearch.trim() === "") return;
+    httpRequest
+      .get(`department/name?name=${valueSearch}`)
+      .then((result) => {
+        console.log(result);
+        // setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        // setIsLoaded(true);
+      })
+      .finally(setIsLoaded(true));
+  };
+
   return (
     <View>
-      <SearchBar page={"department"} />
+      <SearchBar
+        page={"department"}
+        onInputSearch={(e) => setValueSearch(e.target.value)}
+        onSubmitSearch={handleSubmitSearch}
+      />
       {msgStatus.isSuccess && (
         <Message
           isSuccess={msgStatus.isSuccess}

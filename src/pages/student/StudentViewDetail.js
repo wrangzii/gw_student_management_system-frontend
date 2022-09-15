@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import ViewDetail from "~/components/crud/ViewDetail";
 import { Loading } from "~/components";
 import httpRequest from "~/utils/httpRequest";
+import InsertGrade from "./insertGrade";
 
 function StudentViewDetail() {
   const { id } = useParams();
