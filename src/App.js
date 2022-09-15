@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { useAuth } from "./store/auth";
 import "./styles/base.scss";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/Footer";
 
 function App() {
   const { auth } = useAuth();
@@ -26,6 +27,7 @@ function App() {
             })}
         </Routes>
       </div>
+      <Footer />
     </Router>
   );
 }

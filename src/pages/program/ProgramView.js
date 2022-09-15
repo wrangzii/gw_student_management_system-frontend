@@ -94,6 +94,7 @@ function ProgramView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"program"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

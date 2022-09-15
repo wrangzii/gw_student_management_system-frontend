@@ -6,7 +6,7 @@ import { MajorCreate, MajorUpdate, MajorView, MajorViewDetail } from "./";
 function Major() {
   return (
     <div className="major">
-      <NavigateAction title={"major"} />
+      <NavigateAction title={"majors"} />
       <Routes>
         <Route path="/create" element={<MajorCreate />} />
         <Route path="/view" element={<MajorView />} />

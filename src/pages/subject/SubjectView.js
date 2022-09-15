@@ -91,6 +91,7 @@ function SubjectView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"subject"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

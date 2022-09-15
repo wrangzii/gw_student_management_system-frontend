@@ -95,6 +95,7 @@ function MajorView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"major"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

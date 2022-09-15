@@ -1,16 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 // import { Link } from "react-router-dom";
 
 import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
 function Pagination({ pageName }) {
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageValue, setPageValue] = useState(1);
-  const { pagination, setPagination } = usePagination(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const { setPagination } = usePagination();
   const [amountOfItem, setAmountOfItem] = useState(0);
-  const nextRef = useRef();
-  const prevRef = useRef();
 
   // Handle pagination action
   useEffect(() => {
@@ -22,17 +19,7 @@ function Pagination({ pageName }) {
       .catch((error) => {
         console.log(error);
       });
-    // Handle pointer-event
-    pageNumber <= 0
-      ? prevRef.current.classList.add("pe-none")
-      : prevRef.current.classList.remove("pe-none");
-
-    // pageNumber >= countPageLength()
-    //   ? nextRef.current.classList.add("pe-none")
-    //   : nextRef.current.classList.remove("pe-none");
-    // Send context page number
-    setPagination({ pageNumber });
-  }, [pageNumber]);
+  }, []);
 
   // Count page length
   const countPageLength = () => {
@@ -47,54 +34,31 @@ function Pagination({ pageName }) {
     if (inputRef) {
       inputRef.current.onkeypress = (e) => {
         if (e.key === "Enter") {
-          setPageNumber(pageValue);
+          if (
+            inputRef.current.value <= 0 ||
+            inputRef.current.value > countPageLength()
+          )
+            return;
+          setPagination({ pageNumber });
         }
       };
     }
-  }, [pageValue]);
+  }, [pageNumber]);
 
   return (
-    <ul className="pagination my-3">
-      <li
-        className="page-item prev"
-        onClick={() => setPageNumber(pagination.pageNumber - 1)}
-        ref={prevRef}
-      >
-        <button
-          className="page-link"
-          // to={`?page=${pageNumber - 1}`}
-          aria-label="Previous"
-        >
-          <span aria-hidden="true">&laquo;</span>
-          <span className="sr-only">Previous</span>
-        </button>
-      </li>
+    <ul className="pagination my-3 justify-content-end">
       <li className="page-item">
-        {/* <button className="page-link text-center">{`${
-          pagination.pageNumber + 1
-        }/${countPageLength() + 1}`}</button> */}
-        <button className="page-link text-center" id="paginationInput">
+        <button className="page-link text-center d-flex" id="paginationInput">
+          <span className="me-3 d-block">Page</span>
           <input
             type="number"
-            defaultValue={pageValue}
-            onChange={(e) => setPageValue(e.target.value)}
+            min={1}
+            max={countPageLength() + 1}
+            defaultValue={pageNumber}
+            onChange={(e) => setPageNumber(Number(e.target.value))}
             ref={inputRef}
           />
-          / {countPageLength() + 1}
-        </button>
-      </li>
-      <li
-        className="page-item next"
-        onClick={() => setPageNumber(pagination.pageNumber + 1)}
-        ref={nextRef}
-      >
-        <button
-          className="page-link"
-          // to={`?page=${pageNumber + 1}`}
-          aria-label="Previous"
-        >
-          <span aria-hidden="true">&raquo;</span>
-          <span className="sr-only">Next</span>
+          / {countPageLength()}
         </button>
       </li>
     </ul>

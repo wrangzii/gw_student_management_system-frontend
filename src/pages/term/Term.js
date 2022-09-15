@@ -6,7 +6,7 @@ import { TermCreate, TermUpdate, TermView, TermViewDetail } from "./";
 function Term() {
   return (
     <div className="term">
-      <NavigateAction title={"term"} />
+      <NavigateAction title={"terms"} />
       <Routes>
         <Route path="/create" element={<TermCreate />} />
         <Route path="/view" element={<TermView />} />

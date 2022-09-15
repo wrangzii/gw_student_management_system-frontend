@@ -11,7 +11,7 @@ import {
 function Subject() {
   return (
     <div className="subject">
-      <NavigateAction title={"subject"} />
+      <NavigateAction title={"subjects"} />
       <Routes>
         <Route path="/create" element={<SubjectCreate />} />
         <Route path="/view" element={<SubjectView />} />

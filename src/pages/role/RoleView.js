@@ -92,6 +92,7 @@ function RoleView() {
           onCloseMsg={() => handleMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"role"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -136,7 +137,6 @@ function RoleView() {
           <Loading />
         )}
       </div>
-      {/* <Pagination pageName={"role"} /> */}
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

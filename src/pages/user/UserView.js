@@ -93,6 +93,7 @@ function UserView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"users"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

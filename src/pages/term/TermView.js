@@ -95,6 +95,7 @@ function TermView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"term"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

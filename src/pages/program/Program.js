@@ -11,7 +11,7 @@ import {
 function Program() {
   return (
     <div className="program">
-      <NavigateAction title={"program"} />
+      <NavigateAction title={"programs"} />
       <Routes>
         <Route path="/create" element={<ProgramCreate />} />
         <Route path="/view" element={<ProgramView />} />

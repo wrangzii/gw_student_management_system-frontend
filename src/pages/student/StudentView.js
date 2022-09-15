@@ -39,16 +39,14 @@ function StudentView() {
     });
   };
   const studentIdRef = useRef();
+  const [valueSearch, setValueSearch] = useState("");
 
   // Call list of student
-  useEffect(() => {
-    setIsLoaded(false);
+  const callListStudent = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 1;
     httpRequest
-      .get(
-        `student/all?pageNumber=${
-          pagination.pageNumber !== undefined ? pagination.pageNumber : 0
-        }`
-      )
+      .get(`student/all?pageNumber=${pageNumber}`)
       .then((result) => {
         setStudents(result?.data);
         setIsLoaded(true);
@@ -57,6 +55,11 @@ function StudentView() {
         console.log(error);
         setIsLoaded(true);
       });
+  };
+
+  useEffect(() => {
+    setIsLoaded(false);
+    callListStudent();
   }, [pagination.pageNumber]);
 
   // Handle delete student
@@ -91,9 +94,30 @@ function StudentView() {
     }
   };
 
+  // Search
+  const handleSubmitSearch = (e) => {
+    e.preventDefault();
+    if (valueSearch.trim() === "") callListStudent();
+    setIsLoaded(false);
+    httpRequest
+      .get(`student/name?name=${valueSearch}`)
+      .then((result) => {
+        setStudents(result?.data?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
+  };
+
   return (
     <View>
-      <SearchBar page={"student"} />
+      <SearchBar
+        page={"student"}
+        onInputSearch={(e) => setValueSearch(e.target.value)}
+        onSubmitSearch={handleSubmitSearch}
+      />
       <UploadCSV />
       <UploadGrade />
       {msgStatus.isSuccess && (
@@ -103,6 +127,7 @@ function StudentView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"student"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -143,7 +168,6 @@ function StudentView() {
           <Loading />
         )}
       </div>
-      <Pagination pageName={"student"} />
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}

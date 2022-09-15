@@ -40,10 +40,9 @@ function DepartmentView() {
   const departmentIdRef = useRef();
 
   // Call list of department
-  useEffect(() => {
+  const callListDepartments = () => {
     const pageNumber =
       pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
-    setIsLoaded(false);
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -54,6 +53,11 @@ function DepartmentView() {
         console.log(error);
         setIsLoaded(true);
       });
+  }
+  
+  useEffect(() => {
+    setIsLoaded(false);
+    callListDepartments()
   }, [pagination.pageNumber]);
 
   // Handle delete department
@@ -91,19 +95,18 @@ function DepartmentView() {
   // Search
   const handleSubmitSearch = (e) => {
     e.preventDefault();
+    if (valueSearch.trim() === "") callListDepartments();
     setIsLoaded(false);
-    if (valueSearch.trim() === "") return;
     httpRequest
       .get(`department/name?name=${valueSearch}`)
       .then((result) => {
-        console.log(result);
-        // setIsLoaded(true);
+        setDepartments(result?.data?.data);
+        setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
-        // setIsLoaded(true);
-      })
-      .finally(setIsLoaded(true));
+        setIsLoaded(true);
+      });
   };
 
   return (
@@ -120,6 +123,7 @@ function DepartmentView() {
           onCloseMsg={() => handleMsgStatus("", false)}
         />
       )}
+      <Pagination pageName={"department"} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -170,7 +174,6 @@ function DepartmentView() {
           <Loading />
         )}
       </div>
-      {/* <Pagination pageName={"department"} /> */}
       {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}
