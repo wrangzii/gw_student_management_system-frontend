@@ -188,7 +188,7 @@ function UserUpdate() {
                   isMulti
                   name="roles"
                   options={role_dropdown.current}
-                  defaultValue={role_current.current}
+                  defaultValue={role.map((item) => item)}
                   className="basic-multi-select"
                   classNamePrefix="select"
                   onChange={handleChange}

@@ -1,0 +1,15 @@
+.dashboard {
+  .carousel {
+    &-inner {
+      border-radius: 10px;
+    }
+
+    &-item {
+      img {
+        width: 100%;
+        height: calc(100vh - 160px);
+        object-fit: cover;
+      }
+    }
+  }
+}

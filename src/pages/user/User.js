@@ -6,7 +6,7 @@ import { UserCreate, UserUpdate, UserView, UserViewDetail } from "./";
 function User() {
   return (
     <div className="user">
-      <NavigateAction title={"users"} />
+      <NavigateAction title={"user"} />
       <Routes>
         <Route path="/create" element={<UserCreate />} />
         <Route path="/view" element={<UserView />} />
