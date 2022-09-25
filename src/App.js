@@ -2,11 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { publicRoutes, privateRoutes } from "~/route";
-import Navbar from "./components/Navbar";
 import { useAuth } from "./store/auth";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 import "./styles/base.scss";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "./components/Footer";
 
 function App() {
   const { auth } = useAuth();

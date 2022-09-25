@@ -13,11 +13,13 @@ import { usePagination } from "~/store/pagination";
 import httpRequest from "~/utils/httpRequest";
 import UploadCSV from "./uploadCSV";
 import UploadGrade from "./uploadGrade";
+import FilterSearch from "~/components/filterSearch/FilterSearch";
 
 function StudentView() {
   const [students, setStudents] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -38,17 +40,20 @@ function StudentView() {
       isLoading,
     });
   };
-  const studentIdRef = useRef();
+  const fptIdRef = useRef();
   const [valueSearch, setValueSearch] = useState("");
+
+  const currentPage = pagination.pageNumber;
 
   // Call list of student
   const callListStudent = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 1;
+    const pageNumber = currentPage !== undefined ? currentPage : 1;
     httpRequest
       .get(`student/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setStudents(result?.data);
+        const data = result?.data;
+        setStudents(data?.data);
+        setPageCount(data?.pageNumber - 1);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -60,24 +65,24 @@ function StudentView() {
   useEffect(() => {
     setIsLoaded(false);
     callListStudent();
-  }, [pagination.pageNumber]);
+  }, [currentPage]);
 
   // Handle delete student
-  const handleDelete = (studentId) => {
+  const handleDelete = (fptId) => {
     handlePopup("Are you sure to delete?", true);
-    studentIdRef.current = studentId;
+    fptIdRef.current = fptId;
   };
 
   // Confirm to delete student
   const confirmDelete = (choose) => {
     if (choose) {
       httpRequest
-        .delete(`student/delete/${studentIdRef.current}`)
+        .delete(`student/delete/${fptIdRef.current}`)
         .then((result) => {
           setIsLoaded(true);
           const newStudentList = [...students];
           const index = students.findIndex(
-            (student) => student.studentId === studentIdRef.current
+            (student) => student.fptId === fptIdRef.current
           );
           newStudentList.splice(index, 1);
           setStudents(newStudentList);
@@ -99,10 +104,14 @@ function StudentView() {
     e.preventDefault();
     if (valueSearch.trim() === "") callListStudent();
     setIsLoaded(false);
+    const pageNumber =
+      pagination.pageNumber === undefined ? 0 : pagination.pageNumber;
     httpRequest
-      .get(`student/name?name=${valueSearch}`)
+      .get(
+        `student/filter?pageNumber=${pageNumber}&search=fullName:*${valueSearch}`
+      )
       .then((result) => {
-        setStudents(result?.data?.data);
+        setStudents(result?.data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -118,6 +127,7 @@ function StudentView() {
         onInputSearch={(e) => setValueSearch(e.target.value)}
         onSubmitSearch={handleSubmitSearch}
       />
+      <FilterSearch />
       <UploadCSV />
       <UploadGrade />
       {msgStatus.isSuccess && (
@@ -127,7 +137,7 @@ function StudentView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"student"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
@@ -143,20 +153,20 @@ function StudentView() {
             </thead>
             <tbody>
               {students.map((student) => (
-                <tr key={student.studentId}>
+                <tr key={student.fptId}>
                   <td>{student.fptId}</td>
                   <td>{student.fullName}</td>
                   <td>{student.gender}</td>
                   <td>{student.email}</td>
                   <td>{new Date(student.dob).toLocaleDateString()}</td>
                   <td>
-                    <Link to={`detail/${student.studentId}`}>
+                    <Link to={`detail/${student.fptId}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`../update/${student.studentId}`}>
+                    <Link to={`../update/${student.fptId}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button onClick={() => handleDelete(student.studentId)}>
+                    <button onClick={() => handleDelete(student.fptId)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>

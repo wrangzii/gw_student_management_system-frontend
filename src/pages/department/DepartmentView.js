@@ -16,6 +16,7 @@ function DepartmentView() {
   const [departments, setDepartments] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -46,18 +47,20 @@ function DepartmentView() {
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setDepartments(result?.data);
+        const data = result?.data;
+        setDepartments(data?.data);
+        setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
-  }
-  
+  };
+
   useEffect(() => {
     setIsLoaded(false);
-    callListDepartments()
+    callListDepartments();
   }, [pagination.pageNumber]);
 
   // Handle delete department
@@ -123,7 +126,7 @@ function DepartmentView() {
           onCloseMsg={() => handleMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"department"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

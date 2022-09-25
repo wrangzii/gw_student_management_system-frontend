@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "~/store/auth";
 import { Loading } from "~/components";
 import { ToastContainer, toast } from "react-toastify";
+import { saveAs } from "file-saver";
 
 function UploadGrade() {
   const [csvFile, setCsvFile] = useState("");
@@ -34,11 +35,11 @@ function UploadGrade() {
       },
     })
       .then((result) => {
-        // console.log(result.data);
-        // const blob = new Blob([result.data], {
-        //   type: "application/vnd.ms-excel",
-        // });
-        // saveAs(blob, "StudentGrade.xls");
+        console.log(result.data);
+        const blob = new Blob([result.data], {
+          type: "text/csv; charset=UTF-8",
+        });
+        saveAs(blob, "Invalid_Grades.csv");
         notify();
         setCsvFile("");
         setIsLoaded(true);

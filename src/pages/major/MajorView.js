@@ -11,11 +11,13 @@ import {
 import View from "~/components/crud/View";
 
 import httpRequest from "~/utils/httpRequest";
+import { usePagination } from "~/store/pagination";
 
 function MajorView() {
   const [majors, setMajors] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -39,19 +41,27 @@ function MajorView() {
   const majorIdRef = useRef();
 
   // Call list of major
-  useEffect(() => {
-    setIsLoaded(false);
+  const callListMajor = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`major/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setMajors(result?.data);
+        const data = result?.data;
+        setMajors(data?.data);
+        setPageCount(data?.pageCount);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNumber]);
+  };
+
+  useEffect(() => {
+    setIsLoaded(false);
+    callListMajor();
+  }, [pagination.pageNumber]);
 
   // Handle delete major
   const handleDelete = (majorId) => {
@@ -95,7 +105,7 @@ function MajorView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"major"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

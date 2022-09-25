@@ -11,11 +11,13 @@ import {
 
 import View from "~/components/crud/View";
 import httpRequest from "~/utils/httpRequest";
+import { usePagination } from "~/store/pagination";
 
 function SubjectView() {
   const [subjects, setSubjects] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -39,19 +41,26 @@ function SubjectView() {
   const subjectIdRef = useRef();
 
   // Call list of subject
-  useEffect(() => {
-    setIsLoaded(false);
+  const callListSubject = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`subject/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setSubjects(result?.data);
+        const data = result?.data;
+        setSubjects(data?.data);
+        setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNumber]);
+  };
+  useEffect(() => {
+    setIsLoaded(false);
+    callListSubject();
+  }, [pagination.pageNumber]);
 
   // Handle delete subject
   const handleDelete = (subjectId) => {
@@ -91,7 +100,7 @@ function SubjectView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"subject"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

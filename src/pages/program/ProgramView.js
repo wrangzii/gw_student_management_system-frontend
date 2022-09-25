@@ -10,11 +10,13 @@ import {
 } from "~/components";
 import View from "~/components/crud/View";
 import httpRequest from "~/utils/httpRequest";
+import { usePagination } from "~/store/pagination";
 
 function ProgramView() {
-  const [pageNumber, setPageNumber] = useState(0);
   const [programs, setPrograms] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -38,18 +40,25 @@ function ProgramView() {
   const programIdRef = useRef();
 
   // Call list of program
-  useEffect(() => {
-    setIsLoaded(false);
+  const callListProgram = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`program/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setPrograms(result?.data);
+        const data = result?.data;
+        setPrograms(data?.data);
+        setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
+  };
+  useEffect(() => {
+    setIsLoaded(false);
+    callListProgram();
   }, []);
 
   // Handle delete program
@@ -94,7 +103,7 @@ function ProgramView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"program"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

@@ -10,11 +10,13 @@ import {
   Message,
 } from "~/components";
 import httpRequest from "~/utils/httpRequest";
+import { usePagination } from "~/store/pagination";
 
 function UserView() {
   const [users, setUsers] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -38,18 +40,27 @@ function UserView() {
   const userIdRef = useRef();
 
   // Get list user
-  useEffect(() => {
+  const callListUser = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`users/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setUsers(result?.data);
+        const data = result?.data;
+        setUsers(data?.data);
+        setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNumber]);
+  };
+
+  useEffect(() => {
+    setIsLoaded(false);
+    callListUser();
+  }, [pagination.pageNumber]);
 
   // Handle delete user
   const handleDelete = (userId) => {
@@ -93,7 +104,7 @@ function UserView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"users"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

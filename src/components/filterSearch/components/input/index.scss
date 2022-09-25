@@ -1,0 +1,16 @@
+.input {
+  display: flex;
+  gap: 1rem;
+
+  .button {
+    display: flex;
+    gap: .5rem;
+    height: 38px;
+
+    button {
+        i {
+            padding: 0;
+        }
+    }
+  }
+}

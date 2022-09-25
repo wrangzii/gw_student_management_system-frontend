@@ -1,31 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-// import { Link } from "react-router-dom";
 
-import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
-function Pagination({ pageName }) {
+function Pagination({ pageCount }) {
   const [pageNumber, setPageNumber] = useState(1);
   const { setPagination } = usePagination();
-  const [amountOfItem, setAmountOfItem] = useState(0);
-
-  // Handle pagination action
-  useEffect(() => {
-    httpRequest
-      .get(`${pageName}/pageNumber`)
-      .then((result) => {
-        setAmountOfItem(result?.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  // Count page length
-  const countPageLength = () => {
-    const pageLength = amountOfItem / 15;
-    return Math.floor(pageLength);
-  };
 
   // Input pagination
   const inputRef = useRef();
@@ -34,10 +13,7 @@ function Pagination({ pageName }) {
     if (inputRef) {
       inputRef.current.onkeypress = (e) => {
         if (e.key === "Enter") {
-          if (
-            inputRef.current.value <= 0 ||
-            inputRef.current.value > countPageLength()
-          )
+          if (inputRef.current.value <= 0 || inputRef.current.value > pageCount)
             return;
           setPagination({ pageNumber });
         }
@@ -53,12 +29,12 @@ function Pagination({ pageName }) {
           <input
             type="number"
             min={1}
-            max={countPageLength() + 1}
+            max={pageCount}
             defaultValue={pageNumber}
             onChange={(e) => setPageNumber(Number(e.target.value))}
             ref={inputRef}
           />
-          / {countPageLength()}
+          / {pageCount}
         </button>
       </li>
     </ul>

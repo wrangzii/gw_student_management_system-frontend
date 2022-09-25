@@ -15,6 +15,7 @@ import httpRequest from "~/utils/httpRequest";
 function RoleView() {
   const [roles, setRoles] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -92,7 +93,7 @@ function RoleView() {
           onCloseMsg={() => handleMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"role"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">

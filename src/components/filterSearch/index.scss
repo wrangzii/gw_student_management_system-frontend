@@ -1,0 +1,14 @@
+.filter-search {
+  ul {
+    border-radius: 10px;
+    background-color: #eee;
+    padding: 2rem;
+
+    width: fit-content;
+
+    li {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

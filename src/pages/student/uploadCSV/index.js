@@ -36,9 +36,9 @@ function UploadCSV() {
     })
       .then((result) => {
         const blob = new Blob([result.data], {
-          type: "application/vnd.ms-excel",
+          type: "text/csv; charset=UTF-8",
         });
-        saveAs(blob, "StudentList.xls");
+        saveAs(blob, "Invalid_Students.csv");
         notify();
         setCsvFile("");
         setIsLoaded(true);

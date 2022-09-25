@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Create from "~/components/crud/Create";
@@ -8,10 +8,12 @@ import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
+import Select from "react-select";
 
 function StudentCreate() {
   const form = "create";
   const [fptId, setFptId] = useState("");
+  const [majorId, setMajorId] = useState(1);
   const [personId, setPersonId] = useState("");
   const [uogId, setUogId] = useState("");
   const [fullName, setFullName] = useState("");
@@ -20,8 +22,10 @@ function StudentCreate() {
   const [email, setEmail] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
+  const [pageNumber, setPageNumber] = useState(0);
   const { auth } = useAuth();
   const createBy = auth?.user?.username;
+  let major_dropdown = useRef();
   const navigate = useNavigate();
 
   // Handle create student
@@ -31,6 +35,7 @@ function StudentCreate() {
     httpRequest
       .post("student/add", {
         fptId,
+        majorId,
         personId,
         uogId,
         fullName,
@@ -49,6 +54,33 @@ function StudentCreate() {
       });
   };
 
+  // Get major list
+  useEffect(() => {
+    setIsLoaded(false);
+    httpRequest
+      .get(`major/all?pageNumber=${pageNumber}`)
+      .then((result) => {
+        setMajorId(result?.data);
+        return result?.data;
+      })
+      .then((result) => {
+        major_dropdown.current = result?.map((major) => ({
+          value: major?.majorId,
+          label: major?.majorCode,
+        }));
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
+  }, []);
+
+  // Handle change select
+  const handleChange = (e) => {
+    setMajorId(Array.isArray(e) ? e.map((x) => x.value) : []);
+  };
+
   return (
     <Create>
       {isLoaded ? (
@@ -62,15 +94,28 @@ function StudentCreate() {
               <div className="fullname form-group d-flex">
                 <label htmlFor="fullname">Fullname</label>
                 <input
+                  required
                   onChange={(e) => setFullName(e.target.value)}
                   type="text"
                   placeholder="Nguyen Van A"
                   className="form-control"
                 />
               </div>
+              <div className="major-dropdown dropdown d-flex">
+                <label htmlFor="major">Major</label>
+                <Select
+                  required
+                  name="major"
+                  options={major_dropdown.current}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  onChange={handleChange}
+                />
+              </div>
               <div className="email form-group d-flex">
                 <label htmlFor="email">Email</label>
                 <input
+                  required
                   onChange={(e) => {
                     setEmail(e.target.value);
                     setIsError(false);
@@ -86,6 +131,7 @@ function StudentCreate() {
                   <label htmlFor="male">
                     Male
                     <input
+                      required
                       onChange={(e) => setGender(e.target.value)}
                       type="radio"
                       id="male"
@@ -97,6 +143,7 @@ function StudentCreate() {
                   <label htmlFor="female">
                     Female
                     <input
+                      required
                       onChange={(e) => setGender(e.target.value)}
                       type="radio"
                       id="female"
@@ -110,6 +157,7 @@ function StudentCreate() {
               <div className="birthday form-group d-flex">
                 <label htmlFor="birthday">Birthday</label>
                 <input
+                  required
                   onChange={(e) => setDob(e.target.value)}
                   type="date"
                   className="form-control"
@@ -120,6 +168,7 @@ function StudentCreate() {
               <div className="d-flex">
                 <label htmlFor="fpt_id">FPT ID</label>
                 <input
+                  required
                   onChange={(e) => {
                     setFptId(e.target.value);
                   }}
@@ -131,6 +180,7 @@ function StudentCreate() {
               <div className="d-flex">
                 <label htmlFor="person_id">Person ID</label>
                 <input
+                  required
                   onChange={(e) => {
                     setPersonId(e.target.value);
                   }}
@@ -142,6 +192,7 @@ function StudentCreate() {
               <div className="d-flex">
                 <label htmlFor="uog_id">UOG ID</label>
                 <input
+                  required
                   onChange={(e) => {
                     setUogId(e.target.value);
                   }}

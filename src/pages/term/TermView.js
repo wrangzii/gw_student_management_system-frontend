@@ -11,11 +11,13 @@ import {
 import httpRequest from "~/utils/httpRequest";
 
 import View from "~/components/crud/View";
+import { usePagination } from "~/store/pagination";
 
 function TermView() {
   const [terms, setTerms] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { pagination } = usePagination();
+  const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
     isSuccess: false,
@@ -39,19 +41,26 @@ function TermView() {
   const termIdRef = useRef();
 
   // Call list of term
-  useEffect(() => {
-    setIsLoaded(false);
+  const callListTerm = () => {
+    const pageNumber =
+      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`term/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setTerms(result?.data);
+        const data = result?.data;
+        setTerms(data?.data);
+        setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
         setIsLoaded(true);
       });
-  }, [pageNumber]);
+  };
+  useEffect(() => {
+    setIsLoaded(false);
+    callListTerm();
+  }, [pagination.pageNumber]);
 
   // Handle delete term
   const handleDelete = (termId) => {
@@ -95,7 +104,7 @@ function TermView() {
           onCloseMsg={() => setMsgStatus("", false)}
         />
       )}
-      <Pagination pageName={"term"} />
+      <Pagination pageCount={pageCount} />
       <div className="overflow-auto">
         {isLoaded ? (
           <table className="table table-striped table-hover table-bordered">
