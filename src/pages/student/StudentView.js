@@ -2,18 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import View from "~/components/crud/View";
-import {
-  Pagination,
-  PopupConfirm,
-  Loading,
-  SearchBar,
-  Message,
-} from "~/components";
+import { Pagination, PopupConfirm, Loading, Message } from "~/components";
 import { usePagination } from "~/store/pagination";
 import httpRequest from "~/utils/httpRequest";
 import UploadCSV from "./uploadCSV";
 import UploadGrade from "./uploadGrade";
 import FilterSearch from "~/components/filterSearch/FilterSearch";
+
+import "./studentView.scss";
 
 function StudentView() {
   const [students, setStudents] = useState([]);
@@ -41,7 +37,15 @@ function StudentView() {
     });
   };
   const fptIdRef = useRef();
-  const [valueSearch, setValueSearch] = useState("");
+  const [value, setValue] = useState({
+    fullName: "",
+    major: "",
+    fptId: "",
+    uogId: "",
+    personId: "",
+    gender: "",
+    email: "",
+  });
 
   const currentPage = pagination.pageNumber;
 
@@ -53,7 +57,7 @@ function StudentView() {
       .then((result) => {
         const data = result?.data;
         setStudents(data?.data);
-        setPageCount(data?.pageNumber - 1);
+        if (data?.data !== null) setPageCount(data?.pageNumber - 1);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -99,19 +103,39 @@ function StudentView() {
     }
   };
 
+  // handle change Filter Search
+  const handleChangeFilterSearch = (e) => {
+    const newValue = { ...value };
+    newValue[e.target.id] = e.target.value;
+    setValue(newValue);
+  };
+
   // Search
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    if (valueSearch.trim() === "") callListStudent();
+    // if (value.trim() === "") callListStudent();
     setIsLoaded(false);
-    const pageNumber =
-      pagination.pageNumber === undefined ? 0 : pagination.pageNumber;
+    const myQuery = () => {
+      let myQueryArr = [];
+      if (value) {
+        if (value.fullName) myQueryArr.push(`fullName:*${value.fullName}`);
+        if (value.fptId) myQueryArr.push(`fptId:*${value.fptId}`);
+        if (value.uogId) myQueryArr.push(`uogId:*${value.uogId}`);
+        if (value.personId) myQueryArr.push(`personId:*${value.personId}`);
+        if (value.gender) myQueryArr.push(`gender:${value.gender}`);
+        if (value.email) myQueryArr.push(`email:*${value.email}`);
+      }
+      return myQueryArr.join(",");
+    };
+
     httpRequest
       .get(
-        `student/filter?pageNumber=${pageNumber}&search=fullName:*${valueSearch}`
+        `http://localhost:8080/student/filter?pageNumber=0&search=${myQuery()}`
       )
       .then((result) => {
-        setStudents(result?.data);
+        const data = result?.data;
+        setStudents(data?.data);
+        if (data?.data !== null) setPageCount(data.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -120,14 +144,19 @@ function StudentView() {
       });
   };
 
+  // Reset filter search
+  const handleResetFilter = (e) => {
+    e.preventDefault();
+    console.log("this function is building");
+  };
+
   return (
     <View>
-      <SearchBar
-        page={"student"}
-        onInputSearch={(e) => setValueSearch(e.target.value)}
+      <FilterSearch
+        onInputSearch={handleChangeFilterSearch}
         onSubmitSearch={handleSubmitSearch}
+        onResetFilter={handleResetFilter}
       />
-      <FilterSearch />
       <UploadCSV />
       <UploadGrade />
       {msgStatus.isSuccess && (
@@ -152,7 +181,7 @@ function StudentView() {
               </tr>
             </thead>
             <tbody>
-              {students.map((student) => (
+              {students?.map((student) => (
                 <tr key={student.fptId}>
                   <td>{student.fptId}</td>
                   <td>{student.fullName}</td>
@@ -160,6 +189,23 @@ function StudentView() {
                   <td>{student.email}</td>
                   <td>{new Date(student.dob).toLocaleDateString()}</td>
                   <td>
+                    <button className="import-grade-btn text-light">
+                      <i className="fa-solid fa-file-import"></i>
+                      <div className="tooltip-grade">
+                        <Link
+                          className="btn btn-primary"
+                          to={`detail/${student.fptId}/import-grade`}
+                        >
+                          Import grade
+                        </Link>
+                        <Link
+                          className="btn btn-info"
+                          to={`detail/${student.fptId}/view-grade`}
+                        >
+                          View grade
+                        </Link>
+                      </div>
+                    </button>
                     <Link to={`detail/${student.fptId}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>

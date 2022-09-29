@@ -20,7 +20,7 @@ function Dashboard() {
           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
         <div className="carousel-inner">
-          {images.map((image, index) => (
+          {images?.map((image, index) => (
             <div key={index} className={`carousel-item ${image.isActive ? "active" : ""}`}>
               <img className="d-block w-100" src={image.src} alt={image.alt} />
             </div>

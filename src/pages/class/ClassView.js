@@ -12,8 +12,8 @@ import {
 import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
-function DepartmentView() {
-  const [departments, setDepartments] = useState([]);
+function ClassView() {
+  const [classes, setClasss] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
@@ -38,17 +38,17 @@ function DepartmentView() {
     });
   };
   const [valueSearch, setValueSearch] = useState("");
-  const departmentIdRef = useRef();
+  const classIdRef = useRef();
 
-  // Call list of department
-  const callListDepartments = () => {
+  // Call list of class
+  const callListClasss = () => {
     const pageNumber =
       pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
-      .get(`department/all?pageNumber=${pageNumber}`)
+      .get(`studentClass/all?pageNumber=${pageNumber}`)
       .then((result) => {
         const data = result?.data;
-        setDepartments(data?.data);
+        setClasss(data?.data);
         if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
@@ -60,50 +60,50 @@ function DepartmentView() {
 
   useEffect(() => {
     setIsLoaded(false);
-    callListDepartments();
+    callListClasss();
   }, [pagination.pageNumber]);
 
-  // Handle delete department
-  const handleDelete = (departmentId) => {
+  // Handle delete class
+  const handleDelete = (classId) => {
     handlePopup("Are you sure to delete?", true);
-    departmentIdRef.current = departmentId;
+    classIdRef.current = classId;
   };
 
   // Confirm to delete role
-  const confirmDelete = (choose) => {
-    if (choose) {
-      httpRequest
-        .delete(`department/delete/${departmentIdRef.current}`)
-        .then((result) => {
-          setIsLoaded(true);
-          const newDepartmentList = [...departments];
-          const index = departments.findIndex(
-            (department) => department.departmentId === departmentIdRef.current
-          );
-          newDepartmentList.splice(index, 1);
-          setDepartments(newDepartmentList);
-          handleMsgStatus(result?.data?.message, true);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsLoaded(true);
-        });
-      handlePopup("", false);
-      setIsLoaded(false);
-    } else {
-      handlePopup("", false);
-    }
-  };
+  // const confirmDelete = (choose) => {
+  //   if (choose) {
+  //     httpRequest
+  //       .delete(`class/delete/${classIdRef.current}`)
+  //       .then((result) => {
+  //         setIsLoaded(true);
+  //         const newClassList = [...classes];
+  //         const index = classes.findIndex(
+  //           (class) => class.classId === classIdRef.current
+  //         );
+  //         newClassList.splice(index, 1);
+  //         setClasss(newClassList);
+  //         handleMsgStatus(result?.data?.message, true);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         setIsLoaded(true);
+  //       });
+  //     handlePopup("", false);
+  //     setIsLoaded(false);
+  //   } else {
+  //     handlePopup("", false);
+  //   }
+  // };
 
   // Search
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    if (valueSearch.trim() === "") callListDepartments();
+    if (valueSearch.trim() === "") callListClasss();
     setIsLoaded(false);
     httpRequest
-      .get(`department/name?name=${valueSearch}`)
+      .get(`class/name?name=${valueSearch}`)
       .then((result) => {
-        setDepartments(result?.data?.data);
+        setClasss(result?.data?.data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -115,7 +115,7 @@ function DepartmentView() {
   return (
     <View>
       <SearchBar
-        page={"department"}
+        page={"class"}
         onInputSearch={(e) => setValueSearch(e.target.value)}
         onSubmitSearch={handleSubmitSearch}
       />
@@ -133,7 +133,7 @@ function DepartmentView() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Department</th>
+                <th>Class</th>
                 <th>Description</th>
                 <th>Created Date</th>
                 <th>Created By</th>
@@ -143,45 +143,45 @@ function DepartmentView() {
               </tr>
             </thead>
             <tbody>
-              {departments?.map((department, i) => (
-                <tr key={department.departmentId}>
+              {/* {classes?.map((class, i) => (
+                <tr key={class.classId}>
                   <td>{i + 1}</td>
-                  <td>{department.departmentName}</td>
-                  <td>{department.description}</td>
+                  <td>{class.departmentName}</td>
+                  <td>{class.description}</td>
                   <td>
-                    {new Date(department.createDate).toLocaleDateString()}
+                    {new Date(class.createDate).toLocaleDateString()}
                   </td>
-                  <td>{department.createBy}</td>
+                  <td>{class.createBy}</td>
                   <td>
-                    {new Date(department.modifyDate).toLocaleDateString()}
+                    {new Date(class.modifyDate).toLocaleDateString()}
                   </td>
-                  <td>{department.modifyBy}</td>
+                  <td>{class.modifyBy}</td>
                   <td>
-                    <Link to={`detail/${department.departmentId}`}>
+                    <Link to={`detail/${class.classId}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/department/update/${department.departmentId}`}>
+                    <Link to={`/class/update/${class.classId}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
                     <button
-                      onClick={() => handleDelete(department.departmentId)}
+                      onClick={() => handleDelete(class.classId)}
                     >
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         ) : (
           <Loading />
         )}
       </div>
-      {popup.isLoading && (
+      {/* {popup.isLoading && (
         <PopupConfirm message={popup.message} onPopup={confirmDelete} />
-      )}
+      )} */}
     </View>
   );
 }
 
-export default DepartmentView;
+export default ClassView;

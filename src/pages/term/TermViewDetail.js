@@ -14,7 +14,7 @@ function TermViewDetail() {
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`term/${id}`)
+      .get(`student/filter?pageNumber=0&search=term:*${id}`)
       .then((result) => {
         setViewDetail(result?.data?.data);
         setIsLoaded(true);
@@ -29,10 +29,6 @@ function TermViewDetail() {
     <ViewDetail>
       {isLoaded ? (
         <div className="table">
-          <div className="tr">
-            <div className="th">ID</div>
-            <div className="td">{viewDetail.termId}</div>
-          </div>
           <div className="tr">
             <div className="th">Term</div>
             <div className="td">{viewDetail.termName}</div>

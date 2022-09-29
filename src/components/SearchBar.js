@@ -1,9 +1,6 @@
 function SearchBar({ page, onInputSearch, onSubmitSearch }) {
   return (
-    <form
-      className="search d-flex col-12 mb-3"
-      onSubmit={onSubmitSearch}
-    >
+    <form className="search d-flex col-12 mb-3" onSubmit={onSubmitSearch}>
       <div className="search-bar">
         <input
           type="search"

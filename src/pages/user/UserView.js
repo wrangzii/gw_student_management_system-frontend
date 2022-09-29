@@ -48,7 +48,7 @@ function UserView() {
       .then((result) => {
         const data = result?.data;
         setUsers(data?.data);
-        setPageCount(data?.pageNumber);
+        if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -120,7 +120,7 @@ function UserView() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, i) => (
+              {users?.map((user, i) => (
                 <tr key={user.userId}>
                   <td>{i + 1}</td>
                   <td>{user.username}</td>

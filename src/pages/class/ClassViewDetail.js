@@ -5,15 +5,16 @@ import { Loading } from "~/components";
 import ViewDetail from "~/components/crud/ViewDetail";
 import httpRequest from "~/utils/httpRequest";
 
-function SubjectViewDetail() {
+function ClassViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Get class's detail info
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`student/filter?pageNumber=0&search=subjectCode:*${id}`)
+      .get(`class/${id}`)
       .then((result) => {
         setViewDetail(result?.data?.data);
         setIsLoaded(true);
@@ -30,23 +31,15 @@ function SubjectViewDetail() {
         <div className="table">
           <div className="tr">
             <div className="th">ID</div>
-            <div className="td">{viewDetail.subjectId}</div>
+            <div className="td">{viewDetail.classId}</div>
           </div>
           <div className="tr">
-            <div className="th">Subject</div>
-            <div className="td">{viewDetail.subjectName}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Subject Code</div>
-            <div className="td">{viewDetail.subjectCode}</div>
+            <div className="th">class</div>
+            <div className="td">{viewDetail.className}</div>
           </div>
           <div className="tr">
             <div className="th">Description</div>
             <div className="td">{viewDetail.description}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Replace With</div>
-            <div className="td">{viewDetail.replaceWith}</div>
           </div>
           <div className="tr">
             <div className="th">Created Date</div>
@@ -72,7 +65,7 @@ function SubjectViewDetail() {
           <div className="tr">
             <div className="th">Update</div>
             <div className="td">
-              <Link to={`/subject/update/${id}`}>
+              <Link to={`/class/update/${id}`}>
                 <i className="fa-solid fa-pen-to-square"></i>
               </Link>
             </div>
@@ -85,4 +78,4 @@ function SubjectViewDetail() {
   );
 }
 
-export default SubjectViewDetail;
+export default ClassViewDetail;

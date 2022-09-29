@@ -20,7 +20,7 @@ function SubjectUpdate() {
   const { auth } = useAuth();
   const modifyBy = auth?.user?.username;
   const navigate = useNavigate();
-
+console.log(id);
   // Get current info
   useEffect(() => {
     setIsLoaded(false);
@@ -85,6 +85,7 @@ function SubjectUpdate() {
                 defaultValue={subjectCode}
                 onChange={(e) => setSubjectCode(e.target.value)}
                 placeholder="ADV_PM"
+                readOnly
               />
             </div>
             <div className="d-flex">

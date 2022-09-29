@@ -181,6 +181,7 @@ table {
     &:last-child {
       display: flex;
       justify-content: center;
+      gap: .5rem;
 
       @media screen and (max-width: 992px) {
         display: grid;
@@ -271,16 +272,19 @@ i {
 }
 
 .fa-circle-info {
+  background-color: #606eb2;
+}
+
+.fa-file-import {
   background-color: #00b388;
 }
 
 .fa-pen-to-square {
   background-color: #ffc600;
-  margin-inline: 0.5rem;
 
-  @media screen and (max-width: 992px) {
-    margin-block: 0.5rem;
-  }
+  // @media screen and (max-width: 992px) {
+  //   margin-block: 0.5rem;
+  // }
 }
 
 .fa-trash-can {
@@ -326,6 +330,10 @@ i {
     outline: none;
     background-color: transparent;
   }
+}
+
+.basic-multi-select {
+  width: 100%;
 }
 
 @media screen and (max-width: 275px) {

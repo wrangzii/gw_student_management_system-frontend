@@ -53,6 +53,12 @@ const components = [
     icon: "fa-solid fa-star",
     isActive: false,
   },
+  {
+    title: "Class",
+    path: "/class/view",
+    icon: "fa-solid fa-school",
+    isActive: false,
+  },
 ];
 
 export default components;

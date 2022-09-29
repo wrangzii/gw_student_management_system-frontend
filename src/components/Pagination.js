@@ -22,7 +22,7 @@ function Pagination({ pageCount }) {
   }, [pageNumber]);
 
   return (
-    <ul className="pagination my-3 justify-content-end">
+    <ul className="pagination my-3">
       <li className="page-item">
         <button className="page-link text-center d-flex" id="paginationInput">
           <span className="me-3 d-block">Page</span>

@@ -49,7 +49,7 @@ function SubjectView() {
       .then((result) => {
         const data = result?.data;
         setSubjects(data?.data);
-        setPageCount(data?.pageNumber);
+        if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -117,8 +117,8 @@ function SubjectView() {
               </tr>
             </thead>
             <tbody>
-              {subjects.map((subject, i) => (
-                <tr key={subject.subjectId}>
+              {subjects?.map((subject, i) => (
+                <tr key={i}>
                   <td>{i + 1}</td>
                   <td>{subject.subjectName}</td>
                   <td>{subject.subjectCode}</td>
@@ -127,13 +127,13 @@ function SubjectView() {
                   <td>{new Date(subject.createDate).toLocaleDateString()}</td>
                   <td>{subject.createBy}</td>
                   <td>
-                    <Link to={`detail/${subject.subjectId}`}>
+                    <Link to={`detail/${subject.subjectCode}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/subject/update/${subject.subjectId}`}>
+                    <Link to={`/subject/update/${subject.subjectCode}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button onClick={() => handleDelete(subject.subjectId)}>
+                    <button onClick={() => handleDelete(subject.subjectCode)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>

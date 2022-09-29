@@ -6,22 +6,17 @@ import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
-import { ToastContainer, toast } from "react-toastify";
 
 import styles from "~/styles/components/form.module.scss";
 
 function DepartmentUpdate() {
-  const { auth } = useAuth();
   const form = "update";
-  // const [departmentName, setDepartmentName] = useState("");
-  // const [description, setDescription] = useState("");
-  const [data, setData] = useState({
-    departmentName: "",
-    description: "",
-    modifyBy: auth?.user?.username,
-  });
+  const [departmentName, setDepartmentName] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const { id } = useParams();
+  const { auth } = useAuth();
+  const modifyBy = auth?.user?.username;
   const navigate = useNavigate();
 
   // Get current info
@@ -31,11 +26,8 @@ function DepartmentUpdate() {
       .get(`department/${id}`)
       .then((result) => {
         const data = result?.data?.data;
-        setData({
-          ...data,
-          departmentName: data.departmentName,
-          description: data.description,
-        });
+        setDepartmentName(data.departmentName);
+        setDescription(data.description);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -44,22 +36,17 @@ function DepartmentUpdate() {
       });
   }, [id]);
 
-  // handle change value
-  const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   // Handle update department
   const handleUpdateDepartment = (e) => {
     setIsLoaded(false);
     httpRequest
-      .put(`department/edit/${id}`, data)
+      .put(`department/edit/${id}`, {
+        departmentName,
+        description,
+        modifyBy,
+      })
       .then((result) => {
-        result && toast("Edit department successfully!");
-        // result && navigate("../view");
+        result && navigate("../view");
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -72,17 +59,15 @@ function DepartmentUpdate() {
       {isLoaded ? (
         <form onSubmit={handleUpdateDepartment} className="form-group">
           <HeadingTitle title={"department"} form={form} />
-          <ToastContainer />
           <div className={styles["form-body"]}>
             <div className="d-flex">
               <label htmlFor="department">Department</label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={data.departmentName}
-                onChange={handleChange}
+                defaultValue={departmentName}
+                onChange={(e) => setDepartmentName(e.target.value)}
                 placeholder="Accountant Leader"
-                name="departmentName"
               />
             </div>
             <div className="d-flex">
@@ -91,9 +76,8 @@ function DepartmentUpdate() {
                 cols="30"
                 rows="2"
                 className="form-control"
-                defaultValue={data.description}
-                onChange={handleChange}
-                name="description"
+                defaultValue={description}
+                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
             <UserExecuted type={form} />

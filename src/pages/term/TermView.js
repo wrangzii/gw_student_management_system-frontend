@@ -49,7 +49,7 @@ function TermView() {
       .then((result) => {
         const data = result?.data;
         setTerms(data?.data);
-        setPageCount(data?.pageNumber);
+        if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -120,7 +120,7 @@ function TermView() {
               </tr>
             </thead>
             <tbody>
-              {terms.map((term, i) => (
+              {terms?.map((term, i) => (
                 <tr key={term.termId}>
                   <td>{i + 1}</td>
                   <td>{term.termName}</td>
@@ -129,13 +129,13 @@ function TermView() {
                   <td>{new Date(term.createDate).toLocaleDateString()}</td>
                   <td>{term.createBy}</td>
                   <td>
-                    <Link to={`detail/${term.termId}`}>
+                    <Link to={`detail/${term.termCode}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/term/update/${term.termId}`}>
+                    <Link to={`/term/update/${term.termCode}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button onClick={() => handleDelete(term.termId)}>
+                    <button onClick={() => handleDelete(term.termCode)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>

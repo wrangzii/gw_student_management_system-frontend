@@ -110,7 +110,7 @@ function RoleView() {
               </tr>
             </thead>
             <tbody>
-              {roles.map((role, i) => (
+              {roles?.map((role, i) => (
                 <tr key={role.roleId}>
                   <td>{i + 1}</td>
                   <td>{role.roleName}</td>

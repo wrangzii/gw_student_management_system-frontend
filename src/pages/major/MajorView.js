@@ -49,7 +49,7 @@ function MajorView() {
       .then((result) => {
         const data = result?.data;
         setMajors(data?.data);
-        setPageCount(data?.pageCount);
+        if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ function MajorView() {
               </tr>
             </thead>
             <tbody>
-              {majors.map((major, i) => (
+              {majors?.map((major, i) => (
                 <tr key={major.majorId}>
                   <td>{i + 1}</td>
                   <td>{major.vname}</td>
