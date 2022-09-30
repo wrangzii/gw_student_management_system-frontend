@@ -10,28 +10,33 @@ import httpRequest from "~/utils/httpRequest";
 import styles from "~/styles/components/form.module.scss";
 
 function SubjectUpdate() {
-  const form = "update";
-  const [subjectName, setSubjectName] = useState("");
-  const [subjectCode, setSubjectCode] = useState("");
-  const [description, setDescription] = useState("");
-  const [replaceWith, setReplaceWith] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const { id } = useParams();
   const { auth } = useAuth();
-  const modifyBy = auth?.user?.username;
+  const { id } = useParams();
+  const form = "update";
+  const [data, setData] = useState({
+    subjectName: "",
+    subjectCode: "",
+    replaceWith: "",
+    description: "",
+    modifyBy: auth?.user?.username,
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const navigate = useNavigate();
-console.log(id);
+  console.log(id);
   // Get current info
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`subject/${id}`)
+      .get(`subject/filter?pageNumber=0&search=subjectCode:*${id}`)
       .then((result) => {
-        const data = result?.data?.data;
-        setSubjectName(data?.subjectName);
-        setSubjectCode(data?.subjectCode);
-        setReplaceWith(data?.replaceWith);
-        setDescription(data?.description);
+        const data = result?.data?.data[0];
+        setData({
+          subjectName: data.subjectName,
+          subjectCode: data.subjectCode,
+          replaceWith: data.replaceWith,
+          description: data.description,
+        });
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -40,18 +45,20 @@ console.log(id);
       });
   }, [id]);
 
+  // handle change value
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   // Handle update subject
   const handleUpdateSubject = (e) => {
     e.preventDefault();
     setIsLoaded(false);
     httpRequest
-      .put(`subject/edit/${id}`, {
-        subjectName,
-        subjectCode,
-        description,
-        replaceWith,
-        modifyBy,
-      })
+      .put(`subject/edit/${id}`, data)
       .then((result) => {
         result && navigate("../view");
         setIsLoaded(true);
@@ -72,9 +79,10 @@ console.log(id);
               <input
                 type="text"
                 className="form-control"
-                defaultValue={subjectName}
-                onChange={(e) => setSubjectName(e.target.value)}
+                defaultValue={data.subjectName}
+                onChange={handleChange}
                 placeholder="Advanced Programming"
+                name="subjectName"
               />
             </div>
             <div className="d-flex">
@@ -82,10 +90,10 @@ console.log(id);
               <input
                 type="text"
                 className="form-control"
-                defaultValue={subjectCode}
-                onChange={(e) => setSubjectCode(e.target.value)}
+                defaultValue={data.subjectCode}
                 placeholder="ADV_PM"
                 readOnly
+                name="subjectCode"
               />
             </div>
             <div className="d-flex">
@@ -94,8 +102,9 @@ console.log(id);
                 cols="30"
                 rows="2"
                 className="form-control"
-                defaultValue={description}
-                onChange={(e) => setDescription(e.target.value)}
+                defaultValue={data.description}
+                onChange={handleChange}
+                name="description"
               ></textarea>
             </div>
             <div className="d-flex">
@@ -103,9 +112,10 @@ console.log(id);
               <input
                 type="text"
                 className="form-control"
-                defaultValue={replaceWith}
-                onChange={(e) => setReplaceWith(e.target.value)}
+                defaultValue={data.replaceWith}
+                onChange={handleChange}
                 placeholder="ADPM101"
+                name="replaceWith"
               />
             </div>
             <UserExecuted type={form} />

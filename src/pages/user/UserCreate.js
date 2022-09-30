@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,25 +12,26 @@ import httpRequest from "~/utils/httpRequest";
 import styles from "~/styles/components/form.module.scss";
 
 function UserCreate() {
+  const { auth } = useAuth();
   const form = "create";
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [dob, setDob] = useState("");
-  const [address, setAddress] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState([]);
-  const [departmentId, setDepartmentId] = useState(null);
-  const [department, setDepartment] = useState([]);
+  const [data, setData] = useState({
+    email: "",
+    username: "",
+    password: "",
+    phoneNumber: "",
+    dob: "",
+    address: "",
+    fullName: "",
+    role: [],
+    departmentId: "",
+    createBy: auth?.user?.username,
+  });
+  const [roles, setRoles] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isError, setIsError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [emailList, setEmailList] = useState("");
-  let role_dropdown = useRef();
-  const { auth } = useAuth();
-  const createBy = auth?.user?.username;
+  // const [emailList, setEmailList] = useState("");
 
   // Get role list
   useEffect(() => {
@@ -38,14 +39,14 @@ function UserCreate() {
     httpRequest
       .get(`role/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setRole(result?.data);
-        return result?.data;
-      })
-      .then((result) => {
-        role_dropdown.current = result?.map((role) => ({
-          value: role?.roleName,
-          label: role?.roleName,
-        }));
+        setRoles(
+          result?.data.map((role) => {
+            return {
+              label: role.roleName,
+              value: role.roleName,
+            };
+          })
+        );
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -60,7 +61,8 @@ function UserCreate() {
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setDepartment(result?.data);
+        const data = result?.data?.data;
+        setDepartments(data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -75,7 +77,7 @@ function UserCreate() {
     httpRequest
       .get(`users/all?pageNumber=${pageNumber}`)
       .then((result) => {
-        setEmailList(result?.data?.map((item) => item?.email));
+        // setEmailList(result?.data?.map((item) => item?.email));
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -86,14 +88,22 @@ function UserCreate() {
   window.onload = callListUser;
 
   // 2. Check if current email-input is included in (1)
-  const checkCurrentEmail = () => {
-    emailList.includes(email) ? setIsError(true) : setIsError(false);
-  };
+  // const checkCurrentEmail = () => {
+  //   emailList.includes(email) ? setIsError(true) : setIsError(false);
+  // };
 
-  const handleOnBlur = () => {
-    if (email.trim() && email.includes("@")) {
-      checkCurrentEmail();
-    }
+  // const handleOnBlur = () => {
+  //   if (email.trim() && email.includes("@")) {
+  //     checkCurrentEmail();
+  //   }
+  // };
+
+  // handle change value
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
   };
 
   // Handle create user
@@ -101,18 +111,7 @@ function UserCreate() {
     e.preventDefault();
     setIsLoaded(false);
     httpRequest
-      .post("users/add", {
-        email,
-        username,
-        password,
-        phoneNumber,
-        dob,
-        address,
-        fullName,
-        createBy,
-        role,
-        departmentId,
-      })
+      .post("users/add", data)
       .then((result) => {
         result && toast("User registered successfully!");
         setIsLoaded(true);
@@ -124,8 +123,13 @@ function UserCreate() {
   };
 
   // Handle change select
-  const handleChange = (e) => {
-    setRole(Array.isArray(e) ? e.map((x) => x.value) : []);
+  const handleChangeSelect = (selectedOption) => {
+    const roles = [];
+    selectedOption.map((role) => roles.push(role.value));
+    setData({
+      ...data,
+      role: roles,
+    });
   };
 
   return (
@@ -136,7 +140,10 @@ function UserCreate() {
           <HeadingTitle title={"user"} form={form} />
           <div className={styles["form-body"]}>
             {isError ? (
-              <ErrorHandler name={`"${email}"`} msg={"is already taken!"} />
+              <ErrorHandler
+                name={`"${data.email}"`}
+                msg={"is already taken!"}
+              />
             ) : null}
             <div className="form-body__left">
               <div className="fullname form-group d-flex">
@@ -144,9 +151,9 @@ function UserCreate() {
                 <input
                   required
                   type="text"
-                  name="fullname"
+                  name="fullName"
                   placeholder="Nguyen Van A"
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -157,11 +164,8 @@ function UserCreate() {
                   type="email"
                   name="email"
                   placeholder="manager@fe.edu.vn"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setIsError(false);
-                  }}
-                  onBlur={handleOnBlur}
+                  onChange={handleChange}
+                  // onBlur={handleOnBlur}
                   className="form-control"
                 />
               </div>
@@ -170,9 +174,9 @@ function UserCreate() {
                 <input
                   required
                   type="tel"
-                  name="phone"
+                  name="phoneNumber"
                   placeholder="0902345011"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -182,7 +186,7 @@ function UserCreate() {
                   required
                   type="date"
                   name="dob"
-                  onChange={(e) => setDob(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -193,7 +197,7 @@ function UserCreate() {
                   type="text"
                   name="address"
                   placeholder="20 Cong Hoa, Tan Binh"
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -206,7 +210,7 @@ function UserCreate() {
                   type="text"
                   name="username"
                   placeholder="nguyenvana"
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -216,7 +220,7 @@ function UserCreate() {
                   required
                   type="password"
                   name="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
                   className="form-control"
                 />
               </div>
@@ -225,34 +229,30 @@ function UserCreate() {
                 <Select
                   required
                   isMulti
-                  name="roles"
-                  options={role_dropdown.current}
+                  name="role"
+                  options={roles}
                   className="basic-multi-select"
                   classNamePrefix="select"
-                  onChange={handleChange}
+                  onChange={(e) => handleChangeSelect(e)}
                 />
               </div>
               <div className="department-dropdown dropdown d-flex">
                 <label htmlFor="departments">Department</label>
                 <select
                   required
-                  name="department"
+                  name="departmentId"
                   className="form-select"
-                  onChange={(e) => setDepartmentId(parseInt(e.target.value))}
-                  onClick={() => setIsDisabled(true)}
+                  onChange={handleChange}
                 >
-                  <option defaultValue="" disabled={isDisabled}>
-                    --Select department--
-                  </option>
-                  {department &&
-                    department.map((depart) => (
-                      <option
-                        key={depart.departmentId}
-                        value={depart.departmentId}
-                      >
-                        {depart.departmentName}
-                      </option>
-                    ))}
+                  <option>--Select department--</option>
+                  {departments?.map((department) => (
+                    <option
+                      key={department.departmentId}
+                      value={department.departmentId}
+                    >
+                      {department.departmentName}
+                    </option>
+                  ))}
                 </select>
               </div>
               <UserExecuted type={form} />

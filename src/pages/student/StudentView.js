@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import View from "~/components/crud/View";
@@ -37,15 +37,18 @@ function StudentView() {
     });
   };
   const fptIdRef = useRef();
-  const [value, setValue] = useState({
+  const initalValue = {
     fullName: "",
-    major: "",
+    majorId: {
+      majorCode: "",
+    },
     fptId: "",
     uogId: "",
     personId: "",
     gender: "",
     email: "",
-  });
+  };
+  const [value, setValue] = useState(initalValue);
 
   const currentPage = pagination.pageNumber;
 
@@ -105,26 +108,29 @@ function StudentView() {
 
   // handle change Filter Search
   const handleChangeFilterSearch = (e) => {
-    const newValue = { ...value };
-    newValue[e.target.id] = e.target.value;
-    setValue(newValue);
+    setValue({
+      ...value,
+      [e.target.id]: e.target.value,
+      majorId: {
+        majorCode: e.target.value,
+      },
+    });
   };
 
   // Search
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    // if (value.trim() === "") callListStudent();
     setIsLoaded(false);
     const myQuery = () => {
       let myQueryArr = [];
-      if (value) {
-        if (value.fullName) myQueryArr.push(`fullName:*${value.fullName}`);
-        if (value.fptId) myQueryArr.push(`fptId:*${value.fptId}`);
-        if (value.uogId) myQueryArr.push(`uogId:*${value.uogId}`);
-        if (value.personId) myQueryArr.push(`personId:*${value.personId}`);
-        if (value.gender) myQueryArr.push(`gender:${value.gender}`);
-        if (value.email) myQueryArr.push(`email:*${value.email}`);
-      }
+      if (value?.fullName) myQueryArr.push(`fullName:*${value.fullName}`);
+      if (value?.majorId)
+        myQueryArr.push(`majorId:*${value.majorId.majorCode}`);
+      if (value?.fptId) myQueryArr.push(`fptId:*${value.fptId}`);
+      if (value?.uogId) myQueryArr.push(`uogId:*${value.uogId}`);
+      if (value?.personId) myQueryArr.push(`personId:*${value.personId}`);
+      if (value?.gender) myQueryArr.push(`gender:${value.gender}`);
+      if (value?.email) myQueryArr.push(`email:*${value.email}`);
       return myQueryArr.join(",");
     };
 
@@ -145,10 +151,9 @@ function StudentView() {
   };
 
   // Reset filter search
-  const handleResetFilter = (e) => {
-    e.preventDefault();
-    console.log("this function is building");
-  };
+  const handleResetFilter = useCallback(() => {
+    setValue(initalValue);
+  }, []);
 
   return (
     <View>

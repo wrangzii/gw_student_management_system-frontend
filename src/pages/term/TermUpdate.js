@@ -10,26 +10,30 @@ import httpRequest from "~/utils/httpRequest";
 import styles from "~/styles/components/form.module.scss";
 
 function TermUpdate() {
-  const form = "update";
-  const [termName, setTermName] = useState("");
-  const [termCode, setTermCode] = useState("");
-  const [description, setDescription] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const { id } = useParams();
   const { auth } = useAuth();
-  const modifyBy = auth?.user?.username;
+  const { id } = useParams();
+  const form = "update";
+  const [data, setData] = useState({
+    termName: "",
+    termCode: "",
+    description: "",
+    modifyBy: auth?.user?.username,
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
   // Get current info
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`term/${id}`)
+      .get(`term/filter?pageNumber=0&search=termCode:*${id}`)
       .then((result) => {
-        const data = result?.data?.data;
-        setTermName(data?.termName);
-        setTermCode(data?.termCode);
-        setDescription(data?.description);
+        const data = result?.data?.data[0];
+        setData({
+          termName: data.termName,
+          termCode: data.termCode,
+          description: data.description,
+        });
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -38,12 +42,20 @@ function TermUpdate() {
       });
   }, [id]);
 
+  // handle change value
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   // Handle update term
   const handleUpdateTerm = (e) => {
     e.preventDefault();
     setIsLoaded(false);
     httpRequest
-      .put(`term/edit/${id}`, { termName, termCode, description, modifyBy })
+      .put(`term/edit/${id}`, data)
       .then((result) => {
         result && navigate("../view");
         setIsLoaded(true);
@@ -64,9 +76,10 @@ function TermUpdate() {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={termName}
-                onChange={(e) => setTermName(e.target.value)}
+                defaultValue={data.termName}
+                onChange={handleChange}
                 placeholder="Spring 2022"
+                name="termName"
               />
             </div>
             <div className="d-flex">
@@ -74,9 +87,11 @@ function TermUpdate() {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={termCode}
-                onChange={(e) => setTermCode(e.target.value)}
+                defaultValue={data.termCode}
+                // onChange={handleChange}
                 placeholder="SPR22"
+                name="termCode"
+                readOnly
               />
             </div>
             <div className="d-flex">
@@ -85,8 +100,9 @@ function TermUpdate() {
                 cols="30"
                 rows="2"
                 className="form-control"
-                defaultValue={description}
-                onChange={(e) => setDescription(e.target.value)}
+                defaultValue={data.description}
+                onChange={handleChange}
+                name="description"
               ></textarea>
             </div>
             <UserExecuted type={form} />

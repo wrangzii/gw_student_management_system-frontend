@@ -13,9 +13,10 @@ function SubjectViewDetail() {
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`student/filter?pageNumber=0&search=subjectCode:*${id}`)
+      .get(`subject/filter?pageNumber=0&search=subjectCode:*${id}`)
       .then((result) => {
-        setViewDetail(result?.data?.data);
+        const data = result?.data?.data;
+        setViewDetail(data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -27,57 +28,57 @@ function SubjectViewDetail() {
   return (
     <ViewDetail>
       {isLoaded ? (
-        <div className="table">
-          <div className="tr">
-            <div className="th">ID</div>
-            <div className="td">{viewDetail.subjectId}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Subject</div>
-            <div className="td">{viewDetail.subjectName}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Subject Code</div>
-            <div className="td">{viewDetail.subjectCode}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Description</div>
-            <div className="td">{viewDetail.description}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Replace With</div>
-            <div className="td">{viewDetail.replaceWith}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Created Date</div>
-            <div className="td">
-              {new Date(viewDetail.createDate).toLocaleDateString()}
+        <>
+          {viewDetail?.map((subject, index) => (
+            <div className="table" key={index}>
+              <div className="tr">
+                <div className="th">Subject</div>
+                <div className="td">{subject.subjectName}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Subject Code</div>
+                <div className="td">{subject.subjectCode}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Description</div>
+                <div className="td">{subject.description}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Replace With</div>
+                <div className="td">{subject.replaceWith}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Created Date</div>
+                <div className="td">
+                  {new Date(subject.createDate).toLocaleDateString()}
+                </div>
+              </div>
+              <div className="tr">
+                <div className="th">Created By</div>
+                <div className="td">{subject.createBy}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Modified Date</div>
+                <div className="td">
+                  {subject.modifyDate !== null &&
+                    new Date(subject.modifyDate).toLocaleDateString()}
+                </div>
+              </div>
+              <div className="tr">
+                <div className="th">Modified By</div>
+                <div className="td">{subject.modifyBy}</div>
+              </div>
+              <div className="tr">
+                <div className="th">Update</div>
+                <div className="td">
+                  <Link to={`/subject/update/${id}`}>
+                    <i className="fa-solid fa-pen-to-square"></i>
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="tr">
-            <div className="th">Created By</div>
-            <div className="td">{viewDetail.createBy}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Modified Date</div>
-            <div className="td">
-              {viewDetail.modifyDate !== null &&
-                new Date(viewDetail.modifyDate).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="tr">
-            <div className="th">Modified By</div>
-            <div className="td">{viewDetail.modifyBy}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Update</div>
-            <div className="td">
-              <Link to={`/subject/update/${id}`}>
-                <i className="fa-solid fa-pen-to-square"></i>
-              </Link>
-            </div>
-          </div>
-        </div>
+          ))}
+        </>
       ) : (
         <Loading />
       )}

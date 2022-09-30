@@ -3,29 +3,6 @@
 import "./index.scss";
 
 function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
-  // const [value, setValue] = useState({
-  //   fullName: "",
-  //   major: "",
-  //   fptId: "",
-  //   uogId: "",
-  //   personId: "",
-  //   gender: "",
-  //   email: "",
-  // });
-  // const options = [
-  //   {
-  //     label: "Default",
-  //     value: "default",
-  //   },
-  //   {
-  //     label: "Contains",
-  //     value: "contains",
-  //   },
-  //   {
-  //     label: "Absolute",
-  //     value: "absolute",
-  //   },
-  // ];
 
   const factors = [
     {
@@ -33,11 +10,11 @@ function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
       value: "fullName",
       type: "text",
     },
-    // {
-    //   label: "Major",
-    //   value: "major",
-    //   type: "text",
-    // },
+    {
+      label: "Major",
+      value: "major",
+      type: "text",
+    },
     {
       label: "FPT ID",
       value: "fptId",
@@ -66,7 +43,6 @@ function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
           <li key={index}>
             <label>{factor.label}</label>
             <div className="field">
-              {/* <Dropdown options={options} onHandleChange={handleChange} /> */}
               <input
                 type={factor.type}
                 className="form-control"

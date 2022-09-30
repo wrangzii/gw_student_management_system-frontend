@@ -120,9 +120,9 @@ function TermView() {
               </tr>
             </thead>
             <tbody>
-              {terms?.map((term, i) => (
-                <tr key={term.termId}>
-                  <td>{i + 1}</td>
+              {terms?.map((term, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
                   <td>{term.termName}</td>
                   <td>{term.termCode}</td>
                   <td>{term.description}</td>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Select from "react-select";
@@ -12,52 +12,23 @@ import httpRequest from "~/utils/httpRequest";
 import styles from "~/styles/components/form.module.scss";
 
 function UserUpdate() {
-  const form = "update";
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [dob, setDob] = useState("");
-  const [address, setAddress] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState([]);
-  const [departmentId, setDepartmentId] = useState(null);
-  const [departments, setDepartments] = useState([]);
-  const role_current = useRef();
-  const role_dropdown = useRef();
-  const { auth } = useAuth();
-  const modifyBy = auth?.user?.username;
   const { id } = useParams();
+  const { auth } = useAuth();
+  const form = "update";
+  const [data, setData] = useState({
+    email: "",
+    phoneNumber: "",
+    dob: "",
+    address: "",
+    fullName: "",
+    role: "",
+    departmentId: "",
+    modifyBy: auth?.user?.username,
+  });
+  const [roles, setRoles] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
-
-  // Get current info
-  useEffect(() => {
-    setIsLoaded(false);
-    httpRequest
-      .get(`users/${id}`)
-      .then((result) => {
-        const data = result?.data?.data;
-        setEmail(data.email);
-        setPhoneNumber(data.phoneNumber);
-        setDob(new Date(data.dob).toISOString());
-        setAddress(data.address);
-        setFullName(data.fullName);
-        setRole(data.roles.map((role) => role.roleName));
-        setDepartmentId(data.departmentId.departmentId);
-        return data;
-      })
-      .then((result) => {
-        // Get user's current role
-        role_current.current = result?.roles.map((role) => ({
-          value: role?.roleName,
-          label: role?.roleName,
-        }));
-        setIsLoaded(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoaded(true);
-      });
-  }, [id]);
 
   // Get role list
   useEffect(() => {
@@ -65,10 +36,14 @@ function UserUpdate() {
     httpRequest
       .get(`role/all?pageNumber=0`)
       .then((result) => {
-        role_dropdown.current = result?.data?.map((role) => ({
-          value: role.roleName,
-          label: role.roleName,
-        }));
+        setRoles(
+          result?.data.map((role) => {
+            return {
+              value: role.roleName,
+              label: role.roleName,
+            };
+          })
+        );
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -83,7 +58,8 @@ function UserUpdate() {
     httpRequest
       .get(`department/all?pageNumber=0`)
       .then((result) => {
-        setDepartments(result?.data);
+        const data = result?.data?.data;
+        setDepartments(data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -92,9 +68,51 @@ function UserUpdate() {
       });
   }, []);
 
-  // Handle change dropdown
+  // Get current info
+  useEffect(() => {
+    setIsLoaded(false);
+    httpRequest
+      .get(`users/filter?pageNumber=0&search=userId:${id}`)
+      .then((result) => {
+        const data = result?.data?.data[0];
+        setData({
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          dob: new Date(data.dob).toISOString().slice("T", 10),
+          address: data.address,
+          fullName: data.fullName,
+          role: data.roles.map((role) => {
+            return {
+              value: role.roleName,
+              label: role.roleName,
+            };
+          }), // array
+          departmentId: data.departmentId.departmentName,
+        });
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
+  }, [id]);
+
+  // handle change value
   const handleChange = (e) => {
-    setRole(Array.isArray(e) ? e.map((x) => x.value) : []);
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle change select
+  const handleChangeSelect = (selectedOption) => {
+    const roles = [];
+    selectedOption.map((role) => roles.push(role.value));
+    setData({
+      ...data,
+      role: roles,
+    });
   };
 
   // Handle update user
@@ -102,16 +120,7 @@ function UserUpdate() {
     e.preventDefault();
     setIsLoaded(false);
     httpRequest
-      .put(`users/edit/${id}`, {
-        email,
-        phoneNumber,
-        dob,
-        address,
-        fullName,
-        modifyBy,
-        role,
-        departmentId,
-      })
+      .put(`users/edit/${id}`, data)
       .then((result) => {
         result && navigate("../view");
         setIsLoaded(true);
@@ -134,9 +143,10 @@ function UserUpdate() {
                 <input
                   type="text"
                   placeholder="Nguyen Van A"
-                  defaultValue={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  defaultValue={data.fullName}
+                  onChange={handleChange}
                   className="form-control"
+                  name="fullName"
                 />
               </div>
               <div className="email form-group d-flex">
@@ -144,9 +154,10 @@ function UserUpdate() {
                 <input
                   type="text"
                   placeholder="manager@fe.edu.vn"
-                  defaultValue={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  defaultValue={data.email}
+                  onChange={handleChange}
                   className="form-control"
+                  name="email"
                 />
               </div>
               <div className="phone form-group d-flex">
@@ -154,20 +165,20 @@ function UserUpdate() {
                 <input
                   type="tel"
                   placeholder="0902345011"
-                  defaultValue={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  defaultValue={data.phoneNumber}
+                  onChange={handleChange}
                   className="form-control"
+                  name="phoneNumber"
                 />
               </div>
               <div className="dob form-group d-flex">
                 <label htmlFor="dob">Birthday</label>
                 <input
                   type="date"
-                  defaultValue={dob.slice("T", 10)}
-                  onChange={(e) => {
-                    setDob(e.target.value);
-                  }}
+                  defaultValue={data.dob}
+                  onChange={handleChange}
                   className="form-control"
+                  name="dob"
                 />
               </div>
             </div>
@@ -177,9 +188,10 @@ function UserUpdate() {
                 <input
                   type="text"
                   placeholder="20 Cong Hoa, Tan Binh"
-                  defaultValue={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  defaultValue={data.address}
+                  onChange={handleChange}
                   className="form-control"
+                  name="address"
                 />
               </div>
               <div className="role-dropdown dropdown d-flex">
@@ -187,19 +199,20 @@ function UserUpdate() {
                 <Select
                   isMulti
                   name="roles"
-                  options={role_dropdown.current}
-                  defaultValue={role.map((item) => item)}
+                  options={roles}
+                  defaultValue={data.role}
                   className="basic-multi-select"
                   classNamePrefix="select"
-                  onChange={handleChange}
+                  onChange={(e) => handleChangeSelect(e)}
                 />
               </div>
               <div className="department-dropdown dropdown d-flex">
                 <label htmlFor="department">Department</label>
                 <select
                   className="form-select"
-                  defaultValue={departmentId}
-                  onChange={(e) => setDepartmentId(parseInt(e.target.value))}
+                  defaultValue={data.departmentId}
+                  onChange={handleChange}
+                  name="departmentId"
                 >
                   {departments.length > 0 &&
                     departments.map((department) => (
