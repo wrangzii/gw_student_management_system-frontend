@@ -15,7 +15,7 @@ import { usePagination } from "~/store/pagination";
 function ProgramView() {
   const [programs, setPrograms] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -41,8 +41,8 @@ function ProgramView() {
 
   // Call list of program
   const callListProgram = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0;
+    // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`program/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -59,7 +59,7 @@ function ProgramView() {
   useEffect(() => {
     setIsLoaded(false);
     callListProgram();
-  }, []);
+  }, [pageCount]);
 
   // Handle delete program
   const handleDelete = (programId) => {

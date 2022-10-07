@@ -54,8 +54,8 @@ const components = [
     isActive: false,
   },
   {
-    title: "Class",
-    path: "/class/view",
+    title: "Student Class",
+    path: "/student-class/view",
     icon: "fa-solid fa-school",
     isActive: false,
   },

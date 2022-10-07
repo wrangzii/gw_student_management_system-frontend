@@ -16,7 +16,7 @@ import { usePagination } from "~/store/pagination";
 function TermView() {
   const [terms, setTerms] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -42,8 +42,8 @@ function TermView() {
 
   // Call list of term
   const callListTerm = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0;
+    // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`term/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -60,7 +60,7 @@ function TermView() {
   useEffect(() => {
     setIsLoaded(false);
     callListTerm();
-  }, [pagination.pageNumber]);
+  }, [pageCount]);
 
   // Handle delete term
   const handleDelete = (termId) => {

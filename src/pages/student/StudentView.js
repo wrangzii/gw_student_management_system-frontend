@@ -13,6 +13,7 @@ import "./studentView.scss";
 
 function StudentView() {
   const [students, setStudents] = useState([]);
+  const [majorIdList, setMajorIdList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
@@ -39,9 +40,7 @@ function StudentView() {
   const fptIdRef = useRef();
   const initalValue = {
     fullName: "",
-    majorId: {
-      majorCode: "",
-    },
+    majorId: "",
     fptId: "",
     uogId: "",
     personId: "",
@@ -69,9 +68,26 @@ function StudentView() {
       });
   };
 
+  // Call list major
+  const callListMajor = () => {
+    const pageNumber = 0
+    httpRequest
+      .get(`major/all?pageNumber=${pageNumber}`)
+      .then((result) => {
+        const data = result?.data;
+        setMajorIdList(data?.data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoaded(true);
+      });
+  };
+
   useEffect(() => {
     setIsLoaded(false);
     callListStudent();
+    callListMajor();
   }, [currentPage]);
 
   // Handle delete student
@@ -110,10 +126,7 @@ function StudentView() {
   const handleChangeFilterSearch = (e) => {
     setValue({
       ...value,
-      [e.target.id]: e.target.value,
-      majorId: {
-        majorCode: e.target.value,
-      },
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -124,8 +137,7 @@ function StudentView() {
     const myQuery = () => {
       let myQueryArr = [];
       if (value?.fullName) myQueryArr.push(`fullName:*${value.fullName}`);
-      if (value?.majorId)
-        myQueryArr.push(`majorId:*${value.majorId.majorCode}`);
+      if (value?.majorId) myQueryArr.push(`majorId:${value.majorId}`);
       if (value?.fptId) myQueryArr.push(`fptId:*${value.fptId}`);
       if (value?.uogId) myQueryArr.push(`uogId:*${value.uogId}`);
       if (value?.personId) myQueryArr.push(`personId:*${value.personId}`);
@@ -161,6 +173,7 @@ function StudentView() {
         onInputSearch={handleChangeFilterSearch}
         onSubmitSearch={handleSubmitSearch}
         onResetFilter={handleResetFilter}
+        majorIdList={majorIdList}
       />
       <UploadCSV />
       <UploadGrade />

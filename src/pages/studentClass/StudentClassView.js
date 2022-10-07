@@ -12,8 +12,8 @@ import {
 import httpRequest from "~/utils/httpRequest";
 import { usePagination } from "~/store/pagination";
 
-function ClassView() {
-  const [classes, setClasss] = useState([]);
+function StudentClassView() {
+  const [studentClass, setStudentClass] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
@@ -48,7 +48,7 @@ function ClassView() {
       .get(`studentClass/all?pageNumber=${pageNumber}`)
       .then((result) => {
         const data = result?.data;
-        setClasss(data?.data);
+        setStudentClass(data);
         if (data?.data !== null) setPageCount(data?.pageNumber);
         setIsLoaded(true);
       })
@@ -103,7 +103,7 @@ function ClassView() {
     httpRequest
       .get(`class/name?name=${valueSearch}`)
       .then((result) => {
-        setClasss(result?.data?.data);
+        setStudentClass(result?.data?.data);
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -134,43 +134,27 @@ function ClassView() {
               <tr>
                 <th>ID</th>
                 <th>Class</th>
-                <th>Description</th>
-                <th>Created Date</th>
-                <th>Created By</th>
-                <th>Modified Date</th>
-                <th>Modified By</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {/* {classes?.map((class, i) => (
-                <tr key={class.classId}>
-                  <td>{i + 1}</td>
-                  <td>{class.departmentName}</td>
-                  <td>{class.description}</td>
+              {studentClass?.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.studentClassId.classCode}</td>
                   <td>
-                    {new Date(class.createDate).toLocaleDateString()}
-                  </td>
-                  <td>{class.createBy}</td>
-                  <td>
-                    {new Date(class.modifyDate).toLocaleDateString()}
-                  </td>
-                  <td>{class.modifyBy}</td>
-                  <td>
-                    <Link to={`detail/${class.classId}`}>
+                    <Link to={`detail/${item.studentClassId.classCode}`}>
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/class/update/${class.classId}`}>
+                    <Link to={`/class/update/${item.classId}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <button
-                      onClick={() => handleDelete(class.classId)}
-                    >
+                    <button onClick={() => handleDelete(item.classId)}>
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </table>
         ) : (
@@ -184,4 +168,4 @@ function ClassView() {
   );
 }
 
-export default ClassView;
+export default StudentClassView;

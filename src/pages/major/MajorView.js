@@ -11,12 +11,12 @@ import {
 import View from "~/components/crud/View";
 
 import httpRequest from "~/utils/httpRequest";
-import { usePagination } from "~/store/pagination";
+// import { usePagination } from "~/store/pagination";
 
 function MajorView() {
   const [majors, setMajors] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -42,8 +42,8 @@ function MajorView() {
 
   // Call list of major
   const callListMajor = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0;
+    // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`major/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -61,7 +61,7 @@ function MajorView() {
   useEffect(() => {
     setIsLoaded(false);
     callListMajor();
-  }, [pagination.pageNumber]);
+  }, [pageCount]);
 
   // Handle delete major
   const handleDelete = (majorId) => {

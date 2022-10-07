@@ -9,7 +9,7 @@ import Term from "./term/Term";
 import Subject from "./subject/Subject";
 import Major from "./major/Major";
 import NotFound from "./NotFound";
-import Class from "./class/Class";
+import StudentClass from "./studentClass/StudentClass";
 
 // Authentication
 import Login from "./authentication/Login";
@@ -27,7 +27,7 @@ export {
   Subject,
   Major,
   NotFound,
-  Class,
+  StudentClass,
   Login,
   ForgotPassword,
   ResetPassword,

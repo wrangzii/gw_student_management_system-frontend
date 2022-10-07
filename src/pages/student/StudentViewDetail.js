@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import ViewDetail from "~/components/crud/ViewDetail";
@@ -14,10 +14,10 @@ function StudentViewDetail() {
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`student/filter?pageNumber=0&search=fptId:*${id}`)
+      .get(`student/filter?pageNumber=0&search=fptId:${id}`)
       .then((result) => {
-        setIsLoaded(true);
         setViewDetail(result?.data?.data);
+        setIsLoaded(true);
       })
       .catch((error) => {
         console.log(error);
@@ -27,9 +27,9 @@ function StudentViewDetail() {
 
   return (
     <ViewDetail>
-      {viewDetail?.map((detail, index) => (
-        <>
-          {isLoaded ? (
+      {isLoaded ? (
+        <Fragment>
+          {viewDetail?.map((detail, index) => (
             <div className="table" key={index}>
               <div className="tr">
                 <div className="th">Fullname</div>
@@ -104,11 +104,11 @@ function StudentViewDetail() {
                 </div>
               </div>
             </div>
-          ) : (
-            <Loading />
-          )}
-        </>
-      ))}
+          ))}
+        </Fragment>
+      ) : (
+        <Loading />
+      )}
     </ViewDetail>
   );
 }

@@ -15,7 +15,7 @@ import { usePagination } from "~/store/pagination";
 function UserView() {
   const [users, setUsers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -41,8 +41,8 @@ function UserView() {
 
   // Get list user
   const callListUser = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0;
+    // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`users/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -60,7 +60,7 @@ function UserView() {
   useEffect(() => {
     setIsLoaded(false);
     callListUser();
-  }, [pagination.pageNumber]);
+  }, [pageCount]);
 
   // Handle delete user
   const handleDelete = (userId) => {

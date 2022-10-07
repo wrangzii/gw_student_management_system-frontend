@@ -1,27 +1,21 @@
 .filter-search {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
   ul {
     min-height: 200px;
+    width: 85%;
     border-radius: 10px;
     background-color: #eee;
     padding: 2rem;
 
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
     position: relative;
 
-    resize: vertical;
-    overflow: auto;
-
-    .btn-close {
-      position: absolute;
-      right: 0;
-      top: 0;
-
-      padding: 0.5rem 1rem;
-    }
-
     li {
-      display: grid;
-      grid-template-columns: 1fr 5fr;
-      gap: 1rem;
 
       @media screen and (max-width: 375px) {
         grid-template-columns: 1fr 1fr;
@@ -31,15 +25,8 @@
       label {
         white-space: nowrap;
         font-weight: 600;
-      }
-
-      .field {
-        display: flex;
-        gap: 1rem;
-
-        input[type="checkbox"] {
-          margin-bottom: 16px;
-        }
+        min-width: 85px;
+        margin-bottom: .5rem;
       }
     }
   }

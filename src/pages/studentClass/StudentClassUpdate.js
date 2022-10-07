@@ -9,7 +9,7 @@ import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
 
-function DepartmentUpdate() {
+function StudentClassUpdate() {
   const form = "update";
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
@@ -58,7 +58,7 @@ function DepartmentUpdate() {
     <Update>
       {isLoaded ? (
         <form onSubmit={handleUpdateDepartment} className="form-group">
-          <HeadingTitle title={"department"} form={form} />
+          <HeadingTitle title={"student class"} form={form} />
           <div className={styles["form-body"]}>
             <div className="d-flex">
               <label htmlFor="department">Department</label>
@@ -91,4 +91,4 @@ function DepartmentUpdate() {
   );
 }
 
-export default DepartmentUpdate;
+export default StudentClassUpdate;

@@ -5,7 +5,7 @@ import { Loading } from "~/components";
 import ViewDetail from "~/components/crud/ViewDetail";
 import httpRequest from "~/utils/httpRequest";
 
-function ClassViewDetail() {
+function StudentClassViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -78,4 +78,4 @@ function ClassViewDetail() {
   );
 }
 
-export default ClassViewDetail;
+export default StudentClassViewDetail;

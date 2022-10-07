@@ -12,7 +12,7 @@ import {
   Major,
   Subject,
   NotFound,
-  Class,
+  StudentClass,
 } from "~/pages";
 
 const privateRoutes = [
@@ -24,7 +24,7 @@ const privateRoutes = [
   { path: "term/*", component: Term },
   { path: "subject/*", component: Subject },
   { path: "major/*", component: Major },
-  { path: "class/*", component: Class },
+  { path: "student-class/*", component: StudentClass },
 ];
 
 const publicRoutes = [

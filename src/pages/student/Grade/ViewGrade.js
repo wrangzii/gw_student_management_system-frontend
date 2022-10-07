@@ -12,6 +12,7 @@ function ViewGrade() {
       fullName: "",
       ename: "",
       subjectName: "",
+      subjectCode: "",
       status: "",
       mark: "",
       attendancePercent: "",
@@ -30,6 +31,7 @@ function ViewGrade() {
             fptId: d.studentSubjectId.fptId.fptId,
             fullName: d.studentSubjectId.fptId.fullName,
             ename: d.studentSubjectId.fptId.majorId.ename,
+            subjectCode: d.studentSubjectId.subjectCode.subjectCode,
             subjectName: d.studentSubjectId.subjectCode.subjectName,
             status: d.status,
             mark: d.mark,
@@ -56,6 +58,7 @@ function ViewGrade() {
               <th>FPT ID</th>
               <th>Full Name</th>
               <th>E_Name</th>
+              <th>Subject Code</th>
               <th>Subject Name</th>
               <th>Status</th>
               <th>Grade</th>
@@ -68,6 +71,7 @@ function ViewGrade() {
                 <td>{grade.fptId}</td>
                 <td>{grade.fullName}</td>
                 <td>{grade.ename}</td>
+                <td>{grade.subjectCode}</td>
                 <td>{grade.subjectName}</td>
                 <td>{grade.status}</td>
                 <td>{grade.mark}</td>

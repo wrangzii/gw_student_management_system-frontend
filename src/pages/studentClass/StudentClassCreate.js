@@ -6,10 +6,11 @@ import { useAuth } from "~/store/auth";
 import Create from "~/components/crud/Create";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
+import {ToastContainer, toast} from "react-toastify"
 
 import styles from "~/styles/components/form.module.scss";
 
-function ClassCreate() {
+function StudentClassCreate() {
   const form = "create";
   const { auth } = useAuth();
   const [datas, setDatas] = useState({
@@ -29,8 +30,7 @@ function ClassCreate() {
     httpRequest
       .post("studentClass/add", datas)
       .then((result) => {
-        // result && navigate("../view");
-        console.log(result);
+        toast(result?.data?.message)
         setIsLoaded(true);
       })
       .catch((error) => {
@@ -50,9 +50,10 @@ function ClassCreate() {
 
   return (
     <Create>
+      <ToastContainer />
       {isLoaded ? (
         <form onSubmit={handleCreateClass} className="form-group">
-          <HeadingTitle title={"class"} form={form} />
+          <HeadingTitle title={"student class"} form={form} />
           <div className={styles["form-body"]}>
             {/* {isError ? (
               <ErrorHandler name={`"${className}"`} msg={"is already taken!"} />
@@ -97,4 +98,4 @@ function ClassCreate() {
   );
 }
 
-export default ClassCreate;
+export default StudentClassCreate;

@@ -1,18 +1,15 @@
-// import Dropdown from "./components/dropdown/Dropdown";
-
 import "./index.scss";
 
-function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
-
+function FilterSearch({
+  onInputSearch,
+  onSubmitSearch,
+  onResetFilter,
+  majorIdList = [],
+}) {
   const factors = [
     {
       label: "Full Name",
       value: "fullName",
-      type: "text",
-    },
-    {
-      label: "Major",
-      value: "major",
       type: "text",
     },
     {
@@ -37,20 +34,28 @@ function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
     },
   ];
   return (
-    <form className="filter-search" onSubmit={onSubmitSearch}>
+    <form className="filter-search" name="search" onSubmit={onSubmitSearch}>
+      <div className="major form-group">
+        <select className="form-select" onChange={onInputSearch} name="majorId">
+          <option value="">--Select--</option>
+          {majorIdList.map((majorId, index) => (
+            <option key={index} value={majorId.majorId}>
+              {majorId.majorCode}
+            </option>
+          ))}
+        </select>
+      </div>
       <ul>
-        {factors.map((factor, index) => (
+        {factors?.map((factor, index) => (
           <li key={index}>
             <label>{factor.label}</label>
-            <div className="field">
-              <input
-                type={factor.type}
-                className="form-control"
-                onChange={onInputSearch}
-                placeholder="Search here..."
-                id={factor.value}
-              />
-            </div>
+            <input
+              type={factor.type}
+              className="form-control"
+              onChange={onInputSearch}
+              placeholder={`Search ${factor.label} here...`}
+              name={factor.value}
+            />
           </li>
         ))}
         <li>
@@ -66,8 +71,12 @@ function FilterSearch({ onInputSearch, onSubmitSearch, onResetFilter }) {
             <option value="female">Female</option>
           </select>
         </li>
-        <li className="d-flex justify-content-center gap-3">
-          <button type="button" className="btn btn-danger" onClick={onResetFilter}>
+        <li className="d-flex justify-content-end gap-3">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={onResetFilter}
+          >
             Reset
           </button>
           <button className="btn btn-warning">Search</button>

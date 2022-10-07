@@ -10,12 +10,12 @@ import {
   Message,
 } from "~/components";
 import httpRequest from "~/utils/httpRequest";
-import { usePagination } from "~/store/pagination";
+// import { usePagination } from "~/store/pagination";
 
 function DepartmentView() {
   const [departments, setDepartments] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -42,8 +42,8 @@ function DepartmentView() {
 
   // Call list of department
   const callListDepartments = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0
+      // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`department/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -61,7 +61,7 @@ function DepartmentView() {
   useEffect(() => {
     setIsLoaded(false);
     callListDepartments();
-  }, [pagination.pageNumber]);
+  }, [pageCount]);
 
   // Handle delete department
   const handleDelete = (departmentId) => {

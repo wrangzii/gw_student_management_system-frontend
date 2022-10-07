@@ -16,7 +16,7 @@ import { usePagination } from "~/store/pagination";
 function SubjectView() {
   const [subjects, setSubjects] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { pagination } = usePagination();
+  // const { pagination } = usePagination();
   const [pageCount, setPageCount] = useState(1);
   const [msgStatus, setMsgStatus] = useState({
     msg: "",
@@ -42,8 +42,8 @@ function SubjectView() {
 
   // Call list of subject
   const callListSubject = () => {
-    const pageNumber =
-      pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
+    const pageNumber = 0;
+    // pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
       .get(`subject/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -60,7 +60,7 @@ function SubjectView() {
   useEffect(() => {
     setIsLoaded(false);
     callListSubject();
-  }, [pagination.pageNumber]);
+  }, [pageCount]);
 
   // Handle delete subject
   const handleDelete = (subjectId) => {
