@@ -8,6 +8,7 @@ import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
+import { toast } from "react-toastify";
 
 function ProgramUpdate() {
   const form = "update";
@@ -50,7 +51,8 @@ function ProgramUpdate() {
         modifyBy,
       })
       .then((result) => {
-        result && navigate("../view");
+        result && toast.success(result.data.message);
+        // result && navigate("../view");
         setIsLoaded(true);
       })
       .catch((error) => {

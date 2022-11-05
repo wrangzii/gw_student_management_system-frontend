@@ -35,17 +35,22 @@ function FilterSearch({
   ];
   return (
     <form className="filter-search" name="search" onSubmit={onSubmitSearch}>
-      <div className="major form-group">
-        <select className="form-select" onChange={onInputSearch} name="majorId">
-          <option value="">--Select--</option>
-          {majorIdList.map((majorId, index) => (
-            <option key={index} value={majorId.majorId}>
-              {majorId.majorCode}
-            </option>
-          ))}
-        </select>
-      </div>
       <ul>
+        <div className="major form-group">
+          <label htmlFor="majorId">Major</label>
+          <select
+            className="form-select"
+            onChange={onInputSearch}
+            name="majorId"
+          >
+            <option value="">--Select--</option>
+            {majorIdList.map((majorId, index) => (
+              <option key={index} value={majorId.majorId}>
+                {majorId.majorCode}
+              </option>
+            ))}
+          </select>
+        </div>
         {factors?.map((factor, index) => (
           <li key={index}>
             <label>{factor.label}</label>
@@ -71,7 +76,7 @@ function FilterSearch({
             <option value="female">Female</option>
           </select>
         </li>
-        <li className="d-flex justify-content-end gap-3">
+        <li className="d-flex justify-content-end gap-3 mt-3 align-self-center">
           <button
             type="button"
             className="btn btn-danger"

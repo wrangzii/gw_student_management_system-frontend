@@ -10,7 +10,6 @@ import {
   Message,
 } from "~/components";
 import httpRequest from "~/utils/httpRequest";
-import { usePagination } from "~/store/pagination";
 
 function UserView() {
   const [users, setUsers] = useState([]);

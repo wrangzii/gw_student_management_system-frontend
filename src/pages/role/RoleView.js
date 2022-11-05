@@ -113,7 +113,7 @@ function RoleView() {
               {roles?.map((role, i) => (
                 <tr key={role.roleId}>
                   <td>{i + 1}</td>
-                  <td>{role.roleName}</td>
+                  <td>{role.roleName.slice(5)}</td>
                   <td>{role.description}</td>
                   <td>{new Date(role.createDate).toLocaleDateString()}</td>
                   <td>{role.createBy}</td>

@@ -11,7 +11,6 @@ import {
 
 import View from "~/components/crud/View";
 import httpRequest from "~/utils/httpRequest";
-import { usePagination } from "~/store/pagination";
 
 function SubjectView() {
   const [subjects, setSubjects] = useState([]);

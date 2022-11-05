@@ -8,6 +8,7 @@ import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
 
 import styles from "~/styles/components/form.module.scss";
+import { toast } from "react-toastify";
 
 function RoleUpdate() {
   const form = "update";
@@ -26,7 +27,7 @@ function RoleUpdate() {
       .get(`role/${id}`)
       .then((result) => {
         const data = result?.data?.data;
-        setRoleName(data.roleName);
+        setRoleName(data.roleName.slice(5));
         setDescription(data.description);
         setIsLoaded(true);
       })
@@ -47,7 +48,8 @@ function RoleUpdate() {
         modifyBy,
       })
       .then((result) => {
-        result && navigate("../view");
+        result && toast.success(result.data.message);
+        // result && navigate("../view");
         setIsLoaded(true);
       })
       .catch((error) => {

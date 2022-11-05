@@ -23,7 +23,7 @@ function SubjectViewDetail() {
         console.log(error);
         setIsLoaded(true);
       });
-  }, []);
+  }, [id]);
 
   return (
     <ViewDetail>

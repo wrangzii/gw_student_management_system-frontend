@@ -4,9 +4,11 @@ import components from "./components";
 import { hideSidebar } from "./sidebarHandler";
 import { useAuth } from "~/store/auth";
 import styles from "./sidebar.module.scss";
+import { useState } from "react";
 
 function Sidebar() {
   const { auth } = useAuth();
+  const [isShow, setIsShow] = useState(false);
 
   return (
     <div className={`${styles["overlay"]} overlay overflow-auto`}>
@@ -39,7 +41,12 @@ function Sidebar() {
         <div className={styles["sidebar-body"]}>
           <ul>
             {components.map((component, index) => (
-              <li key={index} className="w-100 px-2">
+              <li
+                key={index}
+                className="w-100 px-2"
+                onMouseEnter={() => setIsShow(true)}
+                onMouseLeave={() => setIsShow(false)}
+              >
                 <Link
                   to={component.path}
                   className="py-3"
@@ -50,6 +57,22 @@ function Sidebar() {
                   </span>
                   <p className="fw-bold">{component.title}</p>
                 </Link>
+                {isShow && (
+                  <div className="d-flex flex-column gap-2 ps-3">
+                    {component?.children?.map((child, index) => (
+                      <Link
+                        to={child.path}
+                        key={index}
+                        className={styles["child-item"]}
+                      >
+                        <span>
+                          <i className={child.icon}></i>
+                        </span>
+                        <p>{child.title}</p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
           </ul>

@@ -64,7 +64,7 @@ function ForgotPassword() {
             <Link to={"/login"} className="btn btn-danger">
               Cancel
             </Link>
-            <button className="btn btn-success">Submit</button>
+            <button className="btn btn-warning">Submit</button>
           </div>
         </div>
       </form>

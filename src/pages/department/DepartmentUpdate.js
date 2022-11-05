@@ -6,7 +6,7 @@ import { useAuth } from "~/store/auth";
 import Update from "~/components/crud/Update";
 import HeadingTitle from "~/components/headingTitle/HeadingTitle";
 import httpRequest from "~/utils/httpRequest";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import styles from "~/styles/components/form.module.scss";
 
@@ -58,7 +58,7 @@ function DepartmentUpdate() {
     httpRequest
       .put(`department/edit/${id}`, data)
       .then((result) => {
-        result && toast("Edit department successfully!");
+        result && toast.success("Edit department successfully!");
         // result && navigate("../view");
         setIsLoaded(true);
       })
@@ -72,7 +72,6 @@ function DepartmentUpdate() {
       {isLoaded ? (
         <form onSubmit={handleUpdateDepartment} className="form-group">
           <HeadingTitle title={"department"} form={form} />
-          <ToastContainer />
           <div className={styles["form-body"]}>
             <div className="d-flex">
               <label htmlFor="department">Department</label>

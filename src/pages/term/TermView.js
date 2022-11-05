@@ -11,7 +11,6 @@ import {
 import httpRequest from "~/utils/httpRequest";
 
 import View from "~/components/crud/View";
-import { usePagination } from "~/store/pagination";
 
 function TermView() {
   const [terms, setTerms] = useState([]);

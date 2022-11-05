@@ -84,7 +84,7 @@ function ResetPassword() {
           />
           <div className={`${styles["handler-btn"]} form-group`}>
             <Link to={"/"} className="btn btn-danger">
-              Back to home
+              Cancel
             </Link>
             <button className="btn btn-success">Confirm</button>
           </div>

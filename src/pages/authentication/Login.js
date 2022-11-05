@@ -108,7 +108,7 @@ function Login() {
                 LOGIN WITH FPT EMAIL
               </a>
             </div>
-            <Link to="/forgot_password">
+            <Link to="/forgot-password">
               <small className={`${styles["note"]} text-danger font-italic`}>
                 Forgotten your username or password?
               </small>

@@ -34,6 +34,23 @@ const components = [
     path: "/student/view",
     icon: "fa-solid fa-graduation-cap",
     isActive: false,
+    children: [
+      {
+        title: "Honour Students",
+        path: "/student/view/honour-students",
+        icon: "fa-solid fa-medal",
+      },
+      {
+        title: "Fail Subjects",
+        path: "/student/view/fail-subjects",
+        icon: "fa-solid fa-exclamation",
+      },
+      {
+        title: "OJT Students",
+        path: "/student/view/ojt-students",
+        icon: "fa-solid fa-flag",
+      },
+    ],
   },
   {
     title: "Term",

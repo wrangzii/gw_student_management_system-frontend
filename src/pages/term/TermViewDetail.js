@@ -24,7 +24,7 @@ function TermViewDetail() {
         console.log(error);
         setIsLoaded(true);
       });
-  }, []);
+  }, [id]);
 
   return (
     <ViewDetail>

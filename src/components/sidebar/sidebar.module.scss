@@ -124,6 +124,11 @@
                     }
                 }
             }
+
+            .child-item:hover {
+                opacity: .7;
+                transition: opacity .25s linear;
+            }
         }
 
         &-footer {

@@ -70,7 +70,7 @@ function StudentView() {
 
   // Call list major
   const callListMajor = () => {
-    const pageNumber = 0
+    const pageNumber = 0;
     httpRequest
       .get(`major/all?pageNumber=${pageNumber}`)
       .then((result) => {
@@ -122,8 +122,16 @@ function StudentView() {
     }
   };
 
+  // Handle search major
+  const handleSearchMajor = (id) => {
+    httpRequest
+      .get(`major/filter?pageNumber=0&search=majorId:${id}`)
+      .then((result) => console.log(result));
+  };
+
   // handle change Filter Search
   const handleChangeFilterSearch = (e) => {
+    if (e.target.name === "majorId") handleSearchMajor(e.target.value);
     setValue({
       ...value,
       [e.target.name]: e.target.value,
@@ -147,9 +155,7 @@ function StudentView() {
     };
 
     httpRequest
-      .get(
-        `http://localhost:8080/student/filter?pageNumber=0&search=${myQuery()}`
-      )
+      .get(`student/filter?pageNumber=0&search=${myQuery()}`)
       .then((result) => {
         const data = result?.data;
         setStudents(data?.data);

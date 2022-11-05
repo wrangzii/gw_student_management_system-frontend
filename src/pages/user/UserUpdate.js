@@ -81,13 +81,13 @@ function UserUpdate() {
           dob: new Date(data.dob).toISOString().slice("T", 10),
           address: data.address,
           fullName: data.fullName,
-          role: data.roles.map((role) => {
+          role: data?.roles?.map((role) => {
             return {
-              value: role.roleName,
-              label: role.roleName,
+              value: role?.roleName,
+              label: role?.roleName,
             };
-          }), // array
-          departmentId: data.departmentId.departmentName,
+          }),
+          departmentId: data?.departmentId?.departmentName,
         });
         setIsLoaded(true);
       })
@@ -200,7 +200,7 @@ function UserUpdate() {
                   isMulti
                   name="roles"
                   options={roles}
-                  defaultValue={data.role}
+                  defaultValue={data?.role !== [] ? data.role : []}
                   className="basic-multi-select"
                   classNamePrefix="select"
                   onChange={(e) => handleChangeSelect(e)}
