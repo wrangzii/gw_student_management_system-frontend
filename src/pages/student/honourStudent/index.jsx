@@ -24,6 +24,7 @@ function HonourStudent() {
             <th>Major</th>
             <th>Term</th>
             <th>Subject</th>
+            <th>Studied</th>
             <th>Mark</th>
             <th>Avg Score</th>
           </tr>
@@ -36,8 +37,9 @@ function HonourStudent() {
               <td>{student.majorName}</td>
               <td>{student.termCode}</td>
               <td>{student.subjectCode}</td>
+              <td>{student.numberSubjectStudiedInTheTerm}</td>
               <td>{student.mark}</td>
-              <td>{Math.round(student.averageScore*10)/10}</td>
+              <td>{Math.round(student.averageScore * 10) / 10}</td>
             </tr>
           ))}
         </tbody>

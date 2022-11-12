@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { Loading } from "~/components";
+import { Loading, PopupConfirm } from "~/components";
 import ViewDetail from "~/components/crud/ViewDetail";
 import httpRequest from "~/utils/httpRequest";
 
@@ -9,12 +9,23 @@ function StudentClassViewDetail() {
   const { id } = useParams();
   const [viewDetail, setViewDetail] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [popup, setPopup] = useState({
+    message: "",
+    isLoading: false,
+  });
+  const handlePopup = (message, isLoading) => {
+    setPopup({
+      message,
+      isLoading,
+    });
+  };
+  const fptIdRef = useRef();
 
   // Get class's detail info
   useEffect(() => {
     setIsLoaded(false);
     httpRequest
-      .get(`class/${id}`)
+      .get(`studentClass/${id}`)
       .then((result) => {
         setViewDetail(result?.data?.data);
         setIsLoaded(true);
@@ -25,54 +36,74 @@ function StudentClassViewDetail() {
       });
   }, []);
 
+  // Handle delete student
+  const handleDelete = (fptId) => {
+    handlePopup("Are you sure to delete?", true);
+    fptIdRef.current = fptId;
+  };
+
+  // Confirm to delete student
+  const confirmDelete = (choose) => {
+    if (choose) {
+      httpRequest
+        .delete(`studentClass/delete/${id}/${fptIdRef.current}`)
+        .then((result) => {
+          setIsLoaded(true);
+          const newStudentList = [...viewDetail];
+          const index = viewDetail.findIndex(
+            (student) => student.fptId === fptIdRef.current
+          );
+          newStudentList.splice(index, 1);
+          setViewDetail(newStudentList);
+          // handleMsgStatus(result?.data?.message, true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoaded(true);
+        });
+      handlePopup("", false);
+      setIsLoaded(false);
+    } else {
+      handlePopup("", false);
+    }
+  };
+
   return (
     <ViewDetail>
       {isLoaded ? (
-        <div className="table">
-          <div className="tr">
-            <div className="th">ID</div>
-            <div className="td">{viewDetail.classId}</div>
-          </div>
-          <div className="tr">
-            <div className="th">class</div>
-            <div className="td">{viewDetail.className}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Description</div>
-            <div className="td">{viewDetail.description}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Created Date</div>
-            <div className="td">
-              {new Date(viewDetail.createDate).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="tr">
-            <div className="th">Created By</div>
-            <div className="td">{viewDetail.createBy}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Modified Date</div>
-            <div className="td">
-              {viewDetail.modifyDate !== null &&
-                new Date(viewDetail.modifyDate).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="tr">
-            <div className="th">Modified By</div>
-            <div className="td">{viewDetail.modifyBy}</div>
-          </div>
-          <div className="tr">
-            <div className="th">Update</div>
-            <div className="td">
-              <Link to={`/class/update/${id}`}>
-                <i className="fa-solid fa-pen-to-square"></i>
-              </Link>
-            </div>
-          </div>
-        </div>
+        <>
+          <h6>Class: {id}</h6>
+          <table className="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>FPT ID</th>
+                <th>Fullname</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {viewDetail.map((cls, index) => (
+                <tr key={index}>
+                  <td>{cls.fptId}</td>
+                  <td>{cls.fullName}</td>
+                  <td>
+                    <button
+                      className="border-0"
+                      onClick={() => handleDelete(cls.fptId)}
+                    >
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       ) : (
         <Loading />
+      )}
+      {popup.isLoading && (
+        <PopupConfirm message={popup.message} onPopup={confirmDelete} />
       )}
     </ViewDetail>
   );

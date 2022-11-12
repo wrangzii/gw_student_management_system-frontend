@@ -1,10 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import components from "./components";
 import { hideSidebar } from "./sidebarHandler";
 import { useAuth } from "~/store/auth";
 import styles from "./sidebar.module.scss";
-import { useState } from "react";
 
 function Sidebar() {
   const { auth } = useAuth();

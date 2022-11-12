@@ -62,7 +62,7 @@ function UploadCSV() {
         <label className="import-file mb-2" htmlFor="file">
           <span className="btn btn-danger">
             <i className="fa-solid fa-upload p-0 me-2"></i>
-            Upload CSV
+            Upload Student
           </span>
           <input type="file" onChange={onFileChange} id="file" hidden />
 

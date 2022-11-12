@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import styles from "./navigateAction.module.scss";
 
-function NavigateAction({ title }) {
+function NavigateAction({ title, route }) {
   return (
     <ul className={styles["navigate-action"]}>
       <li className="text-success">
         <h1 className="text-capitalize">{title}</h1>
       </li>
-      <Link to={`/${title}/view`}>
+      <Link to={`/${route}/view`}>
         <li className="text-success">View</li>
       </Link>
-      <Link to={`/${title}/create`}>
+      <Link to={`/${route}/create`}>
         <li className="text-success">Create</li>
       </Link>
     </ul>

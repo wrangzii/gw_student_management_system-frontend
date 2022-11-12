@@ -41,7 +41,7 @@ function StudentClassView() {
   const classIdRef = useRef();
 
   // Call list of class
-  const callListClasss = () => {
+  const callListClass = () => {
     const pageNumber =
       pagination.pageNumber !== undefined ? pagination.pageNumber : 0;
     httpRequest
@@ -60,45 +60,20 @@ function StudentClassView() {
 
   useEffect(() => {
     setIsLoaded(false);
-    callListClasss();
+    callListClass();
   }, [pagination.pageNumber]);
 
   // Handle delete class
-  const handleDelete = (classId) => {
-    handlePopup("Are you sure to delete?", true);
-    classIdRef.current = classId;
-  };
-
-  // Confirm to delete role
-  // const confirmDelete = (choose) => {
-  //   if (choose) {
-  //     httpRequest
-  //       .delete(`class/delete/${classIdRef.current}`)
-  //       .then((result) => {
-  //         setIsLoaded(true);
-  //         const newClassList = [...classes];
-  //         const index = classes.findIndex(
-  //           (class) => class.classId === classIdRef.current
-  //         );
-  //         newClassList.splice(index, 1);
-  //         setClasss(newClassList);
-  //         handleMsgStatus(result?.data?.message, true);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         setIsLoaded(true);
-  //       });
-  //     handlePopup("", false);
-  //     setIsLoaded(false);
-  //   } else {
-  //     handlePopup("", false);
-  //   }
+  // const handleDelete = (classId, fptId) => {
+  //   handlePopup("Are you sure to delete?", true);
+  //   classIdRef.current = classId;
   // };
 
+  
   // Search
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    if (valueSearch.trim() === "") callListClasss();
+    if (valueSearch.trim() === "") callListClass();
     setIsLoaded(false);
     httpRequest
       .get(`class/name?name=${valueSearch}`)
@@ -141,17 +116,24 @@ function StudentClassView() {
               {studentClass?.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{item.studentClassId.classCode}</td>
+                  <td>{item}</td>
                   <td>
-                    <Link to={`detail/${item.studentClassId.classCode}`}>
+                    <Link to={`detail/${item}`} title="View student list">
                       <i className="fa-solid fa-circle-info"></i>
                     </Link>
-                    <Link to={`/class/update/${item.classId}`}>
-                      <i className="fa-solid fa-pen-to-square"></i>
+                    <Link to={`../add-student/${item}`} title="Add student">
+                      <i class="fa-solid fa-plus"></i>
                     </Link>
-                    <button onClick={() => handleDelete(item.classId)}>
+                    {/* <button
+                      onClick={() =>
+                        handleDelete(
+                          item.studentClassId.classCode,
+                          item.studentClassId.fptId.fptId
+                        )
+                      }
+                    >
                       <i className="fa-solid fa-trash-can"></i>
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
@@ -161,9 +143,10 @@ function StudentClassView() {
           <Loading />
         )}
       </div>
-      {/* {popup.isLoading && (
-        <PopupConfirm message={popup.message} onPopup={confirmDelete} />
-      )} */}
+      {popup.isLoading &&
+        {
+          /* <PopupConfirm message={popup.message} onPopup={confirmDelete} /> */
+        }}
     </View>
   );
 }

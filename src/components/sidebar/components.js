@@ -71,7 +71,7 @@ const components = [
     isActive: false,
   },
   {
-    title: "Student Class",
+    title: "Class",
     path: "/student-class/view",
     icon: "fa-solid fa-school",
     isActive: false,
