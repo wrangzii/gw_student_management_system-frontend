@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./navigateAction.module.scss";
 
-function NavigateAction({ title, route }) {
+function NavigateAction({ title, route = title }) {
   return (
     <ul className={styles["navigate-action"]}>
       <li className="text-success">

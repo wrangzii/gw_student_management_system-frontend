@@ -10,6 +10,7 @@ import { useAuth } from "~/store/auth";
 import AuthHeading from "./partials/AuthHeading";
 
 import styles from "./login.module.scss";
+import httpRequest from "~/utils/httpRequest";
 
 function Login() {
   const { setAuth } = useAuth();
@@ -25,12 +26,8 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     setIsLoaded(false);
-    axios({
-      method: "post",
-      url: "http://localhost:8080/login",
-      headers: { "Content-Type": "application/json" },
-      data: JSON.stringify({ username, password }),
-    })
+    httpRequest
+      .post("login", { username, password })
       .then((result) => {
         setIsError(false);
         if (result) {

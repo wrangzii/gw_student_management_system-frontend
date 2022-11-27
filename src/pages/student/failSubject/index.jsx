@@ -16,6 +16,7 @@ function FailSubject() {
 
   return (
     <div className="overflow-auto">
+      <h4 className="text-info">Fail Subjects</h4>
       <table className="table table-striped table-hover table-bordered">
         <thead>
           <tr>

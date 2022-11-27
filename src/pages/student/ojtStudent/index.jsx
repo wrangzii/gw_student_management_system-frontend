@@ -16,6 +16,7 @@ function OjtStudent() {
 
   return (
     <div className="overflow-auto">
+      <h4 className="text-info">OJT Students</h4>
       <table className="table table-striped table-hover table-bordered">
         <thead>
           <tr>

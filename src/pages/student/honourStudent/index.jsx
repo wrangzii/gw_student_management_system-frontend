@@ -16,6 +16,7 @@ function HonourStudent() {
 
   return (
     <div className="overflow-auto">
+      <h4 className="text-info">Honour Students</h4>
       <table className="table table-striped table-hover table-bordered">
         <thead>
           <tr>

@@ -52,7 +52,7 @@ function UploadCSV() {
 
   // Toast
   const notify = useCallback(() => {
-    toast("Import successfully!");
+    toast.success("Import successfully!");
   }, [csvFile]);
 
   return (

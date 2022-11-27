@@ -7,6 +7,7 @@ import { Loading } from "~/components";
 import AuthHeading from "./partials/AuthHeading";
 
 import styles from "~/styles/components/form.module.scss";
+import httpRequest from "~/utils/httpRequest";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -27,14 +28,11 @@ function ResetPassword() {
       return false;
     }
     setIsLoaded(false);
-    axios({
-      method: "post",
-      url: `http://localhost:8080/confirm_reset?token=${resetToken}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({ password, confirmPassword }),
-    })
+    httpRequest
+      .post(`confirm_reset?token=${resetToken}`, {
+        password,
+        confirmPassword,
+      })
       .then((result) => {
         if (result && password === confirmPassword) {
           setIsError(false);
