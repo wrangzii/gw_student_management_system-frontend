@@ -25,6 +25,10 @@
   }
 }
 
+body {
+  min-width: 350px;
+}
+
 .bg-primary,
 .btn-primary,
 .btn-outline-primary {
@@ -184,7 +188,7 @@ table {
       gap: .5rem;
 
       @media screen and (max-width: 992px) {
-        display: grid;
+        // display: grid;
       }
 
       button {
@@ -335,6 +339,12 @@ i {
 
 .basic-multi-select {
   width: 100%;
+}
+
+@media screen and (max-width: 400px) {
+  .select__control {
+    max-width: 165px;
+  }
 }
 
 @media screen and (max-width: 275px) {

@@ -127,7 +127,7 @@ function StudentCreate() {
               </div>
               <div className="gender-dropdown dropdown d-flex">
                 <label htmlFor="gender">Gender</label>
-                <div className="d-flex mb-4">
+                <div className="d-flex mb-4 flex-wrap">
                   <label htmlFor="male">
                     Male
                     <input

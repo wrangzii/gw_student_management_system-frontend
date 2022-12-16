@@ -1,13 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import components from "./components";
 import { hideSidebar } from "./sidebarHandler";
 import { useAuth } from "~/store/auth";
 import styles from "./sidebar.module.scss";
+import Cookies from "js-cookie";
 
 function Sidebar() {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const [isShow, setIsShow] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setAuth((prev) => ({
+      ...prev,
+      accessToken: null,
+    }));
+    Cookies.remove("token");
+    Cookies.remove("user");
+    Cookies.remove("jSessionId");
+    navigate("/");
+  };
 
   return (
     <div className={`${styles["overlay"]} overlay overflow-auto`}>
@@ -27,13 +40,17 @@ function Sidebar() {
                 <i className="fa-solid fa-user"></i>
                 Profile
               </Link>
-              <a
+              <button className="signout btn btn-danger" onClick={handleLogout}>
+                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                Sign out
+              </button>
+              {/* <a
                 className="signout btn btn-danger"
-                href="http://localhost:8080/logout"
+                href="http://localhost:8000/logout"
               >
                 <i className="fa-solid fa-arrow-right-from-bracket"></i>
                 Sign out
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
